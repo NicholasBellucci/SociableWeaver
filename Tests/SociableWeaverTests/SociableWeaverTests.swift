@@ -3,32 +3,26 @@ import XCTest
 
 final class SociableWeaverTests: XCTestCase {
     func testBasicQuery() {
-        let weave = Weave(.query) {
+        let query = Weave(.query) {
             Fields("post") {
                 Keys(Post.CodingKeys.allCases)
                 Exclude(Post.CodingKeys.id)
 
                 Merge(Post.CodingKeys.author) {
-                    return MergeBuilder.buildBlock(
-                        Keys(Author.CodingKeys.allCases)
-                    )
+                    FieldsBuilder.buildBlock(Keys(Author.CodingKeys.allCases))
                 }
 
                 Merge(Post.CodingKeys.comments) {
                     Keys(Comment.CodingKeys.allCases)
 
                     Merge(Comment.CodingKeys.author) {
-                        return MergeBuilder.buildBlock(
-                            Keys(Author.CodingKeys.allCases)
-                        )
+                        FieldsBuilder.buildBlock(Keys(Author.CodingKeys.allCases))
                     }
                 }
             }.result
         }
 
-        print(weave.result)
-
-        XCTAssertEqual(weave.result, "{ post { title description author { id name } comments { id author content } } }")
+        XCTAssertEqual(query.result, "query { post { title description author { id name } comments { id author { id name } content } } }")
     }
 
     static var allTests = [

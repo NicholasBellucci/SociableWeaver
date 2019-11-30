@@ -16,7 +16,7 @@ public class Merge: GQLOption {
 }
 
 extension Merge {
-    convenience init(_ key: CodingKey, @MergeBuilder _ content: () -> String) {
+    convenience init(_ key: CodingKey, @FieldsBuilder _ content: () -> String) {
         self.init(key, result: content())
     }
 }

@@ -11,7 +11,7 @@ public class Weave {
 
     private init(_ type: OperationType, result: String) {
         self.type = type
-        self.result = "{ \(result) }"
+        self.result = type.stringValue.withSubfields(result)
     }
 }
 

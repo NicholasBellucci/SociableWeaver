@@ -10,10 +10,10 @@ class FieldsBuilder {
     static func buildBlock(_ segments: GQLOption...) -> String {
         var keys: [String] = []
         var exclusions: [String] = []
-        var merge: [(key: String, mergeResults: String)] = []
+        var merge: [(key: String, results: String)] = []
 
         segments.forEach {
-            switch $0.self {
+            switch $0 {
             case is Keys:
                 guard let value = $0 as? Keys else { return }
                 keys += value.keys.map { $0.stringValue }
@@ -22,7 +22,7 @@ class FieldsBuilder {
                 exclusions += value.keys.map { $0.stringValue }
             case is Merge:
                 guard let value = $0 as? Merge else { return }
-                merge += [(key: value.key.stringValue, mergeResults: value.result)]
+                merge += [(key: value.key.stringValue, results: value.result)]
             default:
                 break
             }
@@ -32,7 +32,7 @@ class FieldsBuilder {
 
         merge.forEach {
             guard let index = keys.firstIndex(of: $0.key) else { return }
-            keys[index] = "\($0.key) { \($0.mergeResults) }"
+            keys[index] = $0.key.withSubfields($0.results)
         }
 
         return keys.joined(separator: " ")
