@@ -7,13 +7,17 @@
 
 @_functionBuilder
 class QueryBuilder {
-    static func buildBlock(_ segments: Fields...) -> String {
+    static func buildBlock(_ children: Fields...) -> String {
         var values: [String] = []
 
-        segments.forEach {
+        children.forEach {
             values.append($0.name.withSubfields($0.result))
         }
 
         return values.joined(separator: " ")
+    }
+
+    static func buildBlock(_ component: Fields) -> String {
+        return component.name.withSubfields(component.result)
     }
 }

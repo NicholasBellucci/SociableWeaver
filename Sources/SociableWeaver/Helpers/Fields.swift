@@ -11,7 +11,7 @@ public class Fields: GQLOption {
 
     private init(_ name: String, result: String) {
         self.name = name
-        self.result = name.withSubfields(result)
+        self.result = result
     }
 }
 

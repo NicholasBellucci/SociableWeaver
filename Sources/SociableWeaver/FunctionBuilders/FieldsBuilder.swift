@@ -7,12 +7,12 @@
 
 @_functionBuilder
 class FieldsBuilder {
-    static func buildBlock(_ segments: GQLOption...) -> String {
+    static func buildBlock(_ children: GQLOption...) -> String {
         var keys: [String] = []
         var exclusions: [String] = []
         var merge: [(key: String, results: String)] = []
 
-        segments.forEach {
+        children.forEach {
             switch $0 {
             case is Keys:
                 guard let value = $0 as? Keys else { return }
@@ -36,5 +36,10 @@ class FieldsBuilder {
         }
 
         return keys.joined(separator: " ")
+    }
+
+    static func buildBlock(_ component: GQLOption) -> String {
+        guard let component = component as? Keys else { return "" }
+        return component.keys.map { $0.stringValue }.joined(separator: " ")
     }
 }
