@@ -7,7 +7,7 @@
 
 @_functionBuilder
 class QueryBuilder {
-    static func buildBlock(_ children: Fields...) -> String {
+    static func buildBlock(_ children: Object...) -> String {
         var values: [String] = []
 
         children.forEach {
@@ -17,7 +17,7 @@ class QueryBuilder {
         return values.joined(separator: " ")
     }
 
-    static func buildBlock(_ component: Fields) -> String {
+    static func buildBlock(_ component: Object) -> String {
         return component.name.withSubfields(component.result)
     }
 }

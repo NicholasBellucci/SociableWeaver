@@ -1,11 +1,11 @@
 //
-//  Fields.swift
+//  Object.swift
 //  
 //
 //  Created by Nicholas Bellucci on 11/29/19.
 //
 
-public class Fields: GQLOption {
+public class Object {
     let name: String
     let result: String
 
@@ -15,7 +15,7 @@ public class Fields: GQLOption {
     }
 }
 
-extension Fields {
+extension Object {
     convenience init(_ name: String, @FieldsBuilder _ content: () -> String) {
         self.init(name, result: content())
     }
