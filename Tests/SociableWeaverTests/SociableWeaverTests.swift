@@ -7,7 +7,7 @@ final class SociableWeaverTests: XCTestCase {
             return QueryBuilder.buildBlock(
                 Object("post") {
                     Keys(Post.CodingKeys.allCases)
-                    Exclude(Post.CodingKeys.id)
+                    Exclude(Post.CodingKeys.id, Post.CodingKeys.description)
 
                     Merge(Post.CodingKeys.author) {
                         FieldsBuilder.buildBlock(Keys(Author.CodingKeys.allCases))
@@ -17,14 +17,15 @@ final class SociableWeaverTests: XCTestCase {
                         Keys(Comment.CodingKeys.allCases)
 
                         Merge(Comment.CodingKeys.author) {
-                            FieldsBuilder.buildBlock(Keys(Author.CodingKeys.allCases))
+                            Keys(Author.CodingKeys.allCases)
+                            Exclude(Author.CodingKeys.id)
                         }
                     }
                 }
             )
         }
 
-        XCTAssertEqual(query.result, "query { post { title description author { id name } comments { id author { id name } content } } }")
+        XCTAssertEqual(query.result, "query { post { title author { id name } comments { id author { name } content } } }")
     }
 
     static var allTests = [
