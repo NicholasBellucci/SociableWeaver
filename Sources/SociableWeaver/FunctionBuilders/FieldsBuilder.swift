@@ -5,6 +5,8 @@
 //  Created by Nicholas Bellucci on 11/29/19.
 //
 
+import Foundation
+
 @_functionBuilder
 class FieldsBuilder {
     static func buildBlock(_ children: GQLOption...) -> String {
@@ -13,18 +15,12 @@ class FieldsBuilder {
         var merge: [(key: String, results: String)] = []
 
         children.forEach {
-            switch $0 {
-            case is Keys:
-                guard let value = $0 as? Keys else { return }
+            if let value = $0 as? Keys {
                 keys += value.keys.map { $0.stringValue }
-            case is Exclude:
-                guard let value = $0 as? Exclude else { return }
+            } else if let value = $0 as? Exclude {
                 exclusions += value.keys.map { $0.stringValue }
-            case is Merge:
-                guard let value = $0 as? Merge else { return }
+            } else if let value = $0 as? Merge {
                 merge += [(key: value.key.stringValue, results: value.result)]
-            default:
-                break
             }
         }
 
