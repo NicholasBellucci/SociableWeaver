@@ -5,7 +5,7 @@
 //  Created by Nicholas Bellucci on 11/29/19.
 //
 
-public class Merge: GQLOption {
+public struct Merge: GQLOption {
     let key: CodingKey
     let result: String
 
@@ -16,7 +16,7 @@ public class Merge: GQLOption {
 }
 
 extension Merge {
-    convenience init(_ key: CodingKey, @FieldsBuilder _ content: () -> String) {
+    init(_ key: CodingKey, @FieldsBuilder _ content: () -> String) {
         self.init(key, result: content())
     }
 }

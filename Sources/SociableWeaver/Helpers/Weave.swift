@@ -5,7 +5,7 @@
 //  Created by Nicholas Bellucci on 11/29/19.
 //
 
-public class Weave {
+public struct Weave {
     let type: OperationType
     var result: String
 
@@ -16,7 +16,7 @@ public class Weave {
 }
 
 extension Weave {
-    convenience init(_ type: OperationType, @QueryBuilder _ content: () -> String) {
+    init(_ type: OperationType, @QueryBuilder _ content: () -> String) {
         self.init(type, result: content())
     }
 }

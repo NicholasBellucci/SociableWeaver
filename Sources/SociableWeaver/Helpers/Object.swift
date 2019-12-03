@@ -5,7 +5,7 @@
 //  Created by Nicholas Bellucci on 11/29/19.
 //
 
-public class Object {
+public struct Object {
     let name: String
     let result: String
 
@@ -16,7 +16,7 @@ public class Object {
 }
 
 extension Object {
-    convenience init(_ name: String, @FieldsBuilder _ content: () -> String) {
+    init(_ name: String, @FieldsBuilder _ content: () -> String) {
         self.init(name, result: content())
     }
 }
