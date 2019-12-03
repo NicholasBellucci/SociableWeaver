@@ -10,6 +10,6 @@ public enum OperationType: String {
     case mutation = "mutation"
 
     var stringValue: String {
-        return self.rawValue
+        self.rawValue
     }
 }

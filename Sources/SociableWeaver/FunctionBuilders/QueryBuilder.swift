@@ -18,6 +18,6 @@ class QueryBuilder {
     }
 
     static func buildBlock(_ component: Object) -> String {
-        return component.name.withSubfields(component.result)
+        component.name.withSubfields(component.result)
     }
 }
