@@ -11,27 +11,28 @@ import Foundation
 class FieldsBuilder {
     static func buildBlock(_ children: GQLOption...) -> String {
         var keys: [String] = []
+        var pairs: [KeyFieldsPair] = []
         var exclusions: [String] = []
-        var merge: [(key: String, results: String)] = []
 
         children.forEach {
             if let value = $0 as? Keys {
                 keys += value.keys.map { $0.stringValue }
+                pairs += value.pairs
             } else if let value = $0 as? Exclude {
                 exclusions += value.keys.map { $0.stringValue }
-            } else if let value = $0 as? Merge {
-                merge += [(key: value.key.stringValue, results: value.result)]
             }
         }
 
         keys = keys.filter { !exclusions.contains($0) }
+        pairs = pairs.filter { !exclusions.contains($0.key) }
 
-        merge.forEach {
-            guard let index = keys.firstIndex(of: $0.key) else { return }
-            keys[index] = $0.key.withSubfields($0.results)
+        var results = keys.joined(separator: " ")
+
+        pairs.forEach {
+            results = results.replacingOccurrences(of: $0.key, with: $0.result)
         }
 
-        return keys.joined(separator: " ")
+        return results
     }
 
     static func buildBlock(_ component: GQLOption) -> String {
