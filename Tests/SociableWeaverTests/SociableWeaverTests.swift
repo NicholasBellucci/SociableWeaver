@@ -5,7 +5,7 @@ final class SociableWeaverTests: XCTestCase {
     func testBasicQuery() {
         let query = Weave(.query) {
             QueryBuilder.buildBlock(
-                Object("post") {
+                Object(Post.self) {
                     Keys(Post.CodingKeys.allCases)
                     Exclude(Post.CodingKeys.id, Post.CodingKeys.description)
 
