@@ -23,6 +23,10 @@ extension Object {
     init(_ type: Any.Type, caseStyleOption: CaseStyleOption = .lowercase, @FieldsBuilder _ content: () -> String) {
         self.init(String(describing: type.self).lowercased(), result: content())
     }
+
+    init(from key: CodingKey, @FieldsBuilder _ content: () -> String) {
+        self.init(key.stringValue, result: content())
+    }
 }
 
 private extension Object {
