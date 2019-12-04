@@ -5,8 +5,6 @@
 //  Created by Nicholas Bellucci on 11/29/19.
 //
 
-import Foundation
-
 public struct Comment: Codable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id, author, content
