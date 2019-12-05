@@ -6,6 +6,6 @@
 //
 
 public enum OperationType: String, RawRepresentable {
-    case query = "query"
-    case mutation = "mutation"
+    case query
+    case mutation
 }
