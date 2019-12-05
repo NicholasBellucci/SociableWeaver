@@ -1,5 +1,5 @@
 //
-//  Weave.swift
+//  Request.swift
 //  
 //
 //  Created by Nicholas Bellucci on 11/29/19.
@@ -29,7 +29,7 @@ public struct Request: CustomStringConvertible {
 }
 
 public extension Request {
-    init(_ type: OperationType, @QueryBuilder _ content: () -> String) {
+    init(_ type: OperationType, @RequestBuilder _ content: () -> String) {
         self.init(type: type, description: type.rawValue.withSubfields(content()))
     }
 }

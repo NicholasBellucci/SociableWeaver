@@ -1,12 +1,12 @@
 //
-//  QueryBuilder.swift
+//  RequestBuilder.swift
 //  
 //
 //  Created by Nicholas Bellucci on 11/29/19.
 //
 
 @_functionBuilder
-internal struct QueryBuilder {
+internal struct RequestBuilder {
     static func buildBlock(_ children: Object...) -> String {
         var values: [String] = []
 
