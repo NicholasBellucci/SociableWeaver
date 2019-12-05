@@ -30,9 +30,9 @@ public struct Object: CustomStringConvertible {
 public extension Object {
     /**
     Object initializer using the object function builder.
-     This initializer accepts a type which will be converted to a string representation.
+     This initializer accepts a type which will be converted to a string representation and used as the name.
 
-    - parameter type: The object type to be converted to string and used as the object name.
+    - parameter type: The object type to be converted.
     - parameter caseStyleOption: The case style for the converted type string.
     - parameter content: The object builder accepts structs/classes conforming to `CustomStringConvertable`.
     */
