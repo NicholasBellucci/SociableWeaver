@@ -7,9 +7,9 @@
 
 struct Object: CustomStringConvertible {
     let name: String
-    var description: String
+    public var description: String
 
-    init(_ name: String, description: String) {
+    private init(_ name: String, description: String) {
         self.name = name
         self.description = description
     }
@@ -17,10 +17,12 @@ struct Object: CustomStringConvertible {
 
 extension Object {
     init(_ type: Any.Type, caseStyleOption: CaseStyleOption = .lowercase, @ObjectBuilder _ content: () -> String) {
-        self.init(String(describing: type).convert(with: caseStyleOption), description: content())
+        let name = String(describing: type).convert(with: caseStyleOption)
+        self.init(name, description: name.withSubfields(content()))
     }
 
     init(_ key: CodingKey, @ObjectBuilder _ content: () -> String) {
-        self.init(key.stringValue, description: content())
+        let name = key.stringValue
+        self.init(name, description: name.withSubfields(content()))
     }
 }
