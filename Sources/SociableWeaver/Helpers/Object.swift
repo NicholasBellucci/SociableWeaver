@@ -5,47 +5,24 @@
 //  Created by Nicholas Bellucci on 11/29/19.
 //
 
-public struct Object {
-    let name: String
-    let result: String
+struct Object: CustomStringConvertible {
+    public let name: String
+    public let description: String
 
-    private init(_ name: String, result: String) {
+    private init(_ name: String, description: String) {
         self.name = name
-        self.result = result
+        self.description = description
     }
 }
 
 extension Object {
-    init(_ name: String, @FieldsBuilder _ content: () -> String) {
-        self.init(name, result: content())
+    init(_ type: Any.Type, caseStyleOption: CaseStyleOption = .lowercase, @ObjectBuilder _ content: () -> String) {
+        let name = String(describing: type).convert(with: caseStyleOption)
+        self.init(name, description: name.withSubfields(content()))
     }
 
-    init(_ type: Any.Type, caseStyleOption: CaseStyleOption = .lowercase, @FieldsBuilder _ content: () -> String) {
-        self.init(String(describing: type.self).lowercased(), result: content())
-    }
-
-    init(from key: CodingKey, @FieldsBuilder _ content: () -> String) {
-        self.init(key.stringValue, result: content())
-    }
-}
-
-private extension Object {
-    func convertType(_ type: Any.Type, with option: CaseStyleOption) {
-        var string = String(describing: type.self)
-
-        switch option {
-        case .lowercase:
-            string = string.lowercased()
-        case .uppercase:
-            string = string.uppercased()
-        case .camelCase:
-            string = string.camelCased()
-        case .pascalCase:
-            string = string.pascalCased()
-        case .snakeCase:
-            string = string.snakeCased()
-        case .kebabCase:
-            string = string.kebabCased()
-        }
+    init(_ key: CodingKey, @ObjectBuilder _ content: () -> String) {
+        let name = key.stringValue
+        self.init(name, description: name.withSubfields(content()))
     }
 }

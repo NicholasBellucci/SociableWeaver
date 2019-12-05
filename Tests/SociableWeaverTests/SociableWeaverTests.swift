@@ -6,31 +6,24 @@ final class SociableWeaverTests: XCTestCase {
         let query = Weave(.query) {
             QueryBuilder.buildBlock(
                 Object(Post.self) {
-                    Keys(Post.CodingKeys.allCases) {
-                        Object(from: Post.CodingKeys.author) {
-                            FieldsBuilder.buildBlock(Keys(Author.CodingKeys.allCases))
-                        }
-                        
-                        Object(from: Post.CodingKeys.comments) {
-                            Keys(Comment.CodingKeys.allCases) {
-                                KeysBuilder.buildBlock(
-                                    Object(from: Comment.CodingKeys.author) {
-                                        Keys(Author.CodingKeys.allCases)
-                                        Exclude(Author.CodingKeys.id)
-                                    }
-                                )
-                            }
-
-                            Exclude(Comment.CodingKeys.id)
-                        }
+                    Post.CodingKeys.title
+                    Post.CodingKeys.description
+                    Object(Post.CodingKeys.author) {
+                        Author.CodingKeys.id
+                        Author.CodingKeys.name
                     }
-
-                    Exclude(Post.CodingKeys.id, Post.CodingKeys.description)
+                    Object(Post.CodingKeys.comments) {
+                        Comment.CodingKeys.id
+                        Object(Comment.CodingKeys.author) {
+                            ObjectBuilder.buildBlock(Author.CodingKeys.name)
+                        }
+                        Comment.CodingKeys.content
+                    }
                 }
             )
         }
 
-        XCTAssertEqual(query.result, "query { post { title author { id name } comments { author { name } content } } }")
+        XCTAssertEqual(query.description, "query { post { title description author { id name } comments { id author { name } content } } }")
     }
 
     static var allTests = [
