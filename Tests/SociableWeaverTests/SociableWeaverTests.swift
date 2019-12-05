@@ -3,11 +3,11 @@ import XCTest
 
 final class SociableWeaverTests: XCTestCase {
     func testBasicQuery() {
-        let query = Weave(.query) {
-            QueryBuilder.buildBlock(
+        let query = Request(.query) {
+            RequestBuilder.buildBlock(
                 Object(Post.self) {
                     Post.CodingKeys.title
-                    Post.CodingKeys.description
+                    Post.CodingKeys.content
                     Object(Post.CodingKeys.author) {
                         Author.CodingKeys.id
                         Author.CodingKeys.name
@@ -23,7 +23,7 @@ final class SociableWeaverTests: XCTestCase {
             )
         }
 
-        XCTAssertEqual(query.description, "query { post { title description author { id name } comments { id author { name } content } } }")
+        XCTAssertEqual(query.description, "query { post { title content author { id name } comments { id author { name } content } } }")
     }
 
     static var allTests = [

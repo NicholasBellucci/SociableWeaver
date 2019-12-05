@@ -8,7 +8,7 @@
 import Foundation
 
 @_functionBuilder
-class ObjectBuilder {
+internal struct ObjectBuilder {
     static func buildBlock(_ children: CustomStringConvertible...) -> String {
         var descriptions: [String] = []
 

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// The case styles available for class name conversions to strings.
 public enum CaseStyleOption {
     case lowercase
     case uppercase
