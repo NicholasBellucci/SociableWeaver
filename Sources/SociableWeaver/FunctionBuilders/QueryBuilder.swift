@@ -11,13 +11,13 @@ class QueryBuilder {
         var values: [String] = []
 
         children.forEach {
-            values.append($0.name.withSubfields($0.result))
+            values.append($0.name.withSubfields($0.description))
         }
 
         return values.joined(separator: " ")
     }
 
     static func buildBlock(_ component: Object) -> String {
-        component.name.withSubfields(component.result)
+        component.name.withSubfields(component.description)
     }
 }

@@ -10,6 +10,23 @@ internal extension String {
         "\(self) { \(fields) }"
     }
 
+    func convert(with option: CaseStyleOption) -> String {
+        switch option {
+        case .lowercase:
+            return self.lowercased()
+        case .uppercase:
+            return self.uppercased()
+        case .camelCase:
+            return self.camelCased()
+        case .pascalCase:
+            return self.pascalCased()
+        case .snakeCase:
+            return self.snakeCased()
+        case .kebabCase:
+            return self.kebabCased()
+        }
+    }
+
     /// Case styles for an String
     func camelCased() -> String {
         guard var words = self.capitalizedWords else { return "" }
