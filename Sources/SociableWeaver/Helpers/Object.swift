@@ -6,8 +6,8 @@
 //
 
 struct Object: CustomStringConvertible {
-    let name: String
-    public var description: String
+    public let name: String
+    public let description: String
 
     private init(_ name: String, description: String) {
         self.name = name

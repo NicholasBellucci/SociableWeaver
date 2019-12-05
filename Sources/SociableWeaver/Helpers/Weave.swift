@@ -6,8 +6,8 @@
 //
 
 public struct Weave: CustomStringConvertible {
-    let type: OperationType
-    public var description: String
+    public let type: OperationType
+    public let description: String
 
     private init(type: OperationType, description: String) {
         self.type = type
