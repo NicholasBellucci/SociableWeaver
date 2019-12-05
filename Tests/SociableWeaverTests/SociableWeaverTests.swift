@@ -4,7 +4,7 @@ import XCTest
 final class SociableWeaverTests: XCTestCase {
     func testBasicQuery() {
         let query = Request(.query) {
-            QueryBuilder.buildBlock(
+            RequestBuilder.buildBlock(
                 Object(Post.self) {
                     Post.CodingKeys.title
                     Post.CodingKeys.content

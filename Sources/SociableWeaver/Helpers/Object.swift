@@ -28,11 +28,26 @@ public struct Object: CustomStringConvertible {
 }
 
 public extension Object {
+    /**
+    Object initializer using the object function builder.
+     This initializer accepts a type which will be converted to a string representation.
+
+    - parameter type: The object type to be converted to string and used as the object name.
+    - parameter caseStyleOption: The case style for the converted type string.
+    - parameter content: The object builder accepts structs/classes conforming to `CustomStringConvertable`.
+    */
     init(_ type: Any.Type, caseStyleOption: CaseStyleOption = .lowercase, @ObjectBuilder _ content: () -> String) {
         let name = String(describing: type).convert(with: caseStyleOption)
         self.init(name, description: name.withSubfields(content()))
     }
 
+    /**
+    Object initializer using the object function builder.
+     This initializer accepts a coding key which will be used as the name.
+
+    - parameter key: The coding key to be used.
+    - parameter content: The object builder accepts structs/classes conforming to `CustomStringConvertable`.
+    */
     init(_ key: CodingKey, @ObjectBuilder _ content: () -> String) {
         let name = key.stringValue
         self.init(name, description: name.withSubfields(content()))

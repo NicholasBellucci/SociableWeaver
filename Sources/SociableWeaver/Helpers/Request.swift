@@ -19,17 +19,23 @@
 */
 
 public struct Request: CustomStringConvertible {
-    public let type: OperationType
+    public let type: RequestType
     public let description: String
 
-    private init(type: OperationType, description: String) {
+    private init(type: RequestType, description: String) {
         self.type = type
         self.description = description
     }
 }
 
 public extension Request {
-    init(_ type: OperationType, @RequestBuilder _ content: () -> String) {
+    /**
+    Request initializer using the request function builder.
+
+    - parameter type: The request type to be created.
+    - parameter content: The request builder accepts `Object` models.
+    */
+    init(_ type: RequestType, @RequestBuilder _ content: () -> String) {
         self.init(type: type, description: type.rawValue.withSubfields(content()))
     }
 }
