@@ -17,6 +17,6 @@ public struct Weave: CustomStringConvertible {
 
 extension Weave {
     init(_ type: OperationType, @QueryBuilder _ content: () -> String) {
-        self.init(type: type, description: type.stringValue.withSubfields(content()))
+        self.init(type: type, description: type.rawValue.withSubfields(content()))
     }
 }
