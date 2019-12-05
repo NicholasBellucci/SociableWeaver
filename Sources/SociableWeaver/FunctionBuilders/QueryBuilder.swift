@@ -6,7 +6,7 @@
 //
 
 @_functionBuilder
-class QueryBuilder {
+internal struct QueryBuilder {
     static func buildBlock(_ children: Object...) -> String {
         var values: [String] = []
 
