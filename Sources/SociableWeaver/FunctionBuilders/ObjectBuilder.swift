@@ -16,7 +16,7 @@ internal struct ObjectBuilder {
             if let value = $0 as? CodingKey {
                 descriptions.append(value.stringValue)
             } else if let value = $0 as? Object {
-                descriptions.append(value.description)
+                descriptions.append(String(describing: value))
             }
         }
 

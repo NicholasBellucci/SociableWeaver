@@ -11,19 +11,33 @@
  `Object.name`
  The name of the object that will be returned.
 
- `Object.description`
- The requested object represented as a string. This string includes the name of the object as well
- as the wrapped aggregated fields requested by the user.
-
- Example `Object.description`: `post { id title content }`
+ `Object.fields`
+ The aggregated fields that make up the object.
 */
-public struct Object: CustomStringConvertible {
+public struct Object {
     public let name: String
-    public let description: String
+    public let fields: String
 
-    private init(_ name: String, description: String) {
+    private init(_ name: String, fields: String) {
         self.name = name
-        self.description = description
+        self.fields = fields
+    }
+}
+
+/**
+Object conforms to CustomStringConvertible as well as CustomDebugStringConvertible in order to provide
+ a description as well as a debugDescription of the object model in question.
+
+ Example `String(describing: object)`: `post { id title content }`
+ Example `String(reflecting: object)`: `post { id title content }`
+ */
+extension Object: CustomStringConvertible, CustomDebugStringConvertible {
+    public var description: String {
+        name.withSubfields(fields)
+    }
+
+    public var debugDescription: String {
+        name.withSubfields(fields)
     }
 }
 
@@ -38,7 +52,31 @@ public extension Object {
     */
     init(_ type: Any.Type, caseStyleOption: CaseStyleOption = .lowercase, @ObjectBuilder _ content: () -> String) {
         let name = String(describing: type).convert(with: caseStyleOption)
-        self.init(name, description: name.withSubfields(content()))
+        self.init(name, fields: content())
+    }
+
+    /**
+    Workaround for function builders not accepting one element yet due to it still being a prototype.
+     TODO - Remove when functionBuilders are fully implemented.
+
+     Object initializer using the object function builder.
+     This initializer accepts a type which will be converted to a string representation and used as the name.
+
+    - parameter type: The object type to be converted.
+    - parameter caseStyleOption: The case style for the converted type string.
+    - parameter content: The object builder accepts structs/classes conforming to `CustomStringConvertable`.
+    */
+    init(_ type: Any.Type, caseStyleOption: CaseStyleOption = .lowercase, _ content: () -> CustomStringConvertible) {
+        let name = String(describing: type).convert(with: caseStyleOption)
+        var stringRepresentation: String = ""
+
+        if let value = content() as? CodingKey {
+            stringRepresentation = value.stringValue
+        } else if let value = content() as? Object {
+            stringRepresentation = value.fields
+        }
+
+        self.init(name, fields: stringRepresentation)
     }
 
     /**
@@ -50,13 +88,13 @@ public extension Object {
     */
     init(_ key: CodingKey, @ObjectBuilder _ content: () -> String) {
         let name = key.stringValue
-        self.init(name, description: name.withSubfields(content()))
+        self.init(name, fields: content())
     }
 
     /**
     Workaround for function builders not accepting one element yet due to it still being a prototype.
      TODO - Remove when functionBuilders are fully implemented.
-     
+
      This initializer accepts a coding key which will be used as the name.
 
     - parameter key: The coding key to be used.
@@ -64,14 +102,14 @@ public extension Object {
     */
     init(_ key: CodingKey, _ content: () -> CustomStringConvertible) {
         let name = key.stringValue
-        var description: String = ""
+        var stringRepresentation: String = ""
 
         if let value = content() as? CodingKey {
-            description = value.stringValue
+            stringRepresentation = value.stringValue
         } else if let value = content() as? Object {
-            description = value.description
+            stringRepresentation = value.fields
         }
 
-        self.init(name, description: name.withSubfields(description))
+        self.init(name, fields: stringRepresentation)
     }
 }

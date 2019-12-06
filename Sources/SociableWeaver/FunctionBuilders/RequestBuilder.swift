@@ -11,13 +11,13 @@ internal struct RequestBuilder {
         var values: [String] = []
 
         children.forEach {
-            values.append($0.description)
+            values.append(String(describing: $0))
         }
 
         return values.joined(separator: " ")
     }
 
     static func buildBlock(_ component: Object) -> String {
-        return component.description
+        String(describing: component)
     }
 }
