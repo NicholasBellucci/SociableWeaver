@@ -21,7 +21,7 @@ final class SociableWeaverTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(query.description, "query { post { title content author { id name } comments { id author { name } content } } }")
+        XCTAssertEqual(String(describing: query), "query { post { title content author { id name } comments { id author { name } content } } }")
     }
 
     static var allTests = [

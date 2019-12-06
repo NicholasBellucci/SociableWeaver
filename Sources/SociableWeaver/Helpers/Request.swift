@@ -11,20 +11,34 @@
  `Request.type`
  The type of GraphQL request to be created.
 
- `Request.description`
- The request represented as a string. This string includes the type of request as well
- as the wrapped objects requested by the user.
-
- Example `Request.description`: `query { post { id title content } }`
+ `Object.fields`
+ The aggregated fields that make up the request.
 */
 
-public struct Request: CustomStringConvertible {
+public struct Request {
     public let type: RequestType
-    public let description: String
+    public let fields: String
 
-    private init(type: RequestType, description: String) {
+    private init(type: RequestType, fields: String) {
         self.type = type
-        self.description = description
+        self.fields = fields
+    }
+}
+
+/**
+Request conforms to CustomStringConvertible as well as CustomDebugStringConvertible in order to provide
+ a description as well as a debugDescription of the request model in question.
+
+ Example `String(describing: request)`: `query { post { id title content } }`
+ Example `String(reflecting: request)`: `query { post { id title content } }`
+ */
+extension Request: CustomStringConvertible, CustomDebugStringConvertible {
+    public var description: String {
+        type.rawValue.withSubfields(fields)
+    }
+
+    public var debugDescription: String {
+        type.rawValue.withSubfields(fields)
     }
 }
 
@@ -36,19 +50,19 @@ public extension Request {
     - parameter content: The request builder accepts `Object` models.
     */
     init(_ type: RequestType, @RequestBuilder _ content: () -> String) {
-        self.init(type: type, description: type.rawValue.withSubfields(content()))
+        self.init(type: type, fields: String(describing: content()))
     }
 
     /**
     Workaround for function builders not accepting one element yet due to it still being a prototype.
      TODO - Remove when functionBuilders are fully implemented.
-     
+
      Request initializer using the request function builder.
 
     - parameter type: The request type to be created.
     - parameter content: The request builder accepts `Object` models.
     */
     init(_ type: RequestType, _ content: () -> Object) {
-        self.init(type: type, description: type.rawValue.withSubfields(content().description))
+        self.init(type: type, fields: String(describing: content()))
     }
 }
