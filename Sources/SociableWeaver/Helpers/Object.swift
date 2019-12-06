@@ -52,4 +52,26 @@ public extension Object {
         let name = key.stringValue
         self.init(name, description: name.withSubfields(content()))
     }
+
+    /**
+    Workaround for function builders not accepting one element yet due to it still being a prototype.
+     TODO - Remove when functionBuilders are fully implemented.
+     
+     This initializer accepts a coding key which will be used as the name.
+
+    - parameter key: The coding key to be used.
+    - parameter content: The closure returning a `CustomStringConvertible`.
+    */
+    init(_ key: CodingKey, _ content: () -> CustomStringConvertible) {
+        let name = key.stringValue
+        var description: String = ""
+
+        if let value = content() as? CodingKey {
+            description = value.stringValue
+        } else if let value = content() as? Object {
+            description = value.description
+        }
+
+        self.init(name, description: name.withSubfields(description))
+    }
 }
