@@ -16,10 +16,10 @@
 */
 
 public struct Request {
-    public let type: RequestType
+    public let type: OperationType
     public let fields: String
 
-    private init(type: RequestType, fields: String) {
+    private init(type: OperationType, fields: String) {
         self.type = type
         self.fields = fields
     }
@@ -49,7 +49,20 @@ public extension Request {
     - parameter type: The request type to be created.
     - parameter content: The request builder accepts `Object` models.
     */
-    init(_ type: RequestType, @RequestBuilder _ content: () -> String) {
+    init(_ type: OperationType, @RequestBuilder _ content: () -> String) {
         self.init(type: type, fields: String(describing: content()))
+    }
+
+    /**
+    Workaround for function builders not accepting one element yet due to it still being a prototype.
+     TODO - Remove when functionBuilders are fully implemented.
+
+     Request initializer using the request function builder.
+
+    - parameter type: The request type to be created.
+    - parameter content: The individual `Object`.
+    */
+    init(_ type: OperationType, individual: Bool = true, _ content: () -> Object) {
+        self.init(type: type, fields: "{ \(String(describing: content())) }")
     }
 }
