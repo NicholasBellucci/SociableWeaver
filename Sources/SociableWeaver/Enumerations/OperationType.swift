@@ -11,3 +11,7 @@ public enum OperationType {
     case mutation
     case subscription
 }
+
+public enum BuilderType {
+    case individual
+}

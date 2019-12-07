@@ -62,7 +62,7 @@ public extension Object {
      - parameter field: The objects parent field.
      - parameter content: The individual object conforming to `Weavable`.
     */
-    init(_ field: Field, individual: Bool, _ content: () -> Weavable) {
+    init(_ field: Field, _ individual: BuilderType, _ content: () -> Weavable) {
         self.init(field, fieldAggregates: String(describing: content()))
     }
 }

@@ -8,12 +8,12 @@ final class SociableWeaverTests: XCTestCase {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Field(Post.CodingKeys.author), individual: true) {
+                Object(Field(Post.CodingKeys.author), .individual) {
                     Field(Author.CodingKeys.name)
                 }
 
                 Object(Field(Post.CodingKeys.comments)) {
-                    Object(Field(Comment.CodingKeys.author), individual: true) {
+                    Object(Field(Comment.CodingKeys.author), .individual) {
                         Field(Author.CodingKeys.name)
                     }
                     Field(Comment.CodingKeys.content)

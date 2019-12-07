@@ -62,7 +62,7 @@ public extension Request {
     - parameter type: The request type to be created.
     - parameter content: The individual `Object`.
     */
-    init(_ type: OperationType, individual: Bool = true, _ content: () -> Object) {
+    init(_ type: OperationType, _ individual: BuilderType = .individual, _ content: () -> Object) {
         self.init(type: type, fields: "{ \(String(describing: content())) }")
     }
 }
