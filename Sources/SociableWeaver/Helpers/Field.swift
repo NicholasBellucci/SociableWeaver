@@ -5,6 +5,18 @@
 //  Created by Nicholas Bellucci on 12/6/19.
 //
 
+/**
+`Field` is a model consisting of a name, possible alias, and possible arguments
+
+ `Field.name`
+ The name of the object that will be returned.
+
+ `Field.alias`
+ An optional value that defines the alias name of the field.
+
+ `Field.arguments`
+ An optional value that consists of all some/all passable arguments for the field.
+*/
 public struct Field {
     public let name: String
     public var alias: String? = nil
@@ -23,6 +35,12 @@ public struct Field {
     }
 }
 
+/**
+Field conforms to Weavable in order to provide a description as well as a debugDescription of the object model in question.
+
+ Example `String(describing: field)`: `newPost: post(id: 1)`
+ Example `String(reflecting: field)`: `newPost: post(id: 1)`
+ */
 extension Field: Weavable {
     public var description: String {
         buildDescription()

@@ -8,10 +8,10 @@
 /**
 `Object` is a model consisting of a name and description.
 
- `Object.name`
- The name of the object that will be returned.
+ `Object.field`
+ The parent field of the object.
 
- `Object.fields`
+ `Object.fieldAggregates`
  The aggregated fields that make up the object.
 */
 public struct Object {
@@ -25,8 +25,7 @@ public struct Object {
 }
 
 /**
-Object conforms to CustomStringConvertible as well as CustomDebugStringConvertible in order to provide
- a description as well as a debugDescription of the object model in question.
+Object conforms to Weavable in order to provide a description as well as a debugDescription of the object model in question.
 
  Example `String(describing: object)`: `post { id title content }`
  Example `String(reflecting: object)`: `post { id title content }`
@@ -47,7 +46,7 @@ public extension Object {
      This initializer accepts a coding key which will be used as the name.
 
     - parameter key: The coding key to be used.
-    - parameter content: The object builder accepts structs/classes conforming to `CustomStringConvertable`.
+    - parameter content: The object builder accepts structs/classes conforming to `Weavable`.
     */
     init(_ field: Field, @ObjectBuilder _ content: () -> String) {
         self.init(field, fieldAggregates: content())
