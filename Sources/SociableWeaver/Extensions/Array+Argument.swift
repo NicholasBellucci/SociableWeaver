@@ -6,6 +6,7 @@
 //
 
 extension Array where Element == Argument {
+    /// The GraphQL Representation of an arguments array
     var graphQLRepresentable: String {
         var components: [String] = []
 

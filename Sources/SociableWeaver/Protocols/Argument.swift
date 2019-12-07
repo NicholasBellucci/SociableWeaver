@@ -5,11 +5,20 @@
 //  Created by Nicholas Bellucci on 12/6/19.
 //
 
+/**
+ `Argument` is a type alias that defines a key value tuple.
+
+ This tuple provides a `String` and an `ArgumentValueRepresentable` which is
+ used to construct an argument for a field.
+ */
+public typealias Argument = (key: String, value: ArgumentValueRepresentable)
+
+/// A type that can be used as to represent an argument.
 public protocol ArgumentValueRepresentable {
+
+    /// The argument representation of a given value.
     var argumentValue: String { get }
 }
-
-public typealias Argument = (key: String, value: ArgumentValueRepresentable)
 
 extension Bool: ArgumentValueRepresentable {
     public var argumentValue: String {
