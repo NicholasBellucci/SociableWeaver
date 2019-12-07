@@ -51,14 +51,14 @@ final class SociableWeaverTests: XCTestCase {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Field(Post.CodingKeys.author)) {
-                    FragmentReference(builder: authorFragment).description
+                Object(Field(Post.CodingKeys.author), .individual) {
+                    FragmentReference(builder: authorFragment)
                 }
 
                 Object(Field(Post.CodingKeys.comments)) {
                     Field(Comment.CodingKeys.id)
-                    Object(Field(Comment.CodingKeys.author)) {
-                        FragmentReference(builder: authorFragment).description
+                    Object(Field(Comment.CodingKeys.author), .individual) {
+                        FragmentReference(builder: authorFragment)
                     }
                     Field(Comment.CodingKeys.content)
                 }
