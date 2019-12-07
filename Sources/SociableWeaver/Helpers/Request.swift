@@ -34,11 +34,11 @@ Request conforms to CustomStringConvertible as well as CustomDebugStringConverti
  */
 extension Request: CustomStringConvertible, CustomDebugStringConvertible {
     public var description: String {
-        type.rawValue.withSubfields(fields)
+        "\(type) \(fields)"
     }
 
     public var debugDescription: String {
-        type.rawValue.withSubfields(fields)
+        "\(type) \(fields)"
     }
 }
 
@@ -50,19 +50,6 @@ public extension Request {
     - parameter content: The request builder accepts `Object` models.
     */
     init(_ type: RequestType, @RequestBuilder _ content: () -> String) {
-        self.init(type: type, fields: String(describing: content()))
-    }
-
-    /**
-    Workaround for function builders not accepting one element yet due to it still being a prototype.
-     TODO - Remove when functionBuilders are fully implemented.
-
-     Request initializer using the request function builder.
-
-    - parameter type: The request type to be created.
-    - parameter content: The request builder accepts `Object` models.
-    */
-    init(_ type: RequestType, _ content: () -> Object) {
         self.init(type: type, fields: String(describing: content()))
     }
 }

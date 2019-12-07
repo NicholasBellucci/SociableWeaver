@@ -15,7 +15,7 @@
  The aggregated fields that make up the object.
 */
 public struct Object {
-    public let field: Field
+    public var field: Field
     public let fieldAggregates: String
 
     private init(_ field: Field, fieldAggregates: String) {
@@ -43,9 +43,9 @@ extension Object: Weavable {
 public extension Object {
     /**
     Object initializer using the object function builder.
-     This initializer accepts a coding key which will be used as the name.
+     This initializer accepts a `Field` object which will be used as to determine the name.
 
-    - parameter key: The coding key to be used.
+    - parameter field: The objects parent field.
     - parameter content: The object builder accepts structs/classes conforming to `Weavable`.
     */
     init(_ field: Field, @ObjectBuilder _ content: () -> String) {
