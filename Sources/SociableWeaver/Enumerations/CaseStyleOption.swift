@@ -11,6 +11,7 @@ import Foundation
 public enum CaseStyleOption {
     case lowercase
     case uppercase
+    case capitalized
     case camelCase
     case pascalCase
     case snakeCase

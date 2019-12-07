@@ -27,6 +27,8 @@ internal extension String {
             return self.lowercased()
         case .uppercase:
             return self.uppercased()
+        case .capitalized:
+            return self.capitalized
         case .camelCase:
             return self.camelCased()
         case .pascalCase:
