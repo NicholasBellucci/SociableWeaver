@@ -2,7 +2,7 @@ import XCTest
 @testable import SociableWeaver
 
 final class SociableWeaverTests: XCTestCase {
-    func testBasicQuery() {
+    func testBasicOperation() {
         let query = Operation(.query) {
             Object(Post.self){
                 Field(Post.CodingKeys.title)
@@ -25,19 +25,45 @@ final class SociableWeaverTests: XCTestCase {
         XCTAssertEqual(String(describing: query), expected)
     }
 
-    func testQueryWithArguments() {
+    func testOperationWithName() {
+        let query = Operation(.query) {
+            Object(Post.self){
+                Field(Post.CodingKeys.title)
+                Field(Post.CodingKeys.content)
+
+                Object(Post.CodingKeys.author, .individual) {
+                    Field(Author.CodingKeys.name)
+                }
+
+                Object(Post.CodingKeys.comments) {
+                    Object(Comment.CodingKeys.author, .individual) {
+                        Field(Author.CodingKeys.name)
+                    }
+                    Field(Comment.CodingKeys.content)
+                }
+            }
+        }.name("GetPost")
+
+        let expected = "query GetPost { post { title content author { name } comments { author { name } content } } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+
+    func testOperationWithArguments() {
         let query = Operation(.query) {
             Object(Post.self) {
                 Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.id)
                     Field(Author.CodingKeys.name)
                         .argument(key: "value", value: "Nick")
-                }.alias("newAuthor").argument(key: "id", value: 1)
+                }
+                .alias("newAuthor")
+                .argument(key: "id", value: 1)
 
                 Object(Post.CodingKeys.comments) {
                     Field(Comment.CodingKeys.id)
                     Field(Comment.CodingKeys.content)
-                }.alias("newComments")
+                }
+                .alias("newComments")
             }
         }
 
@@ -45,7 +71,7 @@ final class SociableWeaverTests: XCTestCase {
         XCTAssertEqual(String(describing: query), expected)
     }
 
-    func testQueryWithFragment() {
+    func testOperationWithFragment() {
         let authorFragment = FragmentBuilder(name: "authorFields", type: Author.self)
         let query = Operation(.query) {
             Object(Post.self) {
@@ -76,8 +102,9 @@ final class SociableWeaverTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testBasicQuery", testBasicQuery),
-        ("testQueryWithArguments", testQueryWithArguments),
-        ("testQueryWithFragment", testQueryWithFragment),
+        ("testBasicOperation", testBasicOperation),
+        ("testOperationWithName", testOperationWithName),
+        ("testOperationWithArguments", testOperationWithArguments),
+        ("testOperationWithFragment", testOperationWithFragment),
     ]
 }
