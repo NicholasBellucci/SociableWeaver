@@ -64,8 +64,15 @@ public extension Object {
      - Parameter alias: The alias to use when constructing this field.
      - Returns: A `Field` with the alias in question.
      */
-    func arguments(_ arguments: Argument...) -> Object {
-        self.arguments = arguments
+    func argument(key: String, value: ArgumentValueRepresentable) -> Object {
+        let argument = Argument(key: key, value: value)
+
+        if arguments != nil {
+            arguments!.append(argument)
+        } else {
+            arguments = [argument]
+        }
+
         return self
     }
 }

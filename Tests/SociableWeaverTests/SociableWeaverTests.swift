@@ -31,8 +31,8 @@ final class SociableWeaverTests: XCTestCase {
                 Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.id)
                     Field(Author.CodingKeys.name)
-                        .arguments(Argument(key: "value", value: "Nick"))
-                }.alias("newAuthor").arguments(Argument(key: "id", value: 1))
+                        .argument(key: "value", value: "Nick")
+                }.alias("newAuthor").argument(key: "id", value: 1)
 
                 Object(Post.CodingKeys.comments) {
                     Field(Comment.CodingKeys.id)
@@ -40,8 +40,6 @@ final class SociableWeaverTests: XCTestCase {
                 }.alias("newComments")
             }
         }
-
-        print(query)
 
         let expected = "query { post { newAuthor: author(id: 1) { id name(value: \"Nick\") } newComments: comments { id content } } }"
         XCTAssertEqual(String(describing: query), expected)
