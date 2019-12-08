@@ -20,6 +20,7 @@
 public class Field {
     private var name: String
     private var nameRepresentable: String
+    
     private var alias: String? = nil
     private var arguments: [Argument]? = nil
 
@@ -86,42 +87,15 @@ extension Field: Weavable {
 }
 
 private extension Field {
-    /**
-    Formats a field with a name and alias.
-
-     Example `newPost: post`
-     */
-    func formatField(_ name: String, alias: String) -> String {
-        return "\(alias): \(name)"
-    }
-
-    /**
-    Formats a field with a name and arguments.
-
-     Example `post(id: 1)`
-     */
-    func formatField(_ name: String, arguments: [Argument]) -> String {
-        return "\(name)(\(arguments.graphQLRepresentable))"
-    }
-
-    /**
-    Formats a field with a name, alias, and arguments.
-
-     Example `newPost: post(id: 1)`
-     */
-    func formatField(_ name: String, alias: String, arguments: [Argument]) -> String {
-        return "\(alias): \(name)(\(arguments.graphQLRepresentable))"
-    }
-
     /// Determines which format is needed based on the parameters provided on initialization.
     func buildDescription() -> String {
         switch(alias, arguments) {
         case let(.some(alias), .some(arguments)):
-            return formatField(nameRepresentable, alias: alias, arguments: arguments)
+            return GQLFieldFormatter.formatField(nameRepresentable, alias: alias, arguments: arguments)
         case let(.some(alias), nil):
-            return formatField(nameRepresentable, alias: alias)
+            return GQLFieldFormatter.formatField(nameRepresentable, alias: alias)
         case let(nil, .some(arguments)):
-            return formatField(nameRepresentable, arguments: arguments)
+            return GQLFieldFormatter.formatField(nameRepresentable, arguments: arguments)
         default:
             return nameRepresentable
         }
