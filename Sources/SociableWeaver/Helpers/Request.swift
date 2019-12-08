@@ -16,8 +16,8 @@
 */
 
 public struct Request {
-    public let type: OperationType
-    public let fields: String
+    private let type: OperationType
+    private let fields: String
 
     private init(type: OperationType, fields: String) {
         self.type = type

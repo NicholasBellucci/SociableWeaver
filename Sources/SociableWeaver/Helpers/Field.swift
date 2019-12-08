@@ -17,21 +17,55 @@
  `Field.arguments`
  An optional value that consists of all some/all passable arguments for the field.
 */
-public struct Field {
-    public let name: String
-    public var alias: String? = nil
-    public var arguments: [Argument]? = nil
+public class Field {
+    private var name: String
+    private var nameRepresentable: String
+    private var alias: String? = nil
+    private var arguments: [Argument]? = nil
 
-    public init(_ type: Any.Type, caseStyleOption: CaseStyleOption = .lowercase, alias: String? = nil, arguments: [Argument]? = nil) {
-        self.name = String(describing: type).convert(with: caseStyleOption)
-        self.alias = alias
-        self.arguments = arguments
+    public init(_ type: Any.Type) {
+        self.name = String(describing: type)
+        self.nameRepresentable = String(describing: type).convert(with: .lowercase)
     }
 
-    public init(_ key: CodingKey, alias: String? = nil, arguments: [Argument]? = nil) {
+    public init(_ key: CodingKey) {
         self.name = key.stringValue
+        self.nameRepresentable = key.stringValue.convert(with: .lowercase)
+    }
+}
+
+public extension Field {
+    /**
+    Sets the alias of this field.
+
+     - Parameter alias: The alias to use when constructing this field.
+     - Returns: A `Field` with the alias in question.
+     */
+    func caseStyle(_ caseStyle: CaseStyleOption) -> Field {
+        self.nameRepresentable = name.convert(with: caseStyle)
+        return self
+    }
+
+    /**
+    Sets the alias of this field.
+
+     - Parameter alias: The alias to use when constructing this field.
+     - Returns: A `Field` with the alias in question.
+     */
+    func alias(_ alias: String) -> Field {
         self.alias = alias
+        return self
+    }
+
+    /**
+    Sets the alias of this field.
+
+     - Parameter alias: The alias to use when constructing this field.
+     - Returns: A `Field` with the alias in question.
+     */
+    func arguments(_ arguments: Argument...) -> Field {
         self.arguments = arguments
+        return self
     }
 }
 
@@ -83,13 +117,13 @@ private extension Field {
     func buildDescription() -> String {
         switch(alias, arguments) {
         case let(.some(alias), .some(arguments)):
-            return formatField(name, alias: alias, arguments: arguments)
+            return formatField(nameRepresentable, alias: alias, arguments: arguments)
         case let(.some(alias), nil):
-            return formatField(name, alias: alias)
+            return formatField(nameRepresentable, alias: alias)
         case let(nil, .some(arguments)):
-            return formatField(name, arguments: arguments)
+            return formatField(nameRepresentable, arguments: arguments)
         default:
-            return name
+            return nameRepresentable
         }
     }
 }

@@ -15,8 +15,8 @@
  The aggregated fields that make up the object.
 */
 public struct Object {
-    public var field: Field
-    public let fieldAggregates: String
+    private var field: Field
+    private let fieldAggregates: String
 
     private init(_ field: Field, fieldAggregates: String) {
         self.field = field

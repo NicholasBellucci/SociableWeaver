@@ -28,12 +28,13 @@ final class SociableWeaverTests: XCTestCase {
     func testQueryWithArguments() {
         let query = Request(.query) {
             Object(Field(Post.self)) {
-                Object(Field(Post.CodingKeys.author, alias: "newAuthor", arguments: [Argument(key: "id", value: 1)])) {
+                Object(Field(Post.CodingKeys.author).alias("newAuthor").arguments(Argument(key: "id", value: 1))) {
                     Field(Author.CodingKeys.id)
-                    Field(Author.CodingKeys.name, arguments: [Argument(key: "value", value: "Nick")])
+                    Field(Author.CodingKeys.name)
+                        .arguments(Argument(key: "value", value: "Nick"))
                 }
 
-                Object(Field(Post.CodingKeys.comments, alias: "newComments")) {
+                Object(Field(Post.CodingKeys.comments).alias("newComments")) {
                     Field(Comment.CodingKeys.id)
                     Field(Comment.CodingKeys.content)
                 }
