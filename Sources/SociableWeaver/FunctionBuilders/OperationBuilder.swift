@@ -1,12 +1,12 @@
 //
-//  RequestBuilder.swift
+//  OperationBuilder.swift
 //  
 //
 //  Created by Nicholas Bellucci on 11/29/19.
 //
 
 @_functionBuilder
-internal struct RequestBuilder {
+internal struct OperationBuilder {
     static func buildBlock(_ children: Weavable...) -> String {
         var objects: [Object] = []
         var fragments: [Fragment] = []
@@ -21,6 +21,7 @@ internal struct RequestBuilder {
 
         let objectsRepresentation = objects.map { String(describing: $0) }.joined(separator: " ")
         let fragmentsRepresentation = fragments.map { String(describing: $0) }.joined(separator: " ")
+
         return "{ \(objectsRepresentation) } \(fragmentsRepresentation)"
     }
 

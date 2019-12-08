@@ -6,10 +6,13 @@
 //
 
 /**
-`Field` is a model consisting of a name, possible alias, and possible arguments
+`Field` is a model with a name, possible alias, and possible arguments
 
  `Field.name`
- The name of the object that will be returned.
+ The raw name provided to the field.
+
+ `Field.nameRepresentable`
+ The name of the field converted to a case style.
 
  `Field.alias`
  An optional value that defines the alias name of the field.
@@ -37,10 +40,10 @@ public class Field {
 
 public extension Field {
     /**
-    Sets the alias of this field.
+    Sets the case style of this field.
 
-     - Parameter alias: The alias to use when constructing this field.
-     - Returns: A `Field` with the alias in question.
+     - Parameter caseStyle: The case style to use when constructing this field.
+     - Returns: A `Field` with the case style applied to the name.
      */
     func caseStyle(_ caseStyle: CaseStyleOption) -> Field {
         self.nameRepresentable = name.convert(with: caseStyle)
@@ -59,10 +62,10 @@ public extension Field {
     }
 
     /**
-    Sets the alias of this field.
+    Sets an argument for this field.
 
-     - Parameter alias: The alias to use when constructing this field.
-     - Returns: A `Field` with the alias in question.
+     - Parameter argument: A key value pair to represent and argument name and value.
+     - Returns: A `Field` including the argument passed.
      */
     func argument(key: String, value: ArgumentValueRepresentable) -> Field {
         let argument = Argument(key: key, value: value)

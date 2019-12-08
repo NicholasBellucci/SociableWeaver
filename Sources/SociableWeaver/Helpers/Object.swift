@@ -6,13 +6,22 @@
 //
 
 /**
-`Object` is a model consisting of a name and description.
+`Object` is a model with a name, field aggregates, possible alias, and possible arguments
 
- `Object.field`
- The parent field of the object.
+ `Object.name`
+ The raw name provided to the object.
+
+ `Object.nameRepresentable`
+ The name of the object converted to a case style.
 
  `Object.fieldAggregates`
  The aggregated fields that make up the object.
+
+ `Object.alias`
+ An optional value that defines the alias name of the object.
+
+ `Object.arguments`
+ An optional value that consists of all some/all passable arguments for the object.
 */
 public class Object {
     private var name: String
@@ -37,10 +46,10 @@ public class Object {
 
 public extension Object {
     /**
-    Sets the alias of this field.
+    Sets the case style of this object.
 
-     - Parameter alias: The alias to use when constructing this field.
-     - Returns: A `Field` with the alias in question.
+     - Parameter caseStyle: The case style to use when constructing this object.
+     - Returns: An `Object` with the case style applied to the name.
      */
     func caseStyle(_ caseStyle: CaseStyleOption) -> Object {
         self.nameRepresentable = name.convert(with: caseStyle)
@@ -48,10 +57,10 @@ public extension Object {
     }
 
     /**
-    Sets the alias of this field.
+    Sets the alias of this object.
 
-     - Parameter alias: The alias to use when constructing this field.
-     - Returns: A `Field` with the alias in question.
+     - Parameter alias: The alias to use when constructing this object.
+     - Returns: An `Object` with the alias in question.
      */
     func alias(_ alias: String) -> Object {
         self.alias = alias
@@ -59,10 +68,10 @@ public extension Object {
     }
 
     /**
-    Sets the alias of this field.
+    Sets an argument for this object.
 
-     - Parameter alias: The alias to use when constructing this field.
-     - Returns: A `Field` with the alias in question.
+     - Parameter argument: A key value pair to represent and argument name and value.
+     - Returns: An `Object` including the argument passed.
      */
     func argument(key: String, value: ArgumentValueRepresentable) -> Object {
         let argument = Argument(key: key, value: value)

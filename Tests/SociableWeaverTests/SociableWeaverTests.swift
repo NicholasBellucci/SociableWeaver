@@ -3,7 +3,7 @@ import XCTest
 
 final class SociableWeaverTests: XCTestCase {
     func testBasicQuery() {
-        let query = Request(.query) {
+        let query = Operation(.query) {
             Object(Post.self){
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
@@ -26,7 +26,7 @@ final class SociableWeaverTests: XCTestCase {
     }
 
     func testQueryWithArguments() {
-        let query = Request(.query) {
+        let query = Operation(.query) {
             Object(Post.self) {
                 Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.id)
@@ -47,7 +47,7 @@ final class SociableWeaverTests: XCTestCase {
 
     func testQueryWithFragment() {
         let authorFragment = FragmentBuilder(name: "authorFields", type: Author.self)
-        let query = Request(.query) {
+        let query = Operation(.query) {
             Object(Post.self) {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
