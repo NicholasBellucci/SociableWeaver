@@ -123,6 +123,33 @@ extension Field: Weavable {
 }
 
 private extension Field {
+    /**
+    Formats a field with a name and alias.
+
+     Example `newPost: post`
+     */
+    func formatField(_ name: String, alias: String) -> String {
+        "\(alias): \(name)"
+    }
+
+    /**
+    Formats a field with a name and arguments.
+
+     Example `post(id: 1)`
+     */
+    func formatField(_ name: String, arguments: [Argument]) -> String {
+        "\(name)(\(arguments.graphQLRepresentable))"
+    }
+
+    /**
+    Formats a field with a name, alias, and arguments.
+
+     Example `newPost: post(id: 1)`
+     */
+    func formatField(_ name: String, alias: String, arguments: [Argument]) -> String {
+        "\(alias): \(name)(\(arguments.graphQLRepresentable))"
+    }
+
     /// Determines which format is needed based on the parameters provided on initialization.
     func buildDescription() -> String {
         switch(alias, arguments) {
