@@ -27,6 +27,8 @@ internal extension String {
             return self.lowercased()
         case .uppercase:
             return self.uppercased()
+        case .capitalized:
+            return self.capitalized
         case .camelCase:
             return self.camelCased()
         case .pascalCase:
@@ -41,7 +43,9 @@ internal extension String {
 
 fileprivate extension String {
     /// Determines if a character is uppercase.
-    var isUppercase: Bool { return String(self).uppercased() == String(self) }
+    var isUppercase: Bool {
+        String(self).uppercased() == String(self)
+    }
 
     /// A string array of words that were capitalized in a string
     var capitalizedWords: [String]? {
