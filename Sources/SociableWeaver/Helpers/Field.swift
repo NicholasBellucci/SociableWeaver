@@ -58,7 +58,7 @@ private extension Field {
      Example `newPost: post`
      */
     func formatField(_ name: String, alias: String) -> String {
-        return "\(alias): \(name)"
+        "\(alias): \(name)"
     }
 
     /**
@@ -67,7 +67,7 @@ private extension Field {
      Example `post(id: 1)`
      */
     func formatField(_ name: String, arguments: [Argument]) -> String {
-        return "\(name)(\(arguments.graphQLRepresentable))"
+        "\(name)(\(arguments.graphQLRepresentable))"
     }
 
     /**
@@ -76,7 +76,7 @@ private extension Field {
      Example `newPost: post(id: 1)`
      */
     func formatField(_ name: String, alias: String, arguments: [Argument]) -> String {
-        return "\(alias): \(name)(\(arguments.graphQLRepresentable))"
+        "\(alias): \(name)(\(arguments.graphQLRepresentable))"
     }
 
     /// Determines which format is needed based on the parameters provided on initialization.
