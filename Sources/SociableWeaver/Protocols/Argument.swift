@@ -22,31 +22,31 @@ public protocol ArgumentValueRepresentable {
 
 extension Bool: ArgumentValueRepresentable {
     public var argumentValue: String {
-        return "\(self)"
+        "\(self)"
     }
 }
 
 extension String: ArgumentValueRepresentable {
     public var argumentValue: String {
-        return "\"\(self)\""
+        "\"\(self)\""
     }
 }
 
 extension Int: ArgumentValueRepresentable {
     public var argumentValue: String {
-        return "\(self)"
+        "\(self)"
     }
 }
 
 extension Double: ArgumentValueRepresentable {
     public var argumentValue: String {
-        return "\(self)"
+        "\(self)"
     }
 }
 
 extension Float: ArgumentValueRepresentable {
     public var argumentValue: String {
-        return "\(self)"
+        "\(self)"
     }
 }
 
