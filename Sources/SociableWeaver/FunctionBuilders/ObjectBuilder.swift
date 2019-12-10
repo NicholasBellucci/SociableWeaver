@@ -13,6 +13,10 @@ internal struct ObjectBuilder {
         var descriptions: [String] = []
 
         children.forEach {
+            guard let value = $0 as? Directive else { return }
+            if value.skip || !value.include { return }
+            if let object = value as? Object, object.remove { return }
+
             descriptions.append(String(describing: $0))
         }
 

@@ -20,12 +20,15 @@
  `Field.arguments`
  An optional value that consists of all some/all passable arguments for the field.
 */
-public class Field {
+public class Field: Directive {
     private var name: String
     private var nameRepresentable: String
     
     private var alias: String? = nil
     private var arguments: [Argument]? = nil
+
+    private(set) public var include: Bool = true
+    private(set) public var skip: Bool = false
 
     public init(_ type: Any.Type) {
         self.name = String(describing: type)
@@ -64,7 +67,8 @@ public extension Field {
     /**
     Sets an argument for this field.
 
-     - Parameter argument: A key value pair to represent and argument name and value.
+     - Parameter key: The key for the argument.
+     - Parameter value: The value for the argument conforming to `ArgumentValueRepresentable`.
      - Returns: A `Field` including the argument passed.
      */
     func argument(key: String, value: ArgumentValueRepresentable) -> Field {
@@ -76,6 +80,28 @@ public extension Field {
             arguments = [argument]
         }
 
+        return self
+    }
+
+    /**
+    Only include this field in the operation if the argument is true.
+
+     - Parameter argument: A boolean argument.
+     - Returns: A `Field` with its include value set.
+     */
+    func include(if argument: Bool) -> Field {
+        self.include = argument
+        return self
+    }
+
+    /**
+    Skip this field if the argument is true
+
+     - Parameter argument: A boolean argument.
+     - Returns: A `Field` with its skip value set.
+     */
+    func skip(if argument: Bool) -> Field {
+        self.skip = argument
         return self
     }
 }
