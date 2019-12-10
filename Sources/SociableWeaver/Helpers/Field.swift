@@ -27,8 +27,8 @@ public class Field: Directive {
     private var alias: String? = nil
     private var arguments: [Argument]? = nil
 
-    private(set) public var include: Bool = true
-    private(set) public var skip: Bool = false
+    var include: Bool = true
+    var skip: Bool = false
 
     public init(_ type: Any.Type) {
         self.name = String(describing: type)
@@ -72,12 +72,10 @@ public extension Field {
      - Returns: A `Field` including the argument passed.
      */
     func argument(key: String, value: ArgumentValueRepresentable) -> Field {
-        let argument = Argument(key: key, value: value)
-
         if arguments != nil {
-            arguments!.append(argument)
+            arguments!.append((key: key, value: value))
         } else {
-            arguments = [argument]
+            arguments = [(key: key, value: value)]
         }
 
         return self

@@ -32,8 +32,8 @@ public class Object: Directive {
     private var alias: String? = nil
     private var arguments: [Argument]? = nil
 
-    private(set) internal var include: Bool = true
-    private(set) internal var skip: Bool = false
+    var include: Bool = true
+    var skip: Bool = false
 
     private init(_ type: Any.Type, fieldAggregates: String) {
         self.name = String(describing: type)
@@ -79,12 +79,10 @@ public extension Object {
      - Returns: An `Object` including the argument passed.
      */
     func argument(key: String, value: ArgumentValueRepresentable) -> Object {
-        let argument = Argument(key: key, value: value)
-
         if arguments != nil {
-            arguments!.append(argument)
+            arguments!.append((key: key, value: value))
         } else {
-            arguments = [argument]
+            arguments = [(key: key, value: value)]
         }
 
         return self

@@ -8,8 +8,8 @@
 public class FragmentReference: Directive {
     public let builder: FragmentBuilder
 
-    private(set) public var include: Bool = false
-    private(set) public var skip: Bool = true
+    var include: Bool = false
+    var skip: Bool = true
 
     public init(for builder: FragmentBuilder) {
         self.builder = builder

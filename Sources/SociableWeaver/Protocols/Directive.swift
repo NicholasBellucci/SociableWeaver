@@ -6,6 +6,6 @@
 //
 
 internal protocol Directive {
-    var include: Bool { get }
-    var skip: Bool { get }
+    var include: Bool { get set }
+    var skip: Bool { get set }
 }
