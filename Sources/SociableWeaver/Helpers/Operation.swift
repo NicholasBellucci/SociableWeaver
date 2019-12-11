@@ -15,13 +15,27 @@
  The aggregated fields that make up the operation.
 */
 
-public struct Operation {
+public class Operation {
     private let type: OperationType
     private let fields: String
+    private var name: String?
 
     private init(type: OperationType, fields: String) {
         self.type = type
         self.fields = fields
+    }
+}
+
+public extension Operation {
+    /**
+    Sets the operation name.
+
+     - Parameter name: The desired name of the operation.
+     - Returns: An `Operation` with the name as the parent field.
+     */
+    func name(_ name: String) -> Operation {
+        self.name = name
+        return self
     }
 }
 
@@ -34,11 +48,11 @@ Operation conforms to CustomStringConvertible as well as CustomDebugStringConver
  */
 extension Operation: CustomStringConvertible, CustomDebugStringConvertible {
     public var description: String {
-        "\(type) \(fields)"
+        buildDescription()
     }
 
     public var debugDescription: String {
-        "\(type) \(fields)"
+        buildDescription()
     }
 }
 
@@ -49,7 +63,7 @@ public extension Operation {
     - parameter type: The operation type to be created.
     - parameter content: The operation builder accepts `Weavable` models.
     */
-    init(_ type: OperationType, @OperationBuilder _ content: () -> String) {
+    convenience init(_ type: OperationType, @OperationBuilder _ content: () -> String) {
         self.init(type: type, fields: String(describing: content()))
     }
 
@@ -63,7 +77,19 @@ public extension Operation {
     - parameter buildType: The builder type only exists to avoid ambiguous init error.
     - parameter content: The individual `Weavable` model.
     */
-    init(_ type: OperationType, _ buildType: BuilderType = .individual, _ content: () -> Weavable) {
+    convenience init(_ type: OperationType, _ buildType: BuilderType = .individual, _ content: () -> Weavable) {
         self.init(type: type, fields: "{ \(String(describing: content())) }")
+    }
+}
+
+private extension Operation {
+    /// Determines which format is needed based on the parameters provided on initialization.
+    func buildDescription() -> String {
+        switch name {
+        case let .some(name):
+            return "\(type) \(name) \(fields)"
+        default:
+            return "\(type) \(fields)"
+        }
     }
 }
