@@ -6,16 +6,19 @@
 //
 
 /**
-`Operation` is a model consisting of a type and description.
+`Weave` is a model consisting of a type and description.
 
- `Operation.type`
+ `Weave.type`
  The type of GraphQL operation to be created.
 
- `Operation.fields`
+ `Weave.fields`
  The aggregated fields that make up the operation.
+
+ `Weave.name`
+ The name given to the operation.
 */
 
-public class Operation {
+public class Weave {
     private let type: OperationType
     private let fields: String
     
@@ -34,7 +37,7 @@ Operation conforms to CustomStringConvertible as well as CustomDebugStringConver
  Example `String(describing: operation)`: `query { post { id title content } }`
  Example `String(reflecting: operation)`: `query { post { id title content } }`
  */
-extension Operation: CustomStringConvertible, CustomDebugStringConvertible {
+extension Weave: CustomStringConvertible, CustomDebugStringConvertible {
     public var description: String {
         buildDescription()
     }
@@ -44,20 +47,20 @@ extension Operation: CustomStringConvertible, CustomDebugStringConvertible {
     }
 }
 
-public extension Operation {
+public extension Weave {
     /**
     Sets the operation name.
 
      - Parameter name: The desired name of the operation.
      - Returns: An `Operation` with the name as the parent field.
      */
-    func name(_ name: String) -> Operation {
+    func name(_ name: String) -> Weave {
         self.name = name
         return self
     }
 }
 
-public extension Operation {
+public extension Weave {
     /**
     Operation initializer using the operation function builder.
 
@@ -83,7 +86,7 @@ public extension Operation {
     }
 }
 
-private extension Operation {
+private extension Weave {
     /// Determines which format is needed based on the parameters provided on initialization.
     func buildDescription() -> String {
         switch name {
