@@ -55,7 +55,7 @@ final class SociableWeaverTests: XCTestCase {
                 Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.id)
                     Field(Author.CodingKeys.name)
-                        .argument(key: "value", value: "Nick")
+                        .argument(key: "value", value: "AuthorName")
                 }
                 .alias("newAuthor")
                 .argument(key: "id", value: 1)
@@ -68,7 +68,7 @@ final class SociableWeaverTests: XCTestCase {
             }
         }
 
-        let expected = "query { post { newAuthor: author(id: 1) { id name(value: \"Nick\") } newComments: comments { id content } } }"
+        let expected = "query { post { newAuthor: author(id: 1) { id name(value: \"AuthorName\") } newComments: comments { id content } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
 
@@ -99,6 +99,38 @@ final class SociableWeaverTests: XCTestCase {
         }
 
         let expected = "query { post { title content author { ...authorFields } comments { id author { ...authorFields } content } } } fragment authorFields on Author { id name }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+
+    func testOperationWithInlineFragment() {
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Post.CodingKeys.title)
+                Field(Post.CodingKeys.content)
+
+                Object(Post.CodingKeys.author) {
+                    Field(Author.CodingKeys.id)
+                    Field(Author.CodingKeys.name)
+                }
+
+                Object(Post.CodingKeys.comments) {
+                    Field(Comment.CodingKeys.id)
+                    Object(Comment.CodingKeys.author) {
+                        InlineFragment("AnonymousUser", .individual) {
+                            Field(Author.CodingKeys.id)
+                        }
+
+                        InlineFragment("RegisteredUser") {
+                            Field(Author.CodingKeys.id)
+                            Field(Author.CodingKeys.name)
+                        }
+                    }
+                    Field(Comment.CodingKeys.content)
+                }
+            }
+        }
+
+        let expected = "query { post { title content author { id name } comments { id author { ... on AnonymousUser { id } ... on RegisteredUser { id name } } content } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
 
@@ -135,6 +167,7 @@ final class SociableWeaverTests: XCTestCase {
         ("testOperationWithName", testOperationWithName),
         ("testOperationWithArguments", testOperationWithArguments),
         ("testOperationWithFragment", testOperationWithFragment),
+        ("testOperationWithInlineFragment", testOperationWithInlineFragment),
         ("testOperationWithDirectives", testOperationWithDirectives)
     ]
 }

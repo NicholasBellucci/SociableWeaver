@@ -6,16 +6,13 @@
 //
 
 /**
-`Weave` is a model consisting of a type and description.
+ GraphQL supports three types of operations being queries, mutations, and subscriptions.
 
  `Weave.type`
  The type of GraphQL operation to be created.
 
  `Weave.fields`
  The aggregated fields that make up the operation.
-
- `Weave.name`
- The name given to the operation.
 */
 
 public class Weave {
@@ -27,23 +24,6 @@ public class Weave {
     private init(type: OperationType, fields: String) {
         self.type = type
         self.fields = fields
-    }
-}
-
-/**
-Operation conforms to CustomStringConvertible as well as CustomDebugStringConvertible in order to provide
- a description as well as a debugDescription of the operation model in question.
-
- Example `String(describing: operation)`: `query { post { id title content } }`
- Example `String(reflecting: operation)`: `query { post { id title content } }`
- */
-extension Weave: CustomStringConvertible, CustomDebugStringConvertible {
-    public var description: String {
-        buildDescription()
-    }
-
-    public var debugDescription: String {
-        buildDescription()
     }
 }
 
@@ -83,6 +63,22 @@ public extension Weave {
     */
     convenience init(_ type: OperationType, _ buildType: BuilderType = .individual, _ content: () -> Weavable) {
         self.init(type: type, fields: "{ \(String(describing: content())) }")
+    }
+}
+
+/**
+`Weave` conforms to `Weavable` in order to provide a description as well as a debug description of the operation model in question.
+
+ Example `String(describing: operation)`: `query { post { id title content } }`
+ Example `String(reflecting: operation)`: `query { post { id title content } }`
+ */
+extension Weave: Weavable {
+    public var description: String {
+        buildDescription()
+    }
+
+    public var debugDescription: String {
+        buildDescription()
     }
 }
 
