@@ -6,10 +6,13 @@
 //
 
 /**
-`Field` is a model consisting of a name, possible alias, and possible arguments
+`Field` is a model with a name, possible alias, and possible arguments
 
  `Field.name`
- The name of the object that will be returned.
+ The raw name provided to the field.
+
+ `Field.nameRepresentable`
+ The name of the field converted to a case style.
 
  `Field.alias`
  An optional value that defines the alias name of the field.
@@ -17,21 +20,63 @@
  `Field.arguments`
  An optional value that consists of all some/all passable arguments for the field.
 */
-public struct Field {
-    public let name: String
-    public var alias: String? = nil
-    public var arguments: [Argument]? = nil
+public class Field {
+    private var name: String
+    private var nameRepresentable: String
+    
+    private var alias: String? = nil
+    private var arguments: [Argument]? = nil
 
-    public init(_ type: Any.Type, caseStyleOption: CaseStyleOption = .lowercase, alias: String? = nil, arguments: [Argument]? = nil) {
-        self.name = String(describing: type).convert(with: caseStyleOption)
-        self.alias = alias
-        self.arguments = arguments
+    public init(_ type: Any.Type) {
+        self.name = String(describing: type)
+        self.nameRepresentable = String(describing: type).convert(with: .lowercase)
     }
 
-    public init(_ key: CodingKey, alias: String? = nil, arguments: [Argument]? = nil) {
+    public init(_ key: CodingKey) {
         self.name = key.stringValue
+        self.nameRepresentable = key.stringValue.convert(with: .lowercase)
+    }
+}
+
+public extension Field {
+    /**
+    Sets the case style of this field.
+
+     - Parameter caseStyle: The case style to use when constructing this field.
+     - Returns: A `Field` with the case style applied to the name.
+     */
+    func caseStyle(_ caseStyle: CaseStyleOption) -> Field {
+        self.nameRepresentable = name.convert(with: caseStyle)
+        return self
+    }
+
+    /**
+    Sets the alias of this field.
+
+     - Parameter alias: The alias to use when constructing this field.
+     - Returns: A `Field` with the alias in question.
+     */
+    func alias(_ alias: String) -> Field {
         self.alias = alias
-        self.arguments = arguments
+        return self
+    }
+
+    /**
+    Sets an argument for this field.
+
+     - Parameter argument: A key value pair to represent and argument name and value.
+     - Returns: A `Field` including the argument passed.
+     */
+    func argument(key: String, value: ArgumentValueRepresentable) -> Field {
+        let argument = Argument(key: key, value: value)
+
+        if arguments != nil {
+            arguments!.append(argument)
+        } else {
+            arguments = [argument]
+        }
+
+        return self
     }
 }
 
@@ -83,13 +128,13 @@ private extension Field {
     func buildDescription() -> String {
         switch(alias, arguments) {
         case let(.some(alias), .some(arguments)):
-            return formatField(name, alias: alias, arguments: arguments)
+            return GQLFieldFormatter.formatField(nameRepresentable, alias: alias, arguments: arguments)
         case let(.some(alias), nil):
-            return formatField(name, alias: alias)
+            return GQLFieldFormatter.formatField(nameRepresentable, alias: alias)
         case let(nil, .some(arguments)):
-            return formatField(name, arguments: arguments)
+            return GQLFieldFormatter.formatField(nameRepresentable, arguments: arguments)
         default:
-            return name
+            return nameRepresentable
         }
     }
 }
