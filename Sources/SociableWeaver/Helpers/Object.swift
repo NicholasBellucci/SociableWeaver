@@ -23,13 +23,17 @@
  `Object.arguments`
  An optional value that consists of all some/all passable arguments for the object.
 */
-public class Object {
+public class Object: Directive {
     private var name: String
     private var nameRepresentable: String
     private let fieldAggregates: String
+    internal var remove: Bool = false
     
     private var alias: String? = nil
     private var arguments: [Argument]? = nil
+
+    private(set) internal var include: Bool = true
+    private(set) internal var skip: Bool = false
 
     private init(_ type: Any.Type, fieldAggregates: String) {
         self.name = String(describing: type)
@@ -70,7 +74,8 @@ public extension Object {
     /**
     Sets an argument for this object.
 
-     - Parameter argument: A key value pair to represent and argument name and value.
+     - Parameter key: The key for the argument.
+     - Parameter value: The value for the argument conforming to `ArgumentValueRepresentable`.
      - Returns: An `Object` including the argument passed.
      */
     func argument(key: String, value: ArgumentValueRepresentable) -> Object {
@@ -82,6 +87,28 @@ public extension Object {
             arguments = [argument]
         }
 
+        return self
+    }
+
+    /**
+    Only include this object in the operation if the argument is true.
+
+     - Parameter argument: A boolean argument.
+     - Returns: An `Object` with its include value set.
+     */
+    func include(if argument: Bool) -> Object {
+        self.include = argument
+        return self
+    }
+
+    /**
+    Skip this object if the argument is true
+
+     - Parameter argument: A boolean argument.
+     - Returns: An `Object` with its skip value set.
+     */
+    func skip(if argument: Bool) -> Object {
+        self.skip = argument
         return self
     }
 }
@@ -112,6 +139,7 @@ public extension Object {
     */
     convenience init(_ type: Any.Type, @ObjectBuilder _ content: () -> String) {
         self.init(type, fieldAggregates: content())
+        self.remove = shouldRemove(content: content)
     }
 
     /**
@@ -126,6 +154,7 @@ public extension Object {
     */
     convenience init(_ type: Any.Type, _ individual: BuilderType, _ content: () -> Weavable) {
         self.init(type, fieldAggregates: String(describing: content()))
+        self.skip = shouldRemove(content: content)
     }
 
     /**
@@ -137,6 +166,7 @@ public extension Object {
     */
     convenience init(_ key: CodingKey, @ObjectBuilder _ content: () -> String) {
         self.init(key, fieldAggregates: content())
+        self.remove = shouldRemove(content: content)
     }
 
     /**
@@ -151,6 +181,7 @@ public extension Object {
     */
     convenience init(_ key: CodingKey, _ individual: BuilderType, _ content: () -> Weavable) {
         self.init(key, fieldAggregates: String(describing: content()))
+        self.remove = shouldRemove(content: content)
     }
 }
 
@@ -167,5 +198,21 @@ private extension Object {
         default:
             return nameRepresentable
         }
+    }
+
+    func shouldRemove(content: () -> CustomStringConvertible) -> Bool {
+        if let value = content() as? Directive {
+            if value.skip || !value.include {
+                return true
+            }
+        }
+
+        if let value = content() as? String {
+            if value == "" {
+                return true
+            }
+        }
+
+        return false
     }
 }
