@@ -42,7 +42,8 @@ final class SociableWeaverTests: XCTestCase {
                     Field(Comment.CodingKeys.content)
                 }
             }
-        }.name("GetPost")
+        }
+        .name("GetPost")
 
         let expected = "query GetPost { post { title content author { name } comments { author { name } content } } }"
         XCTAssertEqual(String(describing: operation), expected)
@@ -79,13 +80,13 @@ final class SociableWeaverTests: XCTestCase {
                 Field(Post.CodingKeys.content)
 
                 Object(Post.CodingKeys.author, .individual) {
-                    FragmentReference(builder: authorFragment)
+                    FragmentReference(for: authorFragment)
                 }
 
                 Object(Post.CodingKeys.comments) {
                     Field(Comment.CodingKeys.id)
                     Object(Comment.CodingKeys.author, .individual) {
-                        FragmentReference(builder: authorFragment)
+                        FragmentReference(for: authorFragment)
                     }
                     Field(Comment.CodingKeys.content)
                 }
@@ -101,10 +102,39 @@ final class SociableWeaverTests: XCTestCase {
         XCTAssertEqual(String(describing: operation), expected)
     }
 
+    func testOperationWithDirectives() {
+        let operation = Operation(.query) {
+            Object(Post.self){
+                Field(Post.CodingKeys.title)
+                Field(Post.CodingKeys.content)
+                    .include(if: true)
+
+                Object(Post.CodingKeys.author, .individual) {
+                    Field(Author.CodingKeys.name)
+                }
+                .include(if: false)
+
+                Object(Post.CodingKeys.comments) {
+                    Object(Comment.CodingKeys.author, .individual) {
+                        Field(Author.CodingKeys.name)
+                            .skip(if: true)
+                    }
+                    Field(Comment.CodingKeys.content)
+                        .include(if: true)
+                        .skip(if: true)
+                }
+            }
+        }
+
+        let expected = "query { post { title content } }"
+        XCTAssertEqual(String(describing: operation), expected)
+    }
+
     static var allTests = [
         ("testBasicOperation", testBasicOperation),
         ("testOperationWithName", testOperationWithName),
         ("testOperationWithArguments", testOperationWithArguments),
         ("testOperationWithFragment", testOperationWithFragment),
+        ("testOperationWithDirectives", testOperationWithDirectives)
     ]
 }

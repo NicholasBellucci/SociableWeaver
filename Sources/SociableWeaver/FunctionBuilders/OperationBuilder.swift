@@ -13,6 +13,9 @@ internal struct OperationBuilder {
 
         children.forEach {
             if let object = $0 as? Object {
+                if object.remove { return }
+                if object.skip || !object.include { return }
+                
                 objects.append(object)
             } else if let fragment = $0 as? Fragment {
                 fragments.append(fragment)

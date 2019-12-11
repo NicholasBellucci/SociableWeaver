@@ -5,8 +5,39 @@
 //  Created by Nicholas Bellucci on 12/7/19.
 //
 
-public struct FragmentReference {
+public class FragmentReference: Directive {
     public let builder: FragmentBuilder
+
+    private(set) public var include: Bool = false
+    private(set) public var skip: Bool = true
+
+    public init(for builder: FragmentBuilder) {
+        self.builder = builder
+    }
+}
+
+public extension FragmentReference {
+    /**
+    Only include this fragment reference in the operation if the argument is true.
+
+     - Parameter argument: A boolean argument.
+     - Returns: A `FragmentReference` with its include value set.
+     */
+    func include(if argument: Bool) -> FragmentReference {
+        self.include = argument
+        return self
+    }
+
+    /**
+    Skip this fragment reference if the argument is true
+
+     - Parameter argument: A boolean argument.
+     - Returns: A `FragmentReference` with its skip value set.
+     */
+    func skip(if argument: Bool) -> FragmentReference {
+        self.skip = argument
+        return self
+    }
 }
 
 extension FragmentReference: Weavable {
