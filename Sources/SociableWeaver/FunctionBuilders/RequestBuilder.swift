@@ -7,14 +7,21 @@
 
 @_functionBuilder
 internal struct RequestBuilder {
-    static func buildBlock(_ children: Object...) -> String {
-        var values: [String] = []
+    static func buildBlock(_ children: Weavable...) -> String {
+        var objects: [Object] = []
+        var fragments: [Fragment] = []
 
         children.forEach {
-            values.append(String(describing: $0))
+            if let object = $0 as? Object {
+                objects.append(object)
+            } else if let fragment = $0 as? Fragment {
+                fragments.append(fragment)
+            }
         }
 
-        return values.joined(separator: " ")
+        let objectsRepresentation = objects.map { String(describing: $0) }.joined(separator: " ")
+        let fragmentsRepresentation = fragments.map { String(describing: $0) }.joined(separator: " ")
+        return "{ \(objectsRepresentation) } \(fragmentsRepresentation)"
     }
 
     static func buildBlock(_ component: Object) -> String {

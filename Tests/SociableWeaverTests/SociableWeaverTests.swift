@@ -8,15 +8,12 @@ final class SociableWeaverTests: XCTestCase {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Field(Post.CodingKeys.author)) {
-                    Field(Author.CodingKeys.id)
+                Object(Field(Post.CodingKeys.author), .individual) {
                     Field(Author.CodingKeys.name)
                 }
 
                 Object(Field(Post.CodingKeys.comments)) {
-                    Field(Comment.CodingKeys.id)
-                    Object(Field(Comment.CodingKeys.author)) {
-                        Field(Author.CodingKeys.id)
+                    Object(Field(Comment.CodingKeys.author), .individual) {
                         Field(Author.CodingKeys.name)
                     }
                     Field(Comment.CodingKeys.content)
@@ -24,7 +21,7 @@ final class SociableWeaverTests: XCTestCase {
             }
         }
 
-        let expected = "query { post { title content author { id name } comments { id author { id name } content } } }"
+        let expected = "query { post { title content author { name } comments { author { name } content } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
 
@@ -47,8 +44,39 @@ final class SociableWeaverTests: XCTestCase {
         XCTAssertEqual(String(describing: query), expected)
     }
 
+    func testQueryWithFragment() {
+        let authorFragment = FragmentBuilder(name: "authorFields", type: Author.self)
+        let query = Request(.query) {
+            Object(Field(Post.self)) {
+                Field(Post.CodingKeys.title)
+                Field(Post.CodingKeys.content)
+
+                Object(Field(Post.CodingKeys.author), .individual) {
+                    FragmentReference(builder: authorFragment)
+                }
+
+                Object(Field(Post.CodingKeys.comments)) {
+                    Field(Comment.CodingKeys.id)
+                    Object(Field(Comment.CodingKeys.author), .individual) {
+                        FragmentReference(builder: authorFragment)
+                    }
+                    Field(Comment.CodingKeys.content)
+                }
+            }
+
+            Fragment(authorFragment) {
+                Field(Author.CodingKeys.id)
+                Field(Author.CodingKeys.name)
+            }
+        }
+
+        let expected = "query { post { title content author { ...authorFields } comments { id author { ...authorFields } content } } } fragment authorFields on Author { id name }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+
     static var allTests = [
         ("testBasicQuery", testBasicQuery),
         ("testQueryWithArguments", testQueryWithArguments),
+        ("testQueryWithFragment", testQueryWithFragment),
     ]
 }

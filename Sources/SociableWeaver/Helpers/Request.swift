@@ -16,10 +16,10 @@
 */
 
 public struct Request {
-    public let type: RequestType
+    public let type: OperationType
     public let fields: String
 
-    private init(type: RequestType, fields: String) {
+    private init(type: OperationType, fields: String) {
         self.type = type
         self.fields = fields
     }
@@ -34,11 +34,11 @@ Request conforms to CustomStringConvertible as well as CustomDebugStringConverti
  */
 extension Request: CustomStringConvertible, CustomDebugStringConvertible {
     public var description: String {
-        type.rawValue.withSubfields(fields)
+        "\(type) \(fields)"
     }
 
     public var debugDescription: String {
-        type.rawValue.withSubfields(fields)
+        "\(type) \(fields)"
     }
 }
 
@@ -49,7 +49,7 @@ public extension Request {
     - parameter type: The request type to be created.
     - parameter content: The request builder accepts `Object` models.
     */
-    init(_ type: RequestType, @RequestBuilder _ content: () -> String) {
+    init(_ type: OperationType, @RequestBuilder _ content: () -> String) {
         self.init(type: type, fields: String(describing: content()))
     }
 
@@ -60,9 +60,9 @@ public extension Request {
      Request initializer using the request function builder.
 
     - parameter type: The request type to be created.
-    - parameter content: The request builder accepts `Object` models.
+    - parameter content: The individual `Object`.
     */
-    init(_ type: RequestType, _ content: () -> Object) {
-        self.init(type: type, fields: String(describing: content()))
+    init(_ type: OperationType, _ individual: BuilderType = .individual, _ content: () -> Object) {
+        self.init(type: type, fields: "{ \(String(describing: content())) }")
     }
 }
