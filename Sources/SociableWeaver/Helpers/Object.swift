@@ -27,13 +27,13 @@ public class Object: Directive {
     private var name: String
     private var nameRepresentable: String
     private let fieldAggregates: String
-    internal var remove: Bool = false
     
     private var alias: String? = nil
     private var arguments: [Argument]? = nil
 
     var include: Bool = true
     var skip: Bool = false
+    var remove: Bool = false
 
     private init(_ type: Any.Type, fieldAggregates: String) {
         self.name = String(describing: type)
@@ -45,6 +45,22 @@ public class Object: Directive {
         self.name = key.stringValue
         self.nameRepresentable = key.stringValue.convert(with: .lowercase)
         self.fieldAggregates = fieldAggregates
+    }
+}
+
+/**
+Object conforms to Weavable in order to provide a description as well as a debugDescription of the object model in question.
+
+ Example `String(describing: object)`: `post { id title content }`
+ Example `String(reflecting: object)`: `post { id title content }`
+ */
+extension Object: Weavable {
+    public var description: String {
+        buildDescription().withSubfields(fieldAggregates)
+    }
+
+    public var debugDescription: String {
+        buildDescription().withSubfields(fieldAggregates)
     }
 }
 
@@ -79,10 +95,12 @@ public extension Object {
      - Returns: An `Object` including the argument passed.
      */
     func argument(key: String, value: ArgumentValueRepresentable) -> Object {
+        let argument = Argument(key: key, value: value)
+
         if arguments != nil {
-            arguments!.append((key: key, value: value))
+            arguments!.append(argument)
         } else {
-            arguments = [(key: key, value: value)]
+            arguments = [argument]
         }
 
         return self
@@ -108,22 +126,6 @@ public extension Object {
     func skip(if argument: Bool) -> Object {
         self.skip = argument
         return self
-    }
-}
-
-/**
-Object conforms to Weavable in order to provide a description as well as a debugDescription of the object model in question.
-
- Example `String(describing: object)`: `post { id title content }`
- Example `String(reflecting: object)`: `post { id title content }`
- */
-extension Object: Weavable {
-    public var description: String {
-        buildDescription().withSubfields(fieldAggregates)
-    }
-
-    public var debugDescription: String {
-        buildDescription().withSubfields(fieldAggregates)
     }
 }
 
@@ -198,6 +200,7 @@ private extension Object {
         }
     }
 
+    /// Objects containing no fields are removed.
     func shouldRemove(content: () -> CustomStringConvertible) -> Bool {
         if let value = content() as? Directive {
             if value.skip || !value.include {

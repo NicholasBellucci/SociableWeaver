@@ -18,24 +18,12 @@
 public class Operation {
     private let type: OperationType
     private let fields: String
+    
     private var name: String?
 
     private init(type: OperationType, fields: String) {
         self.type = type
         self.fields = fields
-    }
-}
-
-public extension Operation {
-    /**
-    Sets the operation name.
-
-     - Parameter name: The desired name of the operation.
-     - Returns: An `Operation` with the name as the parent field.
-     */
-    func name(_ name: String) -> Operation {
-        self.name = name
-        return self
     }
 }
 
@@ -53,6 +41,19 @@ extension Operation: CustomStringConvertible, CustomDebugStringConvertible {
 
     public var debugDescription: String {
         buildDescription()
+    }
+}
+
+public extension Operation {
+    /**
+    Sets the operation name.
+
+     - Parameter name: The desired name of the operation.
+     - Returns: An `Operation` with the name as the parent field.
+     */
+    func name(_ name: String) -> Operation {
+        self.name = name
+        return self
     }
 }
 

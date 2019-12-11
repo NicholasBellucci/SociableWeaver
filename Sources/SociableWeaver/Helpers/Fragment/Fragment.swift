@@ -6,8 +6,8 @@
 //
 
 public struct Fragment {
-    public let builder: FragmentBuilder
-    public let fieldAggregates: String
+    let builder: FragmentBuilder
+    let fieldAggregates: String
 
     private init(_ builder: FragmentBuilder, fieldAggregates: String) {
         self.builder = builder

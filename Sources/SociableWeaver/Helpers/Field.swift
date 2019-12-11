@@ -41,6 +41,22 @@ public class Field: Directive {
     }
 }
 
+/**
+Field conforms to Weavable in order to provide a description as well as a debugDescription of the object model in question.
+
+ Example `String(describing: field)`: `newPost: post(id: 1)`
+ Example `String(reflecting: field)`: `newPost: post(id: 1)`
+ */
+extension Field: Weavable {
+    public var description: String {
+        buildDescription()
+    }
+
+    public var debugDescription: String {
+        buildDescription()
+    }
+}
+
 public extension Field {
     /**
     Sets the case style of this field.
@@ -72,10 +88,12 @@ public extension Field {
      - Returns: A `Field` including the argument passed.
      */
     func argument(key: String, value: ArgumentValueRepresentable) -> Field {
+        let argument = Argument(key: key, value: value)
+
         if arguments != nil {
-            arguments!.append((key: key, value: value))
+            arguments!.append(argument)
         } else {
-            arguments = [(key: key, value: value)]
+            arguments = [argument]
         }
 
         return self
@@ -101,22 +119,6 @@ public extension Field {
     func skip(if argument: Bool) -> Field {
         self.skip = argument
         return self
-    }
-}
-
-/**
-Field conforms to Weavable in order to provide a description as well as a debugDescription of the object model in question.
-
- Example `String(describing: field)`: `newPost: post(id: 1)`
- Example `String(reflecting: field)`: `newPost: post(id: 1)`
- */
-extension Field: Weavable {
-    public var description: String {
-        buildDescription()
-    }
-
-    public var debugDescription: String {
-        buildDescription()
     }
 }
 

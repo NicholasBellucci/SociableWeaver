@@ -12,7 +12,7 @@ public class GQLFieldFormatter {
      Example `newPost: post`
      */
     static func formatField(_ name: String, alias: String) -> String {
-        return "\(alias): \(name)"
+        "\(alias): \(name)"
     }
 
     /**
@@ -21,7 +21,7 @@ public class GQLFieldFormatter {
      Example `post(id: 1)`
      */
     static func formatField(_ name: String, arguments: [Argument]) -> String {
-        return "\(name)(\(arguments.graphQLRepresentable))"
+        "\(name)(\(arguments.graphQLRepresentable))"
     }
 
     /**
@@ -29,7 +29,7 @@ public class GQLFieldFormatter {
 
      Example `newPost: post(id: 1)`
      */
-    static func formatField(_ name: String, alias: String, arguments: [(key: String, value: ArgumentValueRepresentable)]) -> String {
-        return "\(alias): \(name)(\(arguments.graphQLRepresentable))"
+    static func formatField(_ name: String, alias: String, arguments: [Argument]) -> String {
+        "\(alias): \(name)(\(arguments.graphQLRepresentable))"
     }
 }

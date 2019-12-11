@@ -8,8 +8,8 @@
 import Foundation
 
 @_functionBuilder
-internal struct ObjectBuilder {
-    static func buildBlock(_ children: Weavable...) -> String {
+struct ObjectBuilder {
+    public static func buildBlock(_ children: Weavable...) -> String {
         var descriptions: [String] = []
 
         children.forEach {

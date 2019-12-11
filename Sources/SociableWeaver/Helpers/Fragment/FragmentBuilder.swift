@@ -6,8 +6,8 @@
 //
 
 public struct FragmentBuilder {
-    public let name: String
-    public let type: String
+    let name: String
+    let type: String
 
     public init(name: String, type: Any.Type) {
         self.name = name

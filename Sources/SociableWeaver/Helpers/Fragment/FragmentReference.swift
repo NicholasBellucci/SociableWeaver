@@ -6,13 +6,23 @@
 //
 
 public class FragmentReference: Directive {
-    public let builder: FragmentBuilder
+    let builder: FragmentBuilder
 
     var include: Bool = false
     var skip: Bool = true
 
     public init(for builder: FragmentBuilder) {
         self.builder = builder
+    }
+}
+
+extension FragmentReference: Weavable {
+    public var description: String {
+        "...\(builder.name)"
+    }
+
+    public var debugDescription: String {
+        "...\(builder.name)"
     }
 }
 
@@ -37,15 +47,5 @@ public extension FragmentReference {
     func skip(if argument: Bool) -> FragmentReference {
         self.skip = argument
         return self
-    }
-}
-
-extension FragmentReference: Weavable {
-    public var description: String {
-        "...\(builder.name)"
-    }
-
-    public var debugDescription: String {
-        "...\(builder.name)"
     }
 }
