@@ -3,17 +3,17 @@ import XCTest
 
 final class SociableWeaverTests: XCTestCase {
     func testBasicQuery() {
-        let query = Request(.query) {
-            Object(Field(Post.self)) {
+        let query = Operation(.query) {
+            Object(Post.self){
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Field(Post.CodingKeys.author), .individual) {
+                Object(Post.CodingKeys.author, .individual) {
                     Field(Author.CodingKeys.name)
                 }
 
-                Object(Field(Post.CodingKeys.comments)) {
-                    Object(Field(Comment.CodingKeys.author), .individual) {
+                Object(Post.CodingKeys.comments) {
+                    Object(Comment.CodingKeys.author, .individual) {
                         Field(Author.CodingKeys.name)
                     }
                     Field(Comment.CodingKeys.content)
@@ -26,17 +26,18 @@ final class SociableWeaverTests: XCTestCase {
     }
 
     func testQueryWithArguments() {
-        let query = Request(.query) {
-            Object(Field(Post.self)) {
-                Object(Field(Post.CodingKeys.author, alias: "newAuthor", arguments: [Argument(key: "id", value: 1)])) {
+        let query = Operation(.query) {
+            Object(Post.self) {
+                Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.id)
-                    Field(Author.CodingKeys.name, arguments: [Argument(key: "value", value: "Nick")])
-                }
+                    Field(Author.CodingKeys.name)
+                        .argument(key: "value", value: "Nick")
+                }.alias("newAuthor").argument(key: "id", value: 1)
 
-                Object(Field(Post.CodingKeys.comments, alias: "newComments")) {
+                Object(Post.CodingKeys.comments) {
                     Field(Comment.CodingKeys.id)
                     Field(Comment.CodingKeys.content)
-                }
+                }.alias("newComments")
             }
         }
 
@@ -46,18 +47,18 @@ final class SociableWeaverTests: XCTestCase {
 
     func testQueryWithFragment() {
         let authorFragment = FragmentBuilder(name: "authorFields", type: Author.self)
-        let query = Request(.query) {
-            Object(Field(Post.self)) {
+        let query = Operation(.query) {
+            Object(Post.self) {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Field(Post.CodingKeys.author), .individual) {
+                Object(Post.CodingKeys.author, .individual) {
                     FragmentReference(builder: authorFragment)
                 }
 
-                Object(Field(Post.CodingKeys.comments)) {
+                Object(Post.CodingKeys.comments) {
                     Field(Comment.CodingKeys.id)
-                    Object(Field(Comment.CodingKeys.author), .individual) {
+                    Object(Comment.CodingKeys.author, .individual) {
                         FragmentReference(builder: authorFragment)
                     }
                     Field(Comment.CodingKeys.content)
