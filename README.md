@@ -123,6 +123,7 @@ Aliases are key when querying a single object multiple times in the same request
 ##### Swift
 ```swift
 Weave(.query) {
+    Object(Post.self) {
         Object(Post.CodingKeys.comments) {
             Field(Comment.CodingKeys.id)
             Field(Comment.CodingKeys.content)
