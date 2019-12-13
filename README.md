@@ -46,7 +46,8 @@ Weave(.query) {
         Field(Post.CodingKeys.content)
     }
 }
-
+```
+```graphql
 // into this GraphQL Query
 query {
     post {
