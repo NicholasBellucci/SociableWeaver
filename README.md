@@ -16,6 +16,9 @@ SociableWeaver is a Swift Package and can be installed using a couple different 
    * [Operation Name](#operation-name)
    * [Variables](#variables)
    * [Directives](#directives)
+   * [Mutations](#mutations)
+   * [Inline Fragments](#inline-fragments)
+   * [Meta Fields](#meta-fields)
 
 ## Usage
 
@@ -49,7 +52,7 @@ GraphQL is all about querying specific fields on objects and returning only what
 ##### Swift
 ```swift
 Weave(.query) {
-    Object(Post.self){
+    Object(Post.self) {
         Field(Post.CodingKeys.id)
         Field(Post.CodingKeys.title)
         Field(Post.CodingKeys.content)
@@ -190,7 +193,7 @@ let query = Weave(.query) {
 
 ##### GraphQL Query
 ```graphql
-{
+query {
   post {
     author {
       ...authorFields
@@ -266,7 +269,7 @@ func queryPost(id: Int) {
 
 ##### GraphQL Query
 ```graphql
-{
+guery {
   post(id: 1) {
     title
     content
@@ -288,7 +291,7 @@ Just to note, Skip will always take precedent over include. Also any objects/fra
 
 ```swift
 let query = Weave(.query) {
-    Object(Post.self){
+    Object(Post.self) {
         Field(Post.CodingKeys.title)
         Field(Post.CodingKeys.content)
             .include(if: true)
@@ -318,5 +321,124 @@ query {
         title 
         content 
     } 
+}
+```
+
+### Mutations
+
+[GraphQL Mutations](https://graphql.org/learn/queries/#mutations)
+
+Mutations work the same as simple queries and should be used when data is supposed to be written. An `Object.schemaName` will replace the name of the Object or Key included in the initializer.
+
+##### Swift
+```swift
+Weave(.mutation) {
+    Object(Post.self) {
+        Field(Post.CodingKeys.id)
+        Field(Post.CodingKeys.title)
+        Field(Post.CodingKeys.content)
+    }
+    .schemaName("createPost")
+    .argument(key: "title", value: "TestPost")
+    .argument(key: "content", value: "This is a test post.")
+    .argument(key: "author", value: "John Doe")
+}
+```
+
+##### GraphQL Mutation
+```graphql
+mutation {
+  createPost(title: "TestPost", content: "This is a test post.", author: "John Doe") {
+    id
+    title
+    content
+  }
+}
+```
+
+### Inline Fragments
+
+[GraphQL Inline Fragments](https://graphql.org/learn/queries/#inline-fragments)
+
+Inline fragments are useful when querying on an interface or union type as they allow the return of underlying types.
+
+##### Swift
+```swift
+Weave(.query) {
+    Object(Post.self) {
+        Field(Post.CodingKeys.title)
+        Field(Post.CodingKeys.content)
+
+        Object(Post.CodingKeys.comments) {
+            Object(Comment.CodingKeys.author) {
+                InlineFragment("AnonymousUser", .individual) {
+                    Field(Author.CodingKeys.id)
+                }
+
+                InlineFragment("RegisteredUser") {
+                    Field(Author.CodingKeys.id)
+                    Field(Author.CodingKeys.name)
+                }
+            }
+            Field(Comment.CodingKeys.content)
+        }
+    }
+}
+```
+
+##### GraphQL Query
+```graphql
+query {
+  post {
+    title
+    content
+    comments {
+      author {
+        ... on AnonymousUser {
+          id
+        }
+        ... on RegisteredUser {
+          id
+          name
+        }
+      }
+      content
+    }
+  }
+}
+```
+
+### Meta Fields
+
+[GraphQL Meta Fields](https://graphql.org/learn/queries/#meta-fields)
+
+The `__typename` metafield can be used to return the object type in the results of a query.
+
+##### Swift
+```swift
+Weave(.query) {
+    Object(Post.self){
+        Field(Post.CodingKeys.title)
+        Field(Post.CodingKeys.content)
+
+        Object(Post.CodingKeys.author) {
+            Typename()
+            Field(Author.CodingKeys.name)
+        }
+    }
+}
+```
+
+##### GraphQL Query
+```graphql
+query {
+  post {
+    title
+    content
+    author {
+      __typename
+      name
+    }
+  }
 }
 ```
