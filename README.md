@@ -37,8 +37,8 @@ If `CodingKeys` aren't possible, SocialbleWeaver does support strings but recomm
 
 GraphQL is all about querying specific fields on objects and returning only what is needed. With SocialbleWeaver constructing objects with fields is a breeze.
 
+#### Swift
 ```swift
-// SociableWeaver easily turns this...
 Weave(.query) {
     Object(Post.self){
         Field(Post.CodingKeys.id)
@@ -47,8 +47,9 @@ Weave(.query) {
     }
 }
 ```
+
+#### GraphQL Query
 ```graphql
-// into this GraphQL Query
 query {
     post {
         id
