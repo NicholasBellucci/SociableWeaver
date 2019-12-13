@@ -12,11 +12,17 @@ SociableWeaver is a Swift Package and can be installed using a couple different 
 [Objects and Fields](https://github.com/NicholasBellucci/SociableWeaver/tree/feature/readme#objects-and-fields)
 
 [Arguments](https://github.com/NicholasBellucci/SociableWeaver/tree/feature/readme#arguments)
+
 [Alias](https://github.com/NicholasBellucci/SociableWeaver/tree/feature/readme#alias)
+
 [Fragments](https://github.com/NicholasBellucci/SociableWeaver/tree/feature/readme#fragments)
+
 [Operation Name](https://github.com/NicholasBellucci/SociableWeaver/tree/feature/readme#operation-name)
+
 [Variables](https://github.com/NicholasBellucci/SociableWeaver/tree/feature/readme#variables)
+
 [Directives](https://github.com/NicholasBellucci/SociableWeaver/tree/feature/readme#directives)
+
 
 ## Usage
 
