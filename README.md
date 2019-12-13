@@ -37,7 +37,7 @@ If `CodingKeys` aren't possible, SocialbleWeaver does support strings but recomm
 
 GraphQL is all about querying specific fields on objects and returning only what is needed. With SocialbleWeaver constructing objects with fields is a breeze.
 
-#### Swift
+##### Swift
 ```swift
 Weave(.query) {
     Object(Post.self){
@@ -48,7 +48,7 @@ Weave(.query) {
 }
 ```
 
-#### GraphQL Query
+##### GraphQL Query
 ```graphql
 query {
     post {
@@ -67,7 +67,7 @@ Arguments are a key part of GraphQL and allow for much more refined queries. Soc
 
 The only requirement is that the value for the argument conforms to `ArgumentValueRepresentable`. Core types such as `String`, `Int`, `Bool` etc. will already conform.
 
-#### Swift
+##### Swift
 ```swift
 Weave(.query) {
     Object(Post.self) {
@@ -88,7 +88,7 @@ Weave(.query) {
 }
 ```
 
-#### GraphQL Query
+##### GraphQL Query
 ```graphql
 query {
     post {
@@ -111,7 +111,7 @@ query {
 
 Aliases are key when querying a single object multiple times in the same request.
 
-#### Swift
+##### Swift
 ```swift
 Weave(.query) {
         Object(Post.CodingKeys.comments) {
@@ -131,7 +131,7 @@ Weave(.query) {
 }
 ```
 
-#### GraphQL Query
+##### GraphQL Query
 ```graphql
 query {
     post {
