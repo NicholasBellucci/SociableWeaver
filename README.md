@@ -132,6 +132,7 @@ Weave(.query) {
 ```
 
 ##### GraphQL Query
+
 ```graphql
 query {
     post {
@@ -151,3 +152,161 @@ query {
 
 [GraphQL Fragments](https://graphql.org/learn/queries/#fragments)
 
+GraphQL fragments can help when building complicated queries. SociableWeaver makes them extremely simple and allows the proper references to be placed exactly where they would be in the query. With the help of a `FragmentBuilder` the `FragmentReference` can be added to the objects that require the fields and the `Fragment` can be added to the operation itself.
+
+##### Swift
+```swift
+let authorFragment = FragmentBuilder(name: "authorFields", type: Author.self)
+let query = Weave(.query) {
+    Object(Post.self) {
+        Object(Post.CodingKeys.author, .individual) {
+            FragmentReference(for: authorFragment)
+        }
+
+        Object(Post.CodingKeys.comments) {
+            Object(Comment.CodingKeys.author, .individual) {
+                FragmentReference(for: authorFragment)
+            }
+            Field(Comment.CodingKeys.content)
+        }
+    }
+
+    Fragment(authorFragment) {
+        Field(Author.CodingKeys.id)
+        Field(Author.CodingKeys.name)
+    }
+}
+```
+
+##### GraphQL Query
+```graphql
+{
+  post {
+    author {
+      ...authorFields
+    }
+    comments {
+      author {
+        ...authorFields
+      }
+      content
+    }
+  }
+}
+
+fragment authorFields on Author {
+  id
+  name
+}
+```
+
+### Operation Name
+
+[GraphQL Operation Name](https://graphql.org/learn/queries/#operation-name)
+
+Operation names aren't required but can make the queries more unique.
+
+```swift
+Weave(.query) {
+    Object(Post.self) {
+        Field(Post.CodingKeys.id)
+        Field(Post.CodingKeys.title)
+        Field(Post.CodingKeys.content)
+    }
+}
+.name("GetPostAndContent")
+```
+
+##### GraphQL Query
+```graphql
+query GetPost {
+  post {
+    id
+    title
+    content
+  }
+}
+```
+
+### Variables
+
+[GraphQL Variables](https://graphql.org/learn/queries/#variables)
+
+Since direct JSON is not needed when making queries in SociableWeaver, variables can and should be define in a method and passed into the query as arguments.
+
+##### Swift
+```swift
+queryPost(id: 1)
+
+func queryPost(id: Int) {
+    Weave(.query) {
+        Object(Post.self) {
+            Field(Post.CodingKeys.title)
+            Field(Post.CodingKeys.content)
+            
+            Object(Post.CodingKeys.author) {
+                Field(Author.CodingKeys.id)
+                Field(Author.CodingKeys.name)
+            }
+        }
+        .argument(key: "id", value: id)
+    }
+}
+```
+
+##### GraphQL Query
+```graphql
+{
+  post(id: 1) {
+    title
+    content
+    author {
+      id
+      name
+    }
+  }
+}
+```
+
+### Directives
+
+[GraphQL Directives](https://graphql.org/learn/queries/#directives)
+
+Directives in GraphQL allows the server to affect execution of the query. The two directives are `@include` and `@skip` both of which can be added to fields or included fragments. The example defines true or false but in an actual query these values would be boolean variables.
+
+Just to note, Skip will always take precedent over include. Also any objects/fragments that end up not having fields will be removed from the query.
+
+```swift
+let query = Weave(.query) {
+    Object(Post.self){
+        Field(Post.CodingKeys.title)
+        Field(Post.CodingKeys.content)
+            .include(if: true)
+
+        Object(Post.CodingKeys.author, .individual) {
+            Field(Author.CodingKeys.name)
+        }
+        .include(if: false)
+
+        Object(Post.CodingKeys.comments) {
+            Object(Comment.CodingKeys.author, .individual) {
+                Field(Author.CodingKeys.name)
+                    .skip(if: true)
+            }
+            Field(Comment.CodingKeys.content)
+                .include(if: true)
+                .skip(if: true)
+        }
+    }
+}
+```
+
+##### GraphQL Queries
+```graphql
+query { 
+    post { 
+        title 
+        content 
+    } 
+}
+```
