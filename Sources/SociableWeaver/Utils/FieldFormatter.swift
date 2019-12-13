@@ -1,11 +1,11 @@
 //
-//  GQLFieldFormatter.swift
+//  FieldFormatter.swift
 //  
 //
 //  Created by Nicholas Bellucci on 12/7/19.
 //
 
-public class GQLFieldFormatter {
+public class FieldFormatter {
     /**
     Formats a field with a name and alias.
 
