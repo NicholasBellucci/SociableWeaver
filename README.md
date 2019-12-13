@@ -67,6 +67,7 @@ Arguments are a key part of GraphQL and allow for much more refined queries. Soc
 
 The only requirement is that the value for the argument conforms to `ArgumentValueRepresentable`. Core types such as `String`, `Int`, `Bool` etc. will already conform.
 
+#### Swift
 ```swift
 Weave(.query) {
     Object(Post.self) {
@@ -85,8 +86,10 @@ Weave(.query) {
         .argument(key: "filter", value: CommentFilter.recent)
     }
 }
+```
 
-// Result
+#### GraphQL Query
+```graphql
 query {
     post {
         title
@@ -108,6 +111,7 @@ query {
 
 Aliases are key when querying a single object multiple times in the same request.
 
+#### Swift
 ```swift
 Weave(.query) {
         Object(Post.CodingKeys.comments) {
@@ -125,8 +129,10 @@ Weave(.query) {
         .alias("oldComments")
     }
 }
+```
 
-// Result
+#### GraphQL Query
+```graphql
 query {
     post {
         newComments: comments(filter: RECENT) {
