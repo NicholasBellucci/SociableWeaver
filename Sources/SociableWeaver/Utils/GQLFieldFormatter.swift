@@ -5,7 +5,7 @@
 //  Created by Nicholas Bellucci on 12/7/19.
 //
 
-public class GQLFieldFormatter {
+public struct GQLFieldFormatter {
     /**
     Formats a field with a name and alias.
 

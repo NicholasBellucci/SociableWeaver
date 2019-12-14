@@ -11,7 +11,7 @@ GraphQL fields are used to ask for specific fields on objects.
  `Field.name`
  The raw name provided to the field.
 */
-public class Field: Directive {
+public struct Field: Directive {
     private var name: String
     private var nameRepresentable: String
     
@@ -40,8 +40,9 @@ public extension Field {
      - Returns: A `Field` with the case style applied to the name.
      */
     func caseStyle(_ caseStyle: CaseStyleOption) -> Field {
-        self.nameRepresentable = name.convert(with: caseStyle)
-        return self
+        var copy = self
+        copy.nameRepresentable = copy.name.convert(with: caseStyle)
+        return copy
     }
 
     /**
@@ -51,8 +52,9 @@ public extension Field {
      - Returns: A `Field` with the alias in question.
      */
     func alias(_ alias: String) -> Field {
-        self.alias = alias
-        return self
+        var copy = self
+        copy.alias = alias
+        return copy
     }
 
     /**
@@ -63,15 +65,16 @@ public extension Field {
      - Returns: A `Field` including the argument passed.
      */
     func argument(key: String, value: ArgumentValueRepresentable) -> Field {
+        var copy = self
         let argument = Argument(key: key, value: value)
 
-        if arguments != nil {
-            arguments!.append(argument)
+        if copy.arguments != nil {
+            copy.arguments!.append(argument)
         } else {
-            arguments = [argument]
+            copy.arguments = [argument]
         }
 
-        return self
+        return copy
     }
 
     /**
@@ -81,8 +84,9 @@ public extension Field {
      - Returns: A `Field` with its include value set.
      */
     func include(if argument: Bool) -> Field {
-        self.include = argument
-        return self
+        var copy = self
+        copy.include = argument
+        return copy
     }
 
     /**
@@ -92,8 +96,9 @@ public extension Field {
      - Returns: A `Field` with its skip value set.
      */
     func skip(if argument: Bool) -> Field {
-        self.skip = argument
-        return self
+        var copy = self
+        copy.skip = argument
+        return copy
     }
 }
 
