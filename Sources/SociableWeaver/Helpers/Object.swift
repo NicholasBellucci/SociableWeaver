@@ -6,34 +6,25 @@
 //
 
 /**
-`Object` is a model with a name, field aggregates, possible alias, and possible arguments
+ GraphQL objects are made up of one or more fields.
 
  `Object.name`
  The raw name provided to the object.
 
- `Object.nameRepresentable`
- The name of the object converted to a case style.
-
  `Object.fieldAggregates`
  The aggregated fields that make up the object.
-
- `Object.alias`
- An optional value that defines the alias name of the object.
-
- `Object.arguments`
- An optional value that consists of all some/all passable arguments for the object.
 */
 public class Object: Directive {
     private var name: String
     private var nameRepresentable: String
     private let fieldAggregates: String
-    internal var remove: Bool = false
     
     private var alias: String? = nil
     private var arguments: [Argument]? = nil
 
-    private(set) internal var include: Bool = true
-    private(set) internal var skip: Bool = false
+    var include: Bool = true
+    var skip: Bool = false
+    var remove: Bool = false
 
     private init(_ type: Any.Type, fieldAggregates: String) {
         self.name = String(describing: type)
@@ -113,29 +104,13 @@ public extension Object {
     }
 }
 
-/**
-Object conforms to Weavable in order to provide a description as well as a debugDescription of the object model in question.
-
- Example `String(describing: object)`: `post { id title content }`
- Example `String(reflecting: object)`: `post { id title content }`
- */
-extension Object: Weavable {
-    public var description: String {
-        buildDescription().withSubfields(fieldAggregates)
-    }
-
-    public var debugDescription: String {
-        buildDescription().withSubfields(fieldAggregates)
-    }
-}
-
 public extension Object {
     /**
     Object initializer using the object function builder.
      This initializer accepts `Any.Type` which will be used as to determine the name.
 
     - parameter type: The type of `Any`.
-    - parameter content: The object builder accepts structs/classes conforming to `Weavable`.
+    - parameter content: The object builder accepts structs/classes conforming to `ObjectWeavable`.
     */
     convenience init(_ type: Any.Type, @ObjectBuilder _ content: () -> String) {
         self.init(type, fieldAggregates: content())
@@ -150,9 +125,9 @@ public extension Object {
       This initializer accepts `Any.Type` which will be used as to determine the name.
 
      - parameter type: The type of `Any` used for the name.
-     - parameter content: The individual object conforming to `Weavable`.
+     - parameter content: The individual object conforming to `ObjectWeavable`.
     */
-    convenience init(_ type: Any.Type, _ individual: BuilderType, _ content: () -> Weavable) {
+    convenience init(_ type: Any.Type, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
         self.init(type, fieldAggregates: String(describing: content()))
         self.skip = shouldRemove(content: content)
     }
@@ -162,7 +137,7 @@ public extension Object {
      This initializer accepts a `CodingKey` which will be used as to determine the name.
 
     - parameter key: The coding key used for the name.
-    - parameter content: The object builder accepts structs/classes conforming to `Weavable`.
+    - parameter content: The object builder accepts structs/classes conforming to `ObjectWeavable`.
     */
     convenience init(_ key: CodingKey, @ObjectBuilder _ content: () -> String) {
         self.init(key, fieldAggregates: content())
@@ -177,11 +152,46 @@ public extension Object {
       This initializer accepts a `CodingKey` which will be used as to determine the name.
 
      - parameter key: The coding key used for the name.
-     - parameter content: The individual object conforming to `Weavable`.
+     - parameter content: The individual object conforming to `ObjectWeavable`.
     */
-    convenience init(_ key: CodingKey, _ individual: BuilderType, _ content: () -> Weavable) {
+    convenience init(_ key: CodingKey, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
         self.init(key, fieldAggregates: String(describing: content()))
         self.remove = shouldRemove(content: content)
+    }
+}
+
+/**
+`Object` conforms to `ObjectWeavable` in order to provide a description as well as a debug description of the object model in question.
+
+ Example `String(describing: object)`: `post { id title content }`
+ Example `String(reflecting: object)`: `post { id title content }`
+ */
+extension Object: ObjectWeavable {
+    public var description: String {
+        buildDescription().withSubfields(fieldAggregates)
+    }
+
+    public var debugDescription: String {
+        buildDescription().withSubfields(fieldAggregates)
+    }
+}
+
+extension Object: Removable {
+    /// Objects containing no fields are removed.
+    func shouldRemove(content: () -> CustomStringConvertible) -> Bool {
+        if let value = content() as? Directive {
+            if value.skip || !value.include {
+                return true
+            }
+        }
+
+        if let value = content() as? String {
+            if value == "" {
+                return true
+            }
+        }
+
+        return false
     }
 }
 
@@ -198,21 +208,5 @@ private extension Object {
         default:
             return nameRepresentable
         }
-    }
-
-    func shouldRemove(content: () -> CustomStringConvertible) -> Bool {
-        if let value = content() as? Directive {
-            if value.skip || !value.include {
-                return true
-            }
-        }
-
-        if let value = content() as? String {
-            if value == "" {
-                return true
-            }
-        }
-
-        return false
     }
 }

@@ -5,7 +5,7 @@
 //  Created by Nicholas Bellucci on 11/30/19.
 //
 
-internal extension String {
+extension String {
     /**
     Wraps fields in curly braces to create a key object pair in a string
 

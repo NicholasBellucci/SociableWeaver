@@ -3,7 +3,7 @@ import XCTest
 
 final class SociableWeaverTests: XCTestCase {
     func testBasicOperation() {
-        let operation = Operation(.query) {
+        let query = Weave(.query) {
             Object(Post.self){
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
@@ -22,11 +22,11 @@ final class SociableWeaverTests: XCTestCase {
         }
 
         let expected = "query { post { title content author { name } comments { author { name } content } } }"
-        XCTAssertEqual(String(describing: operation), expected)
+        XCTAssertEqual(String(describing: query), expected)
     }
 
     func testOperationWithName() {
-        let operation = Operation(.query) {
+        let query = Weave(.query) {
             Object(Post.self){
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
@@ -46,16 +46,16 @@ final class SociableWeaverTests: XCTestCase {
         .name("GetPost")
 
         let expected = "query GetPost { post { title content author { name } comments { author { name } content } } }"
-        XCTAssertEqual(String(describing: operation), expected)
+        XCTAssertEqual(String(describing: query), expected)
     }
 
     func testOperationWithArguments() {
-        let operation = Operation(.query) {
+        let query = Weave(.query) {
             Object(Post.self) {
                 Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.id)
                     Field(Author.CodingKeys.name)
-                        .argument(key: "value", value: "Nick")
+                        .argument(key: "value", value: "AuthorName")
                 }
                 .alias("newAuthor")
                 .argument(key: "id", value: 1)
@@ -68,13 +68,13 @@ final class SociableWeaverTests: XCTestCase {
             }
         }
 
-        let expected = "query { post { newAuthor: author(id: 1) { id name(value: \"Nick\") } newComments: comments { id content } } }"
-        XCTAssertEqual(String(describing: operation), expected)
+        let expected = "query { post { newAuthor: author(id: 1) { id name(value: \"AuthorName\") } newComments: comments { id content } } }"
+        XCTAssertEqual(String(describing: query), expected)
     }
 
     func testOperationWithFragment() {
         let authorFragment = FragmentBuilder(name: "authorFields", type: Author.self)
-        let operation = Operation(.query) {
+        let query = Weave(.query) {
             Object(Post.self) {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
@@ -99,11 +99,43 @@ final class SociableWeaverTests: XCTestCase {
         }
 
         let expected = "query { post { title content author { ...authorFields } comments { id author { ...authorFields } content } } } fragment authorFields on Author { id name }"
-        XCTAssertEqual(String(describing: operation), expected)
+        XCTAssertEqual(String(describing: query), expected)
+    }
+
+    func testOperationWithInlineFragment() {
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Post.CodingKeys.title)
+                Field(Post.CodingKeys.content)
+
+                Object(Post.CodingKeys.author) {
+                    Field(Author.CodingKeys.id)
+                    Field(Author.CodingKeys.name)
+                }
+
+                Object(Post.CodingKeys.comments) {
+                    Field(Comment.CodingKeys.id)
+                    Object(Comment.CodingKeys.author) {
+                        InlineFragment("AnonymousUser", .individual) {
+                            Field(Author.CodingKeys.id)
+                        }
+
+                        InlineFragment("RegisteredUser") {
+                            Field(Author.CodingKeys.id)
+                            Field(Author.CodingKeys.name)
+                        }
+                    }
+                    Field(Comment.CodingKeys.content)
+                }
+            }
+        }
+
+        let expected = "query { post { title content author { id name } comments { id author { ... on AnonymousUser { id } ... on RegisteredUser { id name } } content } } }"
+        XCTAssertEqual(String(describing: query), expected)
     }
 
     func testOperationWithDirectives() {
-        let operation = Operation(.query) {
+        let query = Weave(.query) {
             Object(Post.self){
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
@@ -127,7 +159,24 @@ final class SociableWeaverTests: XCTestCase {
         }
 
         let expected = "query { post { title content } }"
-        XCTAssertEqual(String(describing: operation), expected)
+        XCTAssertEqual(String(describing: query), expected)
+    }
+
+    func testOperationWithMetaField() {
+        let query = Weave(.query) {
+            Object(Post.self){
+                Field(Post.CodingKeys.title)
+                Field(Post.CodingKeys.content)
+
+                Object(Post.CodingKeys.author) {
+                    MetaField(.typename)
+                    Field(Author.CodingKeys.name)
+                }
+            }
+        }
+
+        let expected = "query { post { title content author { __typename name } } }"
+        XCTAssertEqual(String(describing: query), expected)
     }
 
     static var allTests = [
@@ -135,6 +184,8 @@ final class SociableWeaverTests: XCTestCase {
         ("testOperationWithName", testOperationWithName),
         ("testOperationWithArguments", testOperationWithArguments),
         ("testOperationWithFragment", testOperationWithFragment),
-        ("testOperationWithDirectives", testOperationWithDirectives)
+        ("testOperationWithInlineFragment", testOperationWithInlineFragment),
+        ("testOperationWithDirectives", testOperationWithDirectives),
+        ("testOperationWithMetaField", testOperationWithMetaField)
     ]
 }

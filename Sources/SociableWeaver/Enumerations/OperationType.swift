@@ -12,6 +12,8 @@ public enum OperationType {
     case subscription
 }
 
+/// Used when a function builder only has one type.
+/// This will be removed when function builders are a full swift feature.
 public enum BuilderType {
     case individual
 }

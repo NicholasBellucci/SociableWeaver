@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Argument.swift
 //  
 //
 //  Created by Nicholas Bellucci on 12/6/19.
@@ -11,7 +11,7 @@
  This tuple provides a `String` and an `ArgumentValueRepresentable` which is
  used to construct an argument for a field.
  */
-public typealias Argument = (key: String, value: ArgumentValueRepresentable)
+typealias Argument = (key: String, value: ArgumentValueRepresentable)
 
 /// A type that can be used as to represent an argument.
 public protocol ArgumentValueRepresentable {

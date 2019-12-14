@@ -6,8 +6,8 @@
 //
 
 @_functionBuilder
-internal struct OperationBuilder {
-    static func buildBlock(_ children: Weavable...) -> String {
+struct OperationBuilder {
+    public static func buildBlock(_ children: Weavable...) -> String {
         var objects: [Object] = []
         var fragments: [Fragment] = []
 
@@ -28,7 +28,7 @@ internal struct OperationBuilder {
         return "{ \(objectsRepresentation) } \(fragmentsRepresentation)"
     }
 
-    static func buildBlock(_ component: Object) -> String {
+    public static func buildBlock(_ component: Object) -> String {
         String(describing: component)
     }
 }

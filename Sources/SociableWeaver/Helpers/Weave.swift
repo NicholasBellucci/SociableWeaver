@@ -1,23 +1,24 @@
 //
-//  Operation.swift
+//  Weave.swift
 //  
 //
 //  Created by Nicholas Bellucci on 11/29/19.
 //
 
 /**
-`Operation` is a model consisting of a type and description.
+ GraphQL supports three types of operations being queries, mutations, and subscriptions.
 
- `Operation.type`
+ `Weave.type`
  The type of GraphQL operation to be created.
 
- `Operation.fields`
+ `Weave.fields`
  The aggregated fields that make up the operation.
 */
 
-public class Operation {
+public class Weave {
     private let type: OperationType
     private let fields: String
+    
     private var name: String?
 
     private init(type: OperationType, fields: String) {
@@ -26,37 +27,20 @@ public class Operation {
     }
 }
 
-public extension Operation {
+public extension Weave {
     /**
     Sets the operation name.
 
      - Parameter name: The desired name of the operation.
      - Returns: An `Operation` with the name as the parent field.
      */
-    func name(_ name: String) -> Operation {
+    func name(_ name: String) -> Weave {
         self.name = name
         return self
     }
 }
 
-/**
-Operation conforms to CustomStringConvertible as well as CustomDebugStringConvertible in order to provide
- a description as well as a debugDescription of the operation model in question.
-
- Example `String(describing: operation)`: `query { post { id title content } }`
- Example `String(reflecting: operation)`: `query { post { id title content } }`
- */
-extension Operation: CustomStringConvertible, CustomDebugStringConvertible {
-    public var description: String {
-        buildDescription()
-    }
-
-    public var debugDescription: String {
-        buildDescription()
-    }
-}
-
-public extension Operation {
+public extension Weave {
     /**
     Operation initializer using the operation function builder.
 
@@ -82,7 +66,23 @@ public extension Operation {
     }
 }
 
-private extension Operation {
+/**
+`Weave` conforms to `Weavable` in order to provide a description as well as a debug description of the operation model in question.
+
+ Example `String(describing: operation)`: `query { post { id title content } }`
+ Example `String(reflecting: operation)`: `query { post { id title content } }`
+ */
+extension Weave: Weavable {
+    public var description: String {
+        buildDescription()
+    }
+
+    public var debugDescription: String {
+        buildDescription()
+    }
+}
+
+private extension Weave {
     /// Determines which format is needed based on the parameters provided on initialization.
     func buildDescription() -> String {
         switch name {
