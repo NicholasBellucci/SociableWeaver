@@ -179,6 +179,24 @@ final class SociableWeaverTests: XCTestCase {
         XCTAssertEqual(String(describing: query), expected)
     }
 
+    func testOperationWithSchemaName() {
+        let query = Weave(.query) {
+            Object(Post.self){
+                Field(Post.CodingKeys.title)
+                Field(Post.CodingKeys.content)
+
+                Object(Post.CodingKeys.author) {
+                    Field(Author.CodingKeys.id)
+                    Field(Author.CodingKeys.name)
+                }
+            }
+            .schemaName("getFirstPost")
+        }
+
+        let expected = "query { getFirstPost { title content author { id name } } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+
     static var allTests = [
         ("testBasicOperation", testBasicOperation),
         ("testOperationWithName", testOperationWithName),
@@ -186,6 +204,7 @@ final class SociableWeaverTests: XCTestCase {
         ("testOperationWithFragment", testOperationWithFragment),
         ("testOperationWithInlineFragment", testOperationWithInlineFragment),
         ("testOperationWithDirectives", testOperationWithDirectives),
-        ("testOperationWithMetaField", testOperationWithMetaField)
+        ("testOperationWithMetaField", testOperationWithMetaField),
+        ("testOperationWithSchemaName", testOperationWithSchemaName)
     ]
 }
