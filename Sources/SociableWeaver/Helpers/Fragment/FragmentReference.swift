@@ -5,6 +5,12 @@
 //  Created by Nicholas Bellucci on 12/7/19.
 //
 
+/**
+ A `FragmentReference` is a reference  by name to a fragment in the operation.
+
+ `Fragment.builder`
+ The `FragmentBuilder` which will be used to construct the fragment reference's field.
+*/
 public class FragmentReference: Directive {
     let builder: FragmentBuilder
 
@@ -13,16 +19,6 @@ public class FragmentReference: Directive {
 
     public init(for builder: FragmentBuilder) {
         self.builder = builder
-    }
-}
-
-extension FragmentReference: Weavable {
-    public var description: String {
-        "...\(builder.name)"
-    }
-
-    public var debugDescription: String {
-        "...\(builder.name)"
     }
 }
 
@@ -47,5 +43,21 @@ public extension FragmentReference {
     func skip(if argument: Bool) -> FragmentReference {
         self.skip = argument
         return self
+    }
+}
+
+/**
+`FragmentReference` conforms to `ObjectWeavable` in order to provide a description as well as a debug description of the reference in question.
+
+ Example `String(describing: field)`: `...authorFields`
+ Example `String(reflecting: field)`: `...authorFields`
+ */
+extension FragmentReference: ObjectWeavable {
+    public var description: String {
+        "...\(builder.name)"
+    }
+
+    public var debugDescription: String {
+        "...\(builder.name)"
     }
 }

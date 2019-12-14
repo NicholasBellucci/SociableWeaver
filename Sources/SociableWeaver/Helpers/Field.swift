@@ -6,19 +6,10 @@
 //
 
 /**
-`Field` is a model with a name, possible alias, and possible arguments
+GraphQL fields are used to ask for specific fields on objects.
 
  `Field.name`
  The raw name provided to the field.
-
- `Field.nameRepresentable`
- The name of the field converted to a case style.
-
- `Field.alias`
- An optional value that defines the alias name of the field.
-
- `Field.arguments`
- An optional value that consists of all some/all passable arguments for the field.
 */
 public class Field: Directive {
     private var name: String
@@ -38,22 +29,6 @@ public class Field: Directive {
     public init(_ key: CodingKey) {
         self.name = key.stringValue
         self.nameRepresentable = key.stringValue.convert(with: .lowercase)
-    }
-}
-
-/**
-Field conforms to Weavable in order to provide a description as well as a debugDescription of the object model in question.
-
- Example `String(describing: field)`: `newPost: post(id: 1)`
- Example `String(reflecting: field)`: `newPost: post(id: 1)`
- */
-extension Field: Weavable {
-    public var description: String {
-        buildDescription()
-    }
-
-    public var debugDescription: String {
-        buildDescription()
     }
 }
 
@@ -119,6 +94,22 @@ public extension Field {
     func skip(if argument: Bool) -> Field {
         self.skip = argument
         return self
+    }
+}
+
+/**
+`Field` conforms to `ObjectWeavable` in order to provide a description as well as a debug description of the field in question.
+
+ Example `String(describing: field)`: `newPost: post(id: 1)`
+ Example `String(reflecting: field)`: `newPost: post(id: 1)`
+ */
+extension Field: ObjectWeavable {
+    public var description: String {
+        buildDescription()
+    }
+
+    public var debugDescription: String {
+        buildDescription()
     }
 }
 
