@@ -162,14 +162,14 @@ final class SociableWeaverTests: XCTestCase {
         XCTAssertEqual(String(describing: query), expected)
     }
 
-    func testOperationWithTypename() {
+    func testOperationWithMetaField() {
         let query = Weave(.query) {
             Object(Post.self){
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
                 Object(Post.CodingKeys.author) {
-                    Typename()
+                    MetaField(type: .typename)
                     Field(Author.CodingKeys.name)
                 }
             }
@@ -186,6 +186,6 @@ final class SociableWeaverTests: XCTestCase {
         ("testOperationWithFragment", testOperationWithFragment),
         ("testOperationWithInlineFragment", testOperationWithInlineFragment),
         ("testOperationWithDirectives", testOperationWithDirectives),
-        ("testOperationWithTypename", testOperationWithTypename)
+        ("testOperationWithMetaField", testOperationWithMetaField)
     ]
 }
