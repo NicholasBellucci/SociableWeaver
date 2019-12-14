@@ -412,7 +412,9 @@ query {
 
 [GraphQL Meta Fields](https://graphql.org/learn/queries/#meta-fields)
 
-The `__typename` metafield can be used to return the object type in the results of a query.
+GraphQL meta fields can be customized and are recognized to have two proceeding underscores. The `__typename` meta field is a GraphQL default and can be used to return the object type in the results of a query.
+
+Custom meta fields can be defined by using `MetaFieldType.custom`. This enum takes an associated String which does not need to include the double underscores before the name. For example: `.custom("schema")` results in `__schema`.
 
 ##### Swift
 ```swift
@@ -422,7 +424,7 @@ Weave(.query) {
         Field(Post.CodingKeys.content)
 
         Object(Post.CodingKeys.author) {
-            Typename()
+            MetaField(type: .typename)
             Field(Author.CodingKeys.name)
         }
     }
