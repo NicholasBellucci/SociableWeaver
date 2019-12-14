@@ -502,3 +502,7 @@ Object(Post.self) {
 
 /// Result: post(category: TECHNOLOGY) { ... }
 ```
+
+## License
+
+SociableWeaver is, and always will be, MIT licensed. See [LICENSE](LICENSE) for details.
