@@ -15,7 +15,7 @@
  The aggregated fields that make up the operation.
 */
 
-public class Weave {
+public struct Weave {
     private let type: OperationType
     private let fields: String
     
@@ -35,8 +35,9 @@ public extension Weave {
      - Returns: An `Operation` with the name as the parent field.
      */
     func name(_ name: String) -> Weave {
-        self.name = name
-        return self
+        var copy = self
+        copy.name = name
+        return copy
     }
 }
 
@@ -47,7 +48,7 @@ public extension Weave {
     - parameter type: The operation type to be created.
     - parameter content: The operation builder accepts `Weavable` models.
     */
-    convenience init(_ type: OperationType, @OperationBuilder _ content: () -> String) {
+    init(_ type: OperationType, @OperationBuilder _ content: () -> String) {
         self.init(type: type, fields: String(describing: content()))
     }
 
@@ -61,7 +62,7 @@ public extension Weave {
     - parameter buildType: The builder type only exists to avoid ambiguous init error.
     - parameter content: The individual `Weavable` model.
     */
-    convenience init(_ type: OperationType, _ buildType: BuilderType = .individual, _ content: () -> Weavable) {
+    init(_ type: OperationType, _ buildType: BuilderType = .individual, _ content: () -> Weavable) {
         self.init(type: type, fields: "{ \(String(describing: content())) }")
     }
 }
