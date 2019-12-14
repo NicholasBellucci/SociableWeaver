@@ -82,6 +82,18 @@ public extension Object {
     }
 
     /**
+    Sets the field name to the name of the query schema name.
+
+     - Parameter name: The queries schema name for the request.
+     - Returns: An `Object` named after the schema.
+     */
+    func schemaName(_ name: String) -> Object {
+        self.name = name
+        self.nameRepresentable = name
+        return self
+    }
+
+    /**
     Only include this object in the operation if the argument is true.
 
      - Parameter argument: A boolean argument.
