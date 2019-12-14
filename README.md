@@ -20,6 +20,9 @@ SociableWeaver is a Swift Package and can be installed using a couple different 
    * [Inline Fragments](#inline-fragments)
    * [Meta Fields](#meta-fields)
    * [Custom Types](#custom-types)
+        * [BuilderType](#buildertype)
+        * [CaseStyleOption](#casestyleoption)
+        * [EnumValueRepresentable](#enumvaluerepresentable)
 
 ## Usage
 
@@ -447,3 +450,55 @@ query {
 ```
 
 ### Custom Types
+
+SociableWeaver provides a couple of custom types that help to build more natural looking queries. These types may or may not have been included in examples but will also be defined in this section to provide more clarity.
+
+#### BuilderType
+
+Due to current limitations with function builders, individual elements are not currently accepted. For that reason each function builder initializer has a corresponding initializer for a single element. `BuilderType.individual` has been set up to specify when an object or fragment will consist of only one element.
+
+```swift
+Object(Post.CodingKeys.author, .individual) {
+    Field(Author.CodingKeys.name)
+}
+
+Fragment(authorFragment, .individual) {
+    Field(Author.CodingKeys.name)
+}
+```
+
+#### CaseStyleOption
+
+This enumeration has been provided to allow for customization when it comes to object and fields that are initialized with a model or coding key.
+
+```swift
+public enum CaseStyleOption {
+    case lowercase
+    case uppercase
+    case capitalized
+    case camelCase
+    case pascalCase
+    case snakeCase
+    case kebabCase
+}
+```
+
+#### EnumValueRepresentable
+
+GraphQL enumeration values are represented as uppercased representations of the case names. For this reason, custom enumerations in swift that should be passed as argument values can conform to `EnumValueRepresentable`. This protocol conforms to `ArgumentValueRepresentable` and is extended to provide the `argumentValue` as an uppercased version of the case value.
+
+```swift
+enum PostCategories: EnumValueRepresentable {
+    case art
+    case music
+    case technology
+}
+
+
+Object(Post.self) {
+    ...
+}
+.argument(key: "category", value: PostCategories.technology)
+
+/// Result: post(category: TECHNOLOGY) { ... }
+```
