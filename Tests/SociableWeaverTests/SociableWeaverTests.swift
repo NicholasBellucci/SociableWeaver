@@ -169,7 +169,7 @@ final class SociableWeaverTests: XCTestCase {
                 Field(Post.CodingKeys.content)
 
                 Object(Post.CodingKeys.author) {
-                    MetaField(type: .typename)
+                    MetaField(.typename)
                     Field(Author.CodingKeys.name)
                 }
             }

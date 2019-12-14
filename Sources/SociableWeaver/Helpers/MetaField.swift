@@ -17,7 +17,7 @@ public class MetaField: Directive {
     var include: Bool = true
     var skip: Bool = false
 
-    public init(type: MetaFieldType) {
+    public init(_ type: MetaFieldType) {
         self.type = type
     }
 }
