@@ -136,7 +136,7 @@ final class SociableWeaverTests: XCTestCase {
 
     func testOperationWithDirectives() {
         let query = Weave(.query) {
-            Object(Post.self){
+            Object(Post.self) {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
                     .include(if: true)

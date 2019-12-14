@@ -1,10 +1,3 @@
-//
-//  Author.swift
-//  
-//
-//  Created by Nicholas Bellucci on 11/29/19.
-//
-
 public struct Author: Codable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id, name

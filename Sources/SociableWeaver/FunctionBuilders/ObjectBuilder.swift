@@ -1,12 +1,3 @@
-//
-//  ObjectBuilder.swift
-//  
-//
-//  Created by Nicholas Bellucci on 11/29/19.
-//
-
-import Foundation
-
 @_functionBuilder
 struct ObjectBuilder {
     public static func buildBlock(_ children: ObjectWeavable...) -> String {

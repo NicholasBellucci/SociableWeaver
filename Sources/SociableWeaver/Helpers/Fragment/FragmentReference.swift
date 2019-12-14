@@ -1,10 +1,3 @@
-//
-//  FragmentReference.swift
-//  
-//
-//  Created by Nicholas Bellucci on 12/7/19.
-//
-
 /**
  A `FragmentReference` is a reference  by name to a fragment in the operation.
 

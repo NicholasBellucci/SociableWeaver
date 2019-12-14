@@ -1,10 +1,3 @@
-//
-//  Directive.swift
-//  
-//
-//  Created by Nicholas Bellucci on 12/10/19.
-//
-
 /**
 A directive can be attached to a field or fragment reference.
 

@@ -1,10 +1,3 @@
-//
-//  FragmentBuilder.swift
-//  
-//
-//  Created by Nicholas Bellucci on 12/7/19.
-//
-
 /**
  A `FragmentBuilder` is used by fragments and fragment references to help construct the needed field.
 

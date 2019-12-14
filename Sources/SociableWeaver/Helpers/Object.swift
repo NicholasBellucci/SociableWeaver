@@ -1,10 +1,3 @@
-//
-//  Object.swift
-//  
-//
-//  Created by Nicholas Bellucci on 11/29/19.
-//
-
 /**
  GraphQL objects are made up of one or more fields.
 
@@ -218,11 +211,11 @@ private extension Object {
     func buildDescription() -> String {
         switch(alias, arguments) {
         case let(.some(alias), .some(arguments)):
-            return GQLFieldFormatter.formatField(nameRepresentable, alias: alias, arguments: arguments)
+            return FieldFormatter.formatField(nameRepresentable, alias: alias, arguments: arguments)
         case let(.some(alias), nil):
-            return GQLFieldFormatter.formatField(nameRepresentable, alias: alias)
+            return FieldFormatter.formatField(nameRepresentable, alias: alias)
         case let(nil, .some(arguments)):
-            return GQLFieldFormatter.formatField(nameRepresentable, arguments: arguments)
+            return FieldFormatter.formatField(nameRepresentable, arguments: arguments)
         default:
             return nameRepresentable
         }

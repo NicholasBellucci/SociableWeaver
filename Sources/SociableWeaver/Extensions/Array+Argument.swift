@@ -1,10 +1,3 @@
-//
-//  Array+Argument.swift
-//  
-//
-//  Created by Nicholas Bellucci on 12/6/19.
-//
-
 extension Array where Element == Argument {
     /// The GraphQL representation of an arguments array.
     var graphQLRepresentable: String {

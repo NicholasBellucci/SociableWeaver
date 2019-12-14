@@ -1,10 +1,3 @@
-//
-//  Weavable.swift
-//  
-//
-//  Created by Nicholas Bellucci on 12/6/19.
-//
-
 /**
  A type that conforms to both `CustomStringConvertible` and `CustomDebugStringConvertible`.
 

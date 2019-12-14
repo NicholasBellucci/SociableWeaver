@@ -1,16 +1,10 @@
-//
-//  MetaField.swift
-//  
-//
-//  Created by Nicholas Bellucci on 12/11/19.
-//
-
+/// Includes the GraphQL meta field typename as well as any custom meta field.
 public enum MetaFieldType {
     case typename
     case custom(String)
 }
 
-/// GraphQL allows you to request `__typename`, a meta field, at any point in a query to get the name of the object type at that point.
+/// GraphQL allows meta fields as part of a request.
 public struct MetaField: Directive {
     private var type: MetaFieldType
 
@@ -48,7 +42,7 @@ public extension MetaField {
     }
 }
 
-/// `Typename` conforms to `ObjectWeavable` in order to provide a description as well as a debug description.
+/// `MetaField` conforms to `ObjectWeavable` in order to provide a description as well as a debug description.
 extension MetaField: ObjectWeavable {
     public var description: String {
         buildDescription()

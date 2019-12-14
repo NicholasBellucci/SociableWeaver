@@ -1,10 +1,3 @@
-//
-//  String+Utils.swift
-//  
-//
-//  Created by Nicholas Bellucci on 11/30/19.
-//
-
 extension String {
     /**
     Wraps fields in curly braces to create a key object pair in a string
