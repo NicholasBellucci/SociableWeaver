@@ -5,7 +5,7 @@ public enum MetaFieldType {
 }
 
 /// GraphQL allows meta fields as part of a request.
-public class MetaField: Directive {
+public struct MetaField: Directive {
     private var type: MetaFieldType
 
     var include: Bool = true
@@ -24,8 +24,9 @@ public extension MetaField {
      - Returns: A `Typename` with its include value set.
      */
     func include(if argument: Bool) -> MetaField {
-        self.include = argument
-        return self
+        var copy = self
+        copy.include = argument
+        return copy
     }
 
     /**
@@ -35,8 +36,9 @@ public extension MetaField {
      - Returns: A `Typename` with its skip value set.
      */
     func skip(if argument: Bool) -> MetaField {
-        self.skip = argument
-        return self
+        var copy = self
+        copy.skip = argument
+        return copy
     }
 }
 

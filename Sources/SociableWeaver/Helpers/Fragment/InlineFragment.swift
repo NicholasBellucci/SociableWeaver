@@ -7,7 +7,7 @@
  `Fragment.fieldAggregates`
  The aggregated fields that make up the fragment.
 */
-public class InlineFragment: Directive {
+public struct InlineFragment: Directive {
     var type: String
     let fieldAggregates: String
 
@@ -29,8 +29,9 @@ public extension InlineFragment {
      - Returns: An `Object` with its include value set.
      */
     func include(if argument: Bool) -> InlineFragment {
-        self.include = argument
-        return self
+        var copy = self
+        copy.include = argument
+        return copy
     }
 
     /**
@@ -40,8 +41,9 @@ public extension InlineFragment {
      - Returns: An `Object` with its skip value set.
      */
     func skip(if argument: Bool) -> InlineFragment {
-        self.skip = argument
-        return self
+        var copy = self
+        copy.skip = argument
+        return copy
     }
 }
 
@@ -52,7 +54,7 @@ public extension InlineFragment {
     - parameter type: The class type.
     - parameter content: The object builder accepts structs/classes conforming to `ObjectWeavable`.
     */
-    convenience init(_ type: Any.Type, @ObjectBuilder _ content: () -> String) {
+    init(_ type: Any.Type, @ObjectBuilder _ content: () -> String) {
         let type = String(describing: type)
         self.init(type, fieldAggregates: content())
         self.remove = shouldRemove(content: content)
@@ -67,7 +69,7 @@ public extension InlineFragment {
     - parameter type: The class type.
     - parameter content: The individual object conforming to `ObjectWeavable`.
     */
-    convenience init(_ type: Any.Type, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
+    init(_ type: Any.Type, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
         let type = String(describing: type)
         self.init(type, fieldAggregates: String(describing: content()))
         self.remove = shouldRemove(content: content)
@@ -79,7 +81,7 @@ public extension InlineFragment {
     - parameter type: The string representation of type.
     - parameter content: The object builder accepts structs/classes conforming to `ObjectWeavable`.
     */
-    convenience init(_ type: String, @ObjectBuilder _ content: () -> String) {
+    init(_ type: String, @ObjectBuilder _ content: () -> String) {
         self.init(type, fieldAggregates: content())
         self.remove = shouldRemove(content: content)
     }
@@ -93,7 +95,7 @@ public extension InlineFragment {
     - parameter type: The string representation of type.
     - parameter content: The individual object conforming to `ObjectWeavable`.
     */
-    convenience init(_ type: String, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
+    init(_ type: String, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
         self.init(type, fieldAggregates: String(describing: content()))
         self.remove = shouldRemove(content: content)
     }

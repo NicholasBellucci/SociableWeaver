@@ -4,7 +4,7 @@
  `Fragment.builder`
  The `FragmentBuilder` which will be used to construct the fragment reference's field.
 */
-public class FragmentReference: Directive {
+public struct FragmentReference: Directive {
     let builder: FragmentBuilder
 
     var include: Bool = true
@@ -23,8 +23,9 @@ public extension FragmentReference {
      - Returns: A `FragmentReference` with its include value set.
      */
     func include(if argument: Bool) -> FragmentReference {
-        self.include = argument
-        return self
+        var copy = self
+        copy.include = argument
+        return copy
     }
 
     /**
@@ -34,8 +35,9 @@ public extension FragmentReference {
      - Returns: A `FragmentReference` with its skip value set.
      */
     func skip(if argument: Bool) -> FragmentReference {
-        self.skip = argument
-        return self
+        var copy = self
+        copy.skip = argument
+        return copy
     }
 }
 

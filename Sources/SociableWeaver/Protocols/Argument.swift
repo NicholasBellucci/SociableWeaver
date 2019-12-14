@@ -6,6 +6,14 @@
  */
 typealias Argument = (key: String, value: ArgumentValueRepresentable)
 
+public protocol EnumValueRepresentable: ArgumentValueRepresentable { }
+
+public extension EnumValueRepresentable {
+    var argumentValue: String {
+        "\(self)".uppercased()
+    }
+}
+
 /// A type that can be used as to represent an argument.
 public protocol ArgumentValueRepresentable {
 
