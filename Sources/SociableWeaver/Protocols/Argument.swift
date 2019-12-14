@@ -1,10 +1,3 @@
-//
-//  Argument.swift
-//  
-//
-//  Created by Nicholas Bellucci on 12/6/19.
-//
-
 /**
  `Argument` is a type alias that defines a key value tuple.
 

@@ -1,10 +1,3 @@
-//
-//  Field.swift
-//  
-//
-//  Created by Nicholas Bellucci on 12/6/19.
-//
-
 /**
 GraphQL fields are used to ask for specific fields on objects.
 

@@ -1,10 +1,3 @@
-//
-//  Fragment.swift
-//  
-//
-//  Created by Nicholas Bellucci on 12/7/19.
-//
-
 /**
  GraphQL `Fragments` let you construct sets of fields, and then include them in queries where you need to.
 

@@ -1,10 +1,3 @@
-//
-//  OperationBuilder.swift
-//  
-//
-//  Created by Nicholas Bellucci on 11/29/19.
-//
-
 @_functionBuilder
 struct OperationBuilder {
     public static func buildBlock(_ children: Weavable...) -> String {

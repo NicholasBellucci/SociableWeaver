@@ -1,10 +1,3 @@
-//
-//  InlineFragment.swift
-//  
-//
-//  Created by Nicholas Bellucci on 12/11/19.
-//
-
 /**
  GraphQL `Inline Fragments` are used when querying a field that returns an interface or a union type.
 

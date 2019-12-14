@@ -1,10 +1,3 @@
-//
-//  Object.swift
-//  
-//
-//  Created by Nicholas Bellucci on 11/29/19.
-//
-
 /**
  GraphQL objects are made up of one or more fields.
 
