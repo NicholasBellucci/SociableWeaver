@@ -1,3 +1,5 @@
+import Foundation
+
 extension String {
     /**
     Wraps fields in curly braces to create a key object pair in a string
