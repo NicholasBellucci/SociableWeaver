@@ -164,7 +164,7 @@ final class SociableWeaverTests: XCTestCase {
 
     func testOperationWithMetaField() {
         let query = Weave(.query) {
-            Object(Post.self){
+            Object(Post.self) {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
@@ -179,6 +179,30 @@ final class SociableWeaverTests: XCTestCase {
         XCTAssertEqual(String(describing: query), expected)
     }
 
+    func testOperationWithCustomEnum() {
+        enum PostCategories: EnumValueRepresentable {
+            case art
+            case music
+            case technology
+        }
+
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Post.CodingKeys.title)
+                Field(Post.CodingKeys.content)
+
+                Object(Post.CodingKeys.author) {
+                    Field(Author.CodingKeys.id)
+                    Field(Author.CodingKeys.name)
+                }
+            }
+            .argument(key: "category", value: PostCategories.technology)
+        }
+
+        let expected = "query { post(category: TECHNOLOGY) { title content author { id name } } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+
     static var allTests = [
         ("testBasicOperation", testBasicOperation),
         ("testOperationWithName", testOperationWithName),
@@ -186,6 +210,7 @@ final class SociableWeaverTests: XCTestCase {
         ("testOperationWithFragment", testOperationWithFragment),
         ("testOperationWithInlineFragment", testOperationWithInlineFragment),
         ("testOperationWithDirectives", testOperationWithDirectives),
-        ("testOperationWithMetaField", testOperationWithMetaField)
+        ("testOperationWithMetaField", testOperationWithMetaField),
+        ("testOperationWithCustomEnum", testOperationWithCustomEnum)
     ]
 }
