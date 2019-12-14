@@ -19,6 +19,7 @@ SociableWeaver is a Swift Package and can be installed using a couple different 
    * [Mutations](#mutations)
    * [Inline Fragments](#inline-fragments)
    * [Meta Fields](#meta-fields)
+   * [Custom Types](#custom-types)
 
 ## Usage
 
@@ -444,3 +445,5 @@ query {
   }
 }
 ```
+
+### Custom Types
