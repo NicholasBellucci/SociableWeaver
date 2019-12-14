@@ -6,7 +6,7 @@ Swift meets GraphQL in this lightweight, declarative, easy to use framework. Soc
 Xcode 11.x or a Swift 5.1x toolchain with Swift Package Manager.
 
 ## Installation
-SociableWeaver is a Swift Package and can be installed using a couple different methods. For projects using a `.xcodeproj` the best method is to navigate to `File > Swift Packages > Add Package Dependency...`. From there just simply enter `https://github.com/NicholasBellucci/SociableWeaver` as the package repository url and use the master branch or the most recent version. Master will always be inline with the newest release. The other method is to simply add `.package(url: "https://github.com/NicholasBellucci/SociableWeaver.git", from: "1.0.0")` to your `Package.swift` file's `dependencies`.
+SociableWeaver is a Swift Package and can be installed using a couple different methods. For projects using a `.xcodeproj` the best method is to navigate to `File > Swift Packages > Add Package Dependency...`. From there just simply enter `https://github.com/NicholasBellucci/SociableWeaver` as the package repository url and use the master branch or the most recent version. Master will always be inline with the newest release. The other method is to simply add `.package(url: "https://github.com/NicholasBellucci/SociableWeaver.git", from: "0.1.0")` to your `Package.swift` file's `dependencies`.
 
 ## Table of Contents
    * [Objects and Fields](#objects-and-fields)
