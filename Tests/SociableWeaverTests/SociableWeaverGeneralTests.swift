@@ -1,54 +1,7 @@
 import XCTest
 @testable import SociableWeaver
 
-final class SociableWeaverTests: XCTestCase {
-    func testBasicOperation() {
-        let query = Weave(.query) {
-            Object(Post.self){
-                Field(Post.CodingKeys.title)
-                Field(Post.CodingKeys.content)
-
-                Object(Post.CodingKeys.author, .individual) {
-                    Field(Author.CodingKeys.name)
-                }
-
-                Object(Post.CodingKeys.comments) {
-                    Object(Comment.CodingKeys.author, .individual) {
-                        Field(Author.CodingKeys.name)
-                    }
-                    Field(Comment.CodingKeys.content)
-                }
-            }
-        }
-
-        let expected = "query { post { title content author { name } comments { author { name } content } } }"
-        XCTAssertEqual(String(describing: query), expected)
-    }
-
-    func testOperationWithName() {
-        let query = Weave(.query) {
-            Object(Post.self){
-                Field(Post.CodingKeys.title)
-                Field(Post.CodingKeys.content)
-
-                Object(Post.CodingKeys.author, .individual) {
-                    Field(Author.CodingKeys.name)
-                }
-
-                Object(Post.CodingKeys.comments) {
-                    Object(Comment.CodingKeys.author, .individual) {
-                        Field(Author.CodingKeys.name)
-                    }
-                    Field(Comment.CodingKeys.content)
-                }
-            }
-        }
-        .name("GetPost")
-
-        let expected = "query GetPost { post { title content author { name } comments { author { name } content } } }"
-        XCTAssertEqual(String(describing: query), expected)
-    }
-
+final class SociableWeaverGeneralTests: XCTestCase {
     func testOperationWithArguments() {
         let query = Weave(.query) {
             Object(Post.self) {
@@ -181,7 +134,7 @@ final class SociableWeaverTests: XCTestCase {
 
     func testOperationWithSchemaName() {
         let query = Weave(.query) {
-            Object(Post.self){
+            Object(Post.self) {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
@@ -222,8 +175,6 @@ final class SociableWeaverTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testBasicOperation", testBasicOperation),
-        ("testOperationWithName", testOperationWithName),
         ("testOperationWithArguments", testOperationWithArguments),
         ("testOperationWithFragment", testOperationWithFragment),
         ("testOperationWithInlineFragment", testOperationWithInlineFragment),
