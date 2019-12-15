@@ -46,7 +46,7 @@ public struct Post: Codable {
 }
 ```
 
-If `CodingKeys` aren't possible, SocialbleWeaver does support strings but recommendeds this be used as a last resort as it will make queries more difficult to manage.
+If `CodingKeys` aren't possible, SocialbleWeaver does support strings but recommends this be used as a last resort as it will make queries more difficult to manage.
 
 ### Objects and Fields
 [GraphQL Fields](https://graphql.org/learn/queries/#fields)
@@ -485,7 +485,7 @@ public enum CaseStyleOption {
 
 #### EnumValueRepresentable
 
-GraphQL enumeration values are represented as uppercased representations of the case names. For this reason, custom enumerations in swift that should be passed as argument values can conform to `EnumValueRepresentable`. This protocol conforms to `ArgumentValueRepresentable` and is extended to provide the `argumentValue` as an uppercased version of the case value.
+GraphQL enumeration values are represented as uppercase representations of the case names. For this reason, custom enumerations in swift that should be passed as argument values can conform to `EnumValueRepresentable`. This protocol conforms to `ArgumentValueRepresentable` and is extended to provide the `argumentValue` as an uppercase version of the case value.
 
 ```swift
 enum PostCategories: EnumValueRepresentable {
