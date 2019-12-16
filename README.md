@@ -26,7 +26,7 @@ SociableWeaver is a Swift Package and can be installed using a couple different 
 
 ## Usage
 
-SocialbleWeaver supports all that GraphQL has to offer. In order to get everything out of this framework, just make sure that any `Codable` models used contain `CodingKeys`. For example: 
+SociableWeaver supports all that GraphQL has to offer. In order to get everything out of this framework, just make sure that any `Codable` models used contain `CodingKeys`. For example: 
 
 ```swift
 public struct Post: Codable {
@@ -46,12 +46,12 @@ public struct Post: Codable {
 }
 ```
 
-If `CodingKeys` aren't possible, SocialbleWeaver does support strings but recommendeds this be used as a last resort as it will make queries more difficult to manage.
+If `CodingKeys` aren't possible, SociableWeaver does support strings. It is highly recommended this be used as a last resort as it will make queries more difficult to manage.
 
 ### Objects and Fields
 [GraphQL Fields](https://graphql.org/learn/queries/#fields)
 
-GraphQL is all about querying specific fields on objects and returning only what is needed. With SocialbleWeaver constructing objects with fields is a breeze.
+GraphQL is all about querying specific fields on objects and returning only what is needed. With SociableWeaver constructing objects with fields is a breeze.
 
 ##### Swift
 ```swift
@@ -79,7 +79,7 @@ query {
 
 [GraphQL Arguments](https://graphql.org/learn/queries/#arguments)
 
-Arguments are a key part of GraphQL and allow for much more refined queries. SocialbleWeaver supports arguments on both objects and fields.
+Arguments are a key part of GraphQL and allow for much more refined queries. SociableWeaver supports arguments on both objects and fields.
 
 The only requirement is that the value for the argument conforms to `ArgumentValueRepresentable`. Core types such as `String`, `Int`, `Bool` etc. will already conform.
 
@@ -273,7 +273,7 @@ func queryPost(id: Int) {
 
 ##### GraphQL Query
 ```graphql
-guery {
+query {
   post(id: 1) {
     title
     content
