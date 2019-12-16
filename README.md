@@ -485,7 +485,7 @@ public enum CaseStyleOption {
 
 #### EnumValueRepresentable
 
-GraphQL enumeration values are represented as uppercased representations of the case names. For this reason, custom enumerations in swift that should be passed as argument values can conform to `EnumValueRepresentable`. This protocol conforms to `ArgumentValueRepresentable` and is extended to provide the `argumentValue` as an uppercased version of the case value.
+GraphQL enumeration values are represented as uppercase representations of the case names. For this reason, custom enumerations in swift that should be passed as argument values can conform to `EnumValueRepresentable`. This protocol conforms to `ArgumentValueRepresentable` and is extended to provide the `argumentValue` as an uppercase version of the case value.
 
 ```swift
 enum PostCategories: EnumValueRepresentable {
