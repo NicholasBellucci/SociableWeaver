@@ -1,5 +1,5 @@
 @_functionBuilder
-struct OperationBuilder {
+public struct OperationBuilder {
     public static func buildBlock(_ children: Weavable...) -> String {
         var objects: [Object] = []
         var fragments: [Fragment] = []
