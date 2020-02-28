@@ -96,7 +96,7 @@ query {
 
 Arguments are a key part of GraphQL and allow for much more refined queries. SociableWeaver supports arguments on both objects and fields.
 
-The only requirement is that the value for the argument conforms to `ArgumentValueRepresentable`. Core types such as `String`, `Int`, `Bool` etc. will already conform.
+The only requirement is that the value for the argument conforms to `ArgumentValueRepresentable`. Core types such as `String`, `Int`, `Bool` etc. will already conform. For enumerations just conform to the [EnumValueRepresentable](https://github.com/NicholasBellucci/SociableWeaver#enumvaluerepresentable) protocol.
 
 ##### Swift
 ```swift
