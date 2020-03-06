@@ -1,3 +1,4 @@
+import Foundation
 /**
  `Argument` is a type alias that defines a key value tuple.
 
@@ -51,6 +52,21 @@ extension Float: ArgumentValueRepresentable {
     }
 }
 
+extension Optional: ArgumentValueRepresentable {
+    public var argumentValue: String {
+        switch self {
+        case .some(let wrapped):
+            if let wrapped = wrapped as? ArgumentValueRepresentable {
+                return wrapped.argumentValue
+            } else {
+                return "null"
+            }
+        default:
+            return "null"
+        }
+    }
+}
+
 extension Array: ArgumentValueRepresentable {
     public var argumentValue: String  {
         let params = map { value -> String in
@@ -97,6 +113,8 @@ extension Dictionary: ArgumentValueRepresentable {
                     return value.argumentValue
                 } else if let value = value as? Dictionary<String, Any> {
                     return value.argumentValue
+                } else if let _ = value as? NSNull {
+                    return "null"
                 }
 
                 return ""
