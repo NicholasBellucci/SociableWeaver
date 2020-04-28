@@ -123,6 +123,6 @@ extension Dictionary: ArgumentValueRepresentable {
             return "\(key): \(argumentValue)"
         }
 
-        return "{\(params.joined(separator: ", "))}"
+        return "{\(params.sorted().joined(separator: ", "))}"
     }
 }

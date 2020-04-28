@@ -9,6 +9,13 @@ final class SociableWeaverGeneralTests: XCTestCase {
                     Field(Author.CodingKeys.id)
                     Field(Author.CodingKeys.name)
                         .argument(key: "value", value: "AuthorName")
+                    Field(Author.CodingKeys.birthplace)
+                        .argument(key: "value", value: [
+                            "city": "New York",
+                            "state": "New York",
+                            "postalCode": "10001",
+                            "neighborhood": "Chelsea"
+                        ])
                 }
                 .alias("newAuthor")
                 .argument(key: "id", value: 1)
@@ -21,7 +28,7 @@ final class SociableWeaverGeneralTests: XCTestCase {
             }
         }
 
-        let expected = "query { post { newAuthor: author(id: 1) { id name(value: \"AuthorName\") } newComments: comments { id content } } }"
+        let expected = "query { post { newAuthor: author(id: 1) { id name(value: \"AuthorName\") birthplace(value: {city: \"New York\", neighborhood: \"Chelsea\", postalCode: \"10001\", state: \"New York\"}) } newComments: comments { id content } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
 
