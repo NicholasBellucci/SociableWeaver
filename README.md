@@ -522,9 +522,12 @@ Fragment(authorFragment, .individual) {
 
 #### CaseStyleOption
 
-This enumeration has been provided to allow for customization when it comes to object and fields that are initialized with a model or coding key.
+This enumeration has been provided to allow for customization when it comes to object and fields that are initialized with a model or coding key. Defaulted to camel case.
 
 ```swift
+Field(Comment.CodingKeys.createdAt)
+    .caseStyle(.lowercase)
+
 public enum CaseStyleOption {
     case lowercase
     case uppercase
