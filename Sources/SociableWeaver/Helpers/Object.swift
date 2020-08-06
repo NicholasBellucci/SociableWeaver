@@ -21,13 +21,13 @@ public struct Object: Directive {
 
     private init(_ type: Any.Type, fieldAggregates: String) {
         self.name = String(describing: type)
-        self.nameRepresentable = String(describing: type).convert(with: .lowercase)
+        self.nameRepresentable = String(describing: type).convert(with: .camelCase)
         self.fieldAggregates = fieldAggregates
     }
 
     private init(_ key: CodingKey, fieldAggregates: String) {
         self.name = key.stringValue
-        self.nameRepresentable = key.stringValue.convert(with: .lowercase)
+        self.nameRepresentable = key.stringValue.convert(with: .camelCase)
         self.fieldAggregates = fieldAggregates
     }
 }

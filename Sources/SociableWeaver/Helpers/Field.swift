@@ -16,12 +16,12 @@ public struct Field: Directive {
 
     public init(_ type: Any.Type) {
         self.name = String(describing: type)
-        self.nameRepresentable = String(describing: type).convert(with: .lowercase)
+        self.nameRepresentable = String(describing: type).convert(with: .camelCase)
     }
 
     public init(_ key: CodingKey) {
         self.name = key.stringValue
-        self.nameRepresentable = key.stringValue.convert(with: .lowercase)
+        self.nameRepresentable = key.stringValue.convert(with: .camelCase)
     }
 }
 
