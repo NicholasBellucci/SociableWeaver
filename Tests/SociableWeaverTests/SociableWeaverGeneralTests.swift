@@ -29,7 +29,7 @@ final class SociableWeaverGeneralTests: XCTestCase {
             }
         }
 
-        let expected = "query { post { newAuthor: author(id: 1) { id name(value: \"AuthorName\") } newComments: comments { id content createdAt } } }"
+        let expected = "query { post { newAuthor: author(id: 1) { id name(value: \"AuthorName\") birthplace(value: {city: \"New York\", neighborhood: \"Chelsea\", postalCode: \"10001\", state: \"New York\"}) } newComments: comments { id content createdAt } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
 

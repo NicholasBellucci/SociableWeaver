@@ -57,7 +57,7 @@ public extension Field {
      - Parameter value: The value for the argument conforming to `ArgumentValueRepresentable`.
      - Returns: A `Field` including the argument passed.
      */
-    func argument(key: String, value: ArgumentValueRepresentable) -> Field {
+    func argument(key: String, value: ArgumentValueRepresentable?) -> Field {
         var copy = self
         let argument = Argument(key: key, value: value)
 

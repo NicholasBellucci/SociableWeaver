@@ -26,7 +26,8 @@ github "NicholasBellucci/SociableWeaver"
 ## Table of Contents
    * [Objects and Fields](#objects-and-fields)
    * [Arguments](#arguments)
-   * [Alias](#alias)
+        * [Optionals](#optionals)
+   * [Alias](#alias)arguem
    * [Fragments](#fragments)
    * [Operation Name](#operation-name)
    * [Variables](#variables)
@@ -117,6 +118,43 @@ Weave(.query) {
         .argument(key: "filter", value: CommentFilter.recent)
     }
 }
+```
+
+#### Optionals
+
+Optionals are supported and can be included in the query. In the instance where an optional should be included and the value is nil, the resulting GraphQL value will be `null`.
+
+In order to include an optional make sure to get the argument value of the property without including a `?`. This will result in a query param of `age: null`.
+```swift
+public struct Author: Codable {
+    public enum CodingKeys: String, CodingKey, CaseIterable {
+        case id, name, age, birthplace
+    }
+
+    ...
+    public let age: Int?
+    ...
+}
+
+extension Author: ArgumentValueRepresentable {
+    public var argumentValue: String {
+        var params: [String: String?] = [:]
+
+        ...
+        params["age"] = age.argumentValue
+        ...
+
+        let paramStrings: [String] = params.compactMap { argument in
+            guard let value = argument.value else {
+                return nil
+            }
+
+            return "\(argument.key): \(value)"
+        }
+
+        return "{ \(paramStrings.joined(separator: ",")) }"
+    }
+}'
 ```
 
 ##### GraphQL Query
