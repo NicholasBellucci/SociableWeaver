@@ -27,7 +27,7 @@ github "NicholasBellucci/SociableWeaver"
    * [Objects and Fields](#objects-and-fields)
    * [Arguments](#arguments)
         * [Optionals](#optionals)
-   * [Alias](#alias)arguem
+   * [Alias](#alias)
    * [Fragments](#fragments)
    * [Operation Name](#operation-name)
    * [Variables](#variables)
