@@ -76,7 +76,7 @@ public extension Object {
      - Parameter value: The value for the argument conforming to `ArgumentValueRepresentable`.
      - Returns: An `Object` including the argument passed.
      */
-    func argument(key: String? = nil, value: ArgumentValueRepresentable) -> Object {
+    func argument(key: String, value: ArgumentValueRepresentable) -> Object {
         var copy = self
         let argument = Argument(key: key, value: value)
 

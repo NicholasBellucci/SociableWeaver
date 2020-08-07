@@ -4,11 +4,7 @@ extension Array where Element == Argument {
         var components: [String] = []
 
         forEach {
-            if let key = $0.key {
-                components.append("\(key): \($0.value.argumentValue)")
-            } else {
-                components.append("\($0.value.argumentValue)")
-            }
+            components.append("\($0.key): \($0.value.argumentValue)")
         }
 
         return components.joined(separator: ", ")
