@@ -5,7 +5,7 @@ import Foundation
  This tuple provides a `String` and an `ArgumentValueRepresentable` which is
  used to construct an argument for a field.
  */
-typealias Argument = (key: String, value: ArgumentValueRepresentable)
+typealias Argument = (key: String?, value: ArgumentValueRepresentable)
 
 public protocol EnumValueRepresentable: ArgumentValueRepresentable { }
 
