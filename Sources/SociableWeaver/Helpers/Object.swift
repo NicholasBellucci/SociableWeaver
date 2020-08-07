@@ -228,33 +228,6 @@ public extension Object {
         self.init(key, fieldAggregates: String(describing: content()))
         self.remove = shouldRemove(content: content)
     }
-    
-    /**
-    Object initializer using the object function builder.
-     This initializer is for objects without a name.
-
-    - parameter key: The coding key used for the name.
-    - parameter content: The object builder accepts structs/classes conforming to `ObjectWeavable`.
-    */
-    init(@ObjectBuilder _ content: () -> String) {
-        self.init(fieldAggregates: content())
-        self.remove = shouldRemove(content: content)
-    }
-
-    /**
-    Workaround for function builders not accepting one element yet due to it still being a prototype.
-     TODO - Remove when functionBuilders are fully implemented.
-
-     Object initializer using the object function builder.
-      This initializer is for objects without a name.
-
-     - parameter key: The coding key used for the name.
-     - parameter content: The individual object conforming to `ObjectWeavable`.
-    */
-    init(_ individual: BuilderType, _ content: () -> ObjectWeavable) {
-        self.init(fieldAggregates: String(describing: content()))
-        self.remove = shouldRemove(content: content)
-    }
 }
 
 /**
