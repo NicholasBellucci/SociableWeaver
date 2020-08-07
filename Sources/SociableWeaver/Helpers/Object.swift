@@ -24,10 +24,22 @@ public struct Object: Directive {
         self.nameRepresentable = String(describing: type).convert(with: .camelCase)
         self.fieldAggregates = fieldAggregates
     }
+    
+    private init(_ key: String, fieldAggregates: String) {
+        self.name = key
+        self.nameRepresentable = key.convert(with: .camelCase)
+        self.fieldAggregates = fieldAggregates
+    }
 
     private init(_ key: CodingKey, fieldAggregates: String) {
         self.name = key.stringValue
         self.nameRepresentable = key.stringValue.convert(with: .camelCase)
+        self.fieldAggregates = fieldAggregates
+    }
+    
+    private init(fieldAggregates: String) {
+        self.name = ""
+        self.nameRepresentable = ""
         self.fieldAggregates = fieldAggregates
     }
 }
@@ -167,6 +179,60 @@ public extension Object {
     */
     init(_ key: CodingKey, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
         self.init(key, fieldAggregates: String(describing: content()))
+        self.remove = shouldRemove(content: content)
+    }
+    
+    /**
+    Object initializer using the object function builder.
+     This initializer accepts a `String` which will be used as to determine the name.
+
+    - parameter key: The coding key used for the name.
+    - parameter content: The object builder accepts structs/classes conforming to `ObjectWeavable`.
+    */
+    init(_ key: String, @ObjectBuilder _ content: () -> String) {
+        self.init(key, fieldAggregates: content())
+        self.remove = shouldRemove(content: content)
+    }
+
+    /**
+    Workaround for function builders not accepting one element yet due to it still being a prototype.
+     TODO - Remove when functionBuilders are fully implemented.
+
+     Object initializer using the object function builder.
+      This initializer accepts a `String` which will be used as to determine the name.
+
+     - parameter key: The coding key used for the name.
+     - parameter content: The individual object conforming to `ObjectWeavable`.
+    */
+    init(_ key: String, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
+        self.init(key, fieldAggregates: String(describing: content()))
+        self.remove = shouldRemove(content: content)
+    }
+    
+    /**
+    Object initializer using the object function builder.
+     This initializer is for objects without a name.
+
+    - parameter key: The coding key used for the name.
+    - parameter content: The object builder accepts structs/classes conforming to `ObjectWeavable`.
+    */
+    init(@ObjectBuilder _ content: () -> String) {
+        self.init(fieldAggregates: content())
+        self.remove = shouldRemove(content: content)
+    }
+
+    /**
+    Workaround for function builders not accepting one element yet due to it still being a prototype.
+     TODO - Remove when functionBuilders are fully implemented.
+
+     Object initializer using the object function builder.
+      This initializer is for objects without a name.
+
+     - parameter key: The coding key used for the name.
+     - parameter content: The individual object conforming to `ObjectWeavable`.
+    */
+    init(_ individual: BuilderType, _ content: () -> ObjectWeavable) {
+        self.init(fieldAggregates: String(describing: content()))
         self.remove = shouldRemove(content: content)
     }
 }
