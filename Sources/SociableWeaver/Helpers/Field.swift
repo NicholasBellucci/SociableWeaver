@@ -49,6 +49,26 @@ public extension Field {
         copy.alias = alias
         return copy
     }
+    
+    /**
+    Sets an argument for this field.
+
+     - Parameter key: The key for the argument.
+     - Parameter value: The value for the argument conforming to `ArgumentValueRepresentable`.
+     - Returns: A `Field` including the argument passed.
+     */
+    func argument(key: CodingKey, value: ArgumentValueRepresentable?) -> Field {
+        var copy = self
+        let argument = Argument(key: key.stringValue, value: value)
+
+        if copy.arguments != nil {
+            copy.arguments!.append(argument)
+        } else {
+            copy.arguments = [argument]
+        }
+
+        return copy
+    }
 
     /**
     Sets an argument for this field.

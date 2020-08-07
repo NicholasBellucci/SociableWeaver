@@ -68,6 +68,26 @@ public extension Object {
         copy.alias = alias
         return copy
     }
+    
+    /**
+    Sets an argument for this object.
+
+     - Parameter key: The key for the argument.
+     - Parameter value: The value for the argument conforming to `ArgumentValueRepresentable`.
+     - Returns: An `Object` including the argument passed.
+     */
+    func argument(key: CodingKey, value: ArgumentValueRepresentable) -> Object {
+        var copy = self
+        let argument = Argument(key: key.stringValue, value: value)
+
+        if copy.arguments != nil {
+            copy.arguments!.append(argument)
+        } else {
+            copy.arguments = [argument]
+        }
+
+        return copy
+    }
 
     /**
     Sets an argument for this object.
