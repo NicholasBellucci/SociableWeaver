@@ -4,8 +4,12 @@ public class FieldFormatter {
 
      Example `newPost: post`
      */
-    static func formatField(_ name: String, alias: String) -> String {
-        "\(alias): \(name)"
+    static func formatField(_ name: String, alias: String, slice: Slice? = nil) -> String {
+        if let slice = slice {
+            return "\(alias): \(name)\(slice.description)"
+        } else {
+            return "\(alias): \(name)"
+        }
     }
 
     /**
@@ -13,8 +17,12 @@ public class FieldFormatter {
 
      Example `post(id: 1)`
      */
-    static func formatField(_ name: String, arguments: [Argument]) -> String {
-        "\(name)(\(arguments.graphQLRepresentable))"
+    static func formatField(_ name: String, arguments: [Argument], slice: Slice? = nil) -> String {
+        if let slice = slice {
+            return "\(name)\(slice.description)"
+        } else {
+            return "\(name)(\(arguments.graphQLRepresentable))"
+        }
     }
 
     /**
@@ -22,7 +30,11 @@ public class FieldFormatter {
 
      Example `newPost: post(id: 1)`
      */
-    static func formatField(_ name: String, alias: String, arguments: [Argument]) -> String {
-        "\(alias): \(name)(\(arguments.graphQLRepresentable))"
+    static func formatField(_ name: String, alias: String, arguments: [Argument], slice: Slice? = nil) -> String {
+        if let slice = slice {
+            return "\(alias): \(name)\(slice.description)"
+        } else {
+            return "\(alias): \(name)(\(arguments.graphQLRepresentable))"
+        }
     }
 }

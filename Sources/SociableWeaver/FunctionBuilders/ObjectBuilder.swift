@@ -7,7 +7,7 @@ public struct ObjectBuilder {
             guard let directive = $0 as? Directive else { return }
             if directive.skip || !directive.include { return }
             if let removable = directive as? Removable, removable.remove { return }
-
+            
             descriptions.append(String(describing: $0))
         }
 

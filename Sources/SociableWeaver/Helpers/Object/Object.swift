@@ -7,6 +7,7 @@
  `Object.fieldAggregates`
  The aggregated fields that make up the object.
 */
+
 public struct Object: Directive {
     private var name: String
     private var nameRepresentable: String
@@ -14,6 +15,7 @@ public struct Object: Directive {
     
     private var alias: String? = nil
     private var arguments: [Argument]? = nil
+    private var slice: Slice? = nil
 
     var include: Bool = true
     var skip: Bool = false
@@ -45,18 +47,6 @@ public struct Object: Directive {
 }
 
 public extension Object {
-    /**
-    Sets the case style of this object.
-
-     - Parameter caseStyle: The case style to use when constructing this object.
-     - Returns: An `Object` with the case style applied to the name.
-     */
-    func caseStyle(_ caseStyle: CaseStyleOption) -> Object {
-        var copy = self
-        copy.nameRepresentable = copy.name.convert(with: caseStyle)
-        return self
-    }
-
     /**
     Sets the alias of this object.
 
@@ -110,6 +100,30 @@ public extension Object {
     }
 
     /**
+    Sets the case style of this object.
+
+     - Parameter caseStyle: The case style to use when constructing this object.
+     - Returns: An `Object` with the case style applied to the name.
+     */
+    func caseStyle(_ caseStyle: CaseStyleOption) -> Object {
+        var copy = self
+        copy.nameRepresentable = copy.name.convert(with: caseStyle)
+        return copy
+    }
+    
+    /**
+    Only include this object in the operation if the argument is true.
+
+     - Parameter argument: A boolean argument.
+     - Returns: An `Object` with its include value set.
+     */
+    func include(if argument: Bool) -> Object {
+        var copy = self
+        copy.include = argument
+        return copy
+    }
+    
+    /**
     Sets the field name to the name of the query schema name.
 
      - Parameter name: The queries schema name for the request.
@@ -123,18 +137,6 @@ public extension Object {
     }
 
     /**
-    Only include this object in the operation if the argument is true.
-
-     - Parameter argument: A boolean argument.
-     - Returns: An `Object` with its include value set.
-     */
-    func include(if argument: Bool) -> Object {
-        var copy = self
-        copy.include = argument
-        return copy
-    }
-
-    /**
     Skip this object if the argument is true
 
      - Parameter argument: A boolean argument.
@@ -143,6 +145,12 @@ public extension Object {
     func skip(if argument: Bool) -> Object {
         var copy = self
         copy.skip = argument
+        return copy
+    }
+    
+    func slice(first: Int, offset: Int) -> Object {
+        var copy = self
+        copy.slice = Slice(first: first, offset: offset)
         return copy
     }
 }
