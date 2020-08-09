@@ -506,7 +506,7 @@ SociableWeaver support pagination out of the box and can be easily customized. F
 
 #### Slicing
 
-Slicing in GraphQL is great for fetching a specified amount of objects in a response. With SociableWeaver this can easily be specified with the `Object.slice` method.
+Slicing in GraphQL is great for fetching a specified amount of objects in a response. With SociableWeaver this can be specified with the `Object.slice` method.
 
 ##### Swift
 ```swift
@@ -533,7 +533,7 @@ Weave(.query) {
 
 #### Cursor-Based Pagination
 
-Cursor-based pagination is described as being the most powerful pagination type GraphQL provides. Easily setup this pagination by declaring the pagination type for an object.
+Cursor-based pagination is described as being the most powerful pagination type GraphQL provides. Setup this pagination by declaring the pagination type for an object.
 
 ##### Swift
 ```swift
@@ -566,7 +566,7 @@ Weave(.query) {
 
 #### Pagination Page Info
 
-Including page info such as whether or not there is a next page or the end cursor is super easy with SociableWeaver.
+Including page info such as whether or not there is a next page or the end cursor is very flexible and supports a custom model.
 
 ##### Swift
 ```swift
