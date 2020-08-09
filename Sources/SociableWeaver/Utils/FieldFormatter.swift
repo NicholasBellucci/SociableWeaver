@@ -1,5 +1,18 @@
 public class FieldFormatter {
     /**
+    Formats a field with a name
+
+     Example `post`
+     */
+    static func formatField(_ name: String, slice: Slice? = nil) -> String {
+        if let slice = slice {
+            return "\(name)\(slice.description)"
+        } else {
+            return "\(name)"
+        }
+    }
+    
+    /**
     Formats a field with a name and alias.
 
      Example `newPost: post`

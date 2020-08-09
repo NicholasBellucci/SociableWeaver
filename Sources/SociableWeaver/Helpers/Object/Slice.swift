@@ -10,7 +10,7 @@ import Foundation
 struct Slice {
     var first: Int
     var offset: Int?
-    var after: CodingKey?
+    var after: ArgumentValueRepresentable?
 }
 
 /**
@@ -36,7 +36,7 @@ private extension Slice {
         case let(.some(offset), nil):
             return "(first: \(first), offset: \(offset))"
         case let(nil, .some(after)):
-            return "(first: \(first), after: \(after))"
+            return "(first: \(first), after: \(after.argumentValue))"
         default:
             return "(first: \(first))"
         }

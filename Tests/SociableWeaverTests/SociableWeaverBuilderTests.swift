@@ -110,6 +110,45 @@ final class SociableWeaverBuilderTests: XCTestCase {
         let expected = "query { post { id name } }"
         XCTAssertEqual(String(describing: query), expected)
     }
+    
+    func testBuildObjectWithSlice() {
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Author.CodingKeys.id)
+                Field(Author.CodingKeys.name)
+            }
+            .slice(amount: 2)
+        }
+
+        let expected = "query { post(first: 2) { id name } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+    
+    func testBuildObjectWithSliceAndOffset() {
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Author.CodingKeys.id)
+                Field(Author.CodingKeys.name)
+            }
+            .slice(amount: 2, offset: 2)
+        }
+
+        let expected = "query { post(first: 2, offset: 2) { id name } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+    
+    func testBuildObjectWithSliceAfterKey() {
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Author.CodingKeys.id)
+                Field(Author.CodingKeys.name)
+            }
+            .slice(amount: 2, after: "123")
+        }
+
+        let expected = "query { post(first: 2, after: \"123\") { id name } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
 
     static var allTests = [
         ("testBuildField", testBuildField),
@@ -120,6 +159,8 @@ final class SociableWeaverBuilderTests: XCTestCase {
         ("testBuildObjectWithCaseStyle", testBuildObjectWithCaseStyle),
         ("testBuildObjectWithRemove", testBuildObjectWithFalseInclude),
         ("testBuildObjectWithTrueSkip", testBuildObjectWithTrueSkip),
+        ("testBuildObjectWithSlice", testBuildObjectWithSlice),
+        ("testBuildObjectWithSliceAndOffset", testBuildObjectWithSliceAndOffset),
     ]
 }
 

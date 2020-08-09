@@ -148,9 +148,41 @@ public extension Object {
         return copy
     }
     
-    func slice(first: Int, offset: Int) -> Object {
+    /**
+    Adds a slice to fetch a specified amount.
+
+     - Parameter amount: Number of desired results
+     - Returns: An `Object` with its slice value set.
+     */
+    func slice(amount: Int) -> Object {
         var copy = self
-        copy.slice = Slice(first: first, offset: offset)
+        copy.slice = Slice(first: amount)
+        return copy
+    }
+    
+    /**
+    Adds a slice to fetch a specified amount of results at a provided offset.
+
+     - Parameter amount: Number of desired results
+     - Parameter offset: Desired offset for results lookup
+     - Returns: An `Object` with its slice value set.
+     */
+    func slice(amount: Int, offset: Int) -> Object {
+        var copy = self
+        copy.slice = Slice(first: amount, offset: offset)
+        return copy
+    }
+    
+    /**
+    Adds a slice to fetch a specified amount of results at a provided offset.
+
+     - Parameter amount: Number of desired results
+     - Parameter key: Key to determine which variable to check when determining offset
+     - Returns: An `Object` with its slice value set.
+     */
+    func slice(amount: Int, after key: ArgumentValueRepresentable) -> Object {
+        var copy = self
+        copy.slice = Slice(first: amount, after: key)
         return copy
     }
 }
@@ -305,13 +337,13 @@ private extension Object {
     func buildDescription() -> String {
         switch(alias, arguments) {
         case let(.some(alias), .some(arguments)):
-            return FieldFormatter.formatField(nameRepresentable, alias: alias, arguments: arguments)
+            return FieldFormatter.formatField(nameRepresentable, alias: alias, arguments: arguments, slice: slice)
         case let(.some(alias), nil):
-            return FieldFormatter.formatField(nameRepresentable, alias: alias)
+            return FieldFormatter.formatField(nameRepresentable, alias: alias, slice: slice)
         case let(nil, .some(arguments)):
-            return FieldFormatter.formatField(nameRepresentable, arguments: arguments)
+            return FieldFormatter.formatField(nameRepresentable, arguments: arguments, slice: slice)
         default:
-            return nameRepresentable
+            return FieldFormatter.formatField(nameRepresentable, slice: slice)
         }
     }
 }
