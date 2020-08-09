@@ -533,7 +533,78 @@ Weave(.query) {
 
 #### Cursor-Based Pagination
 
-Cursor-based pagination is described as being the most powerful pagination type GraphQL provides.
+Cursor-based pagination is described as being the most powerful pagination type GraphQL provides. Easily setup this pagination by declaring the pagination type for an object.
+
+##### Swift
+```swift
+Weave(.query) {
+    Object(Post.CodingKeys.comments) {
+        Field(Comment.CodingKeys.id)
+        Field(Comment.CodingKeys.author)
+        Field(Comment.CodingKeys.content)
+    }
+    .slice(amount: 2)
+    .paginationType(.cursor)
+}
+```
+
+##### GraphQL Query
+```graphql
+{
+  comments(first: 2) {
+    cursor
+    edges {
+      node {
+        id
+        author
+        content
+      }
+    }
+  }
+}
+```
+
+#### Pagination Page Info
+
+Including page info such as whether or not there is a next page or the end cursor is super easy with SociableWeaver.
+
+##### Swift
+```swift
+Weave(.query) {
+    Object(Post.CodingKeys.comments) {
+        Field(Comment.CodingKeys.id)
+        Field(Comment.CodingKeys.author)
+        Field(Comment.CodingKeys.content)
+    }
+    .slice(amount: 2)
+    .paginationType(.cursor)
+    .pageInfo(type: PageInfo.self,
+              keys: PageInfo.CodingKeys.startCursor,
+                    PageInfo.CodingKeys.endCursor,
+                    PageInfo.CodingKeys.hasNextPage)
+}
+```
+
+##### GraphQL Query
+```graphql
+{
+  comments(first: 2) {
+    cursor
+    edges {
+      node {
+        id
+        author
+        content
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+    }
+  }
+}
+```
 
 ### Custom Types
 
