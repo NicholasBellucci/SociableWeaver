@@ -18,11 +18,6 @@ Add the following entry to your `Cartfile` and run `$ carthage update SociableWe
 github "NicholasBellucci/SociableWeaver"
 ```
 
-## Roadmap
-
-   - [x] Pagination and edges support
-   - [ ] Add networking feature to handle GraphQL requests
-
 ## Table of Contents
    * [Objects and Fields](#objects-and-fields)
    * [Arguments](#arguments)
