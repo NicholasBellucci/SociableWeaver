@@ -7,6 +7,11 @@
 
 import Foundation
 
+public enum PaginationType {
+    case `default`
+    case cursor
+}
+
 struct Slice {
     var first: Int
     var offset: Int?

@@ -6,10 +6,16 @@ extension String {
 
     - parameter fields: The fields to be wrapped.
     */
-    func withSubfields(_ fields: String) -> String {
-        "\(self) { \(fields) }"
+    func withSubfields(_ fields: String, paginationType: PaginationType? = nil, pageInfo: PageInfoModel? = nil) -> String {
+        if let pageInfo = pageInfo, paginationType == .cursor {
+            return "\(self) { cursor edges { node { \(fields) } } \(String(describing: pageInfo.type)) { \(pageInfo.keys.joined(separator: " ")) } }"
+        } else if paginationType == .cursor {
+            return "\(self) { cursor edges { node { \(fields) } } }"
+        } else {
+            return "\(self) { \(fields) }"
+        }
     }
-
+    
     /**
     Converts any String, or in this intented case, an Object Type string to a specific case style.
      This methods splits a string into a string array based on capital letters.

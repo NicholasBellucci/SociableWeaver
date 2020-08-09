@@ -16,6 +16,8 @@ public struct Object: Directive {
     private var alias: String? = nil
     private var arguments: [Argument]? = nil
     private var slice: Slice? = nil
+    private var paginationType: PaginationType? = nil
+    private var pageInfo: PageInfoModel? = nil
 
     var include: Bool = true
     var skip: Bool = false
@@ -120,6 +122,45 @@ public extension Object {
     func include(if argument: Bool) -> Object {
         var copy = self
         copy.include = argument
+        return copy
+    }
+    
+    /**
+    The pagination type for the request. Mainly implemented to handle cursor-based pagination.
+
+     - Parameter type: The pagination type.
+     - Returns: An `Object` with its pagination type set.
+     */
+    func paginationType(_ type: PaginationType) -> Object {
+        var copy = self
+        copy.paginationType = type
+        return copy
+    }
+    
+    /**
+    The model and keys for a page info object that might be used with cursor-based pagination.
+
+     - Parameter type: The model type.
+     - Parameter caseStyle: The case style for the model type name.
+     - Parameter keys: The keys for the model.
+     - Returns: An `Object` with its page info model set.
+     */
+    func pageInfo(type: Any.Type, caseStyle: CaseStyleOption = .camelCase, keys: CodingKey...) -> Object {
+        var copy = self
+        copy.pageInfo = PageInfoModel(type: String(describing: type).convert(with: caseStyle), keys: keys.map { $0.stringValue })
+        return copy
+    }
+    
+    /**
+    The model and keys for a page info object that might be used with cursor-based pagination.
+
+     - Parameter name: The name of the page info model.
+     - Parameter keys: The keys for the model.
+     - Returns: An `Object` with its page info model set.
+     */
+    func pageInfo(name: String, keys: String...) -> Object {
+        var copy = self
+        copy.pageInfo = PageInfoModel(type: name, keys: keys)
         return copy
     }
     
@@ -305,11 +346,11 @@ public extension Object {
  */
 extension Object: ObjectWeavable {
     public var description: String {
-        buildDescription().withSubfields(fieldAggregates)
+        buildDescription().withSubfields(fieldAggregates, paginationType: paginationType, pageInfo: pageInfo)
     }
 
     public var debugDescription: String {
-        buildDescription().withSubfields(fieldAggregates)
+        buildDescription().withSubfields(fieldAggregates, paginationType: paginationType, pageInfo: pageInfo)
     }
 }
 

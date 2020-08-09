@@ -149,6 +149,69 @@ final class SociableWeaverBuilderTests: XCTestCase {
         let expected = "query { post(first: 2, after: \"123\") { id name } }"
         XCTAssertEqual(String(describing: query), expected)
     }
+    
+    func testBuildObjectWithSliceWithEdges() {
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Author.CodingKeys.id)
+                Field(Author.CodingKeys.name)
+            }
+            .slice(amount: 2)
+            .paginationType(.cursor)
+        }
+
+        let expected = "query { post(first: 2) { cursor edges { node { id name } } } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+    
+    func testBuildObjectWithNoSliceAndEdges() {
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Author.CodingKeys.id)
+                Field(Author.CodingKeys.name)
+            }
+            .paginationType(.cursor)
+        }
+
+        let expected = "query { post { id name } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+    
+    func testBuildObjectWithEdgesAndPageInfo() {
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Author.CodingKeys.id)
+                Field(Author.CodingKeys.name)
+            }
+            .slice(amount: 2)
+            .paginationType(.cursor)
+            .pageInfo(type: PageInfo.self,
+                      keys: PageInfo.CodingKeys.startCursor,
+                            PageInfo.CodingKeys.endCursor,
+                            PageInfo.CodingKeys.hasNextPage)
+        }
+
+        let expected = "query { post(first: 2) { cursor edges { node { id name } } pageInfo { startCursor endCursor hasNextPage } } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+    
+    func testBuildObjectWithEdgesAndPageInfoStrings() {
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Author.CodingKeys.id)
+                Field(Author.CodingKeys.name)
+            }
+            .slice(amount: 2)
+            .paginationType(.cursor)
+            .pageInfo(name: "pageInfo",
+                      keys: "startCursor",
+                            "endCursor",
+                            "hasNextPage")
+        }
+
+        let expected = "query { post(first: 2) { cursor edges { node { id name } } pageInfo { startCursor endCursor hasNextPage } } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
 
     static var allTests = [
         ("testBuildField", testBuildField),
@@ -161,6 +224,9 @@ final class SociableWeaverBuilderTests: XCTestCase {
         ("testBuildObjectWithTrueSkip", testBuildObjectWithTrueSkip),
         ("testBuildObjectWithSlice", testBuildObjectWithSlice),
         ("testBuildObjectWithSliceAndOffset", testBuildObjectWithSliceAndOffset),
+        ("testBuildObjectWithNoSliceAndEdges", testBuildObjectWithNoSliceAndEdges),
+        ("testBuildObjectWithEdgesAndPageInfo", testBuildObjectWithEdgesAndPageInfo),
+        ("testBuildObjectWithEdgesAndPageInfoStrings", testBuildObjectWithEdgesAndPageInfoStrings),
     ]
 }
 
