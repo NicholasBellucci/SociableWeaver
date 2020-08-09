@@ -116,6 +116,23 @@ Weave(.query) {
 }
 ```
 
+##### GraphQL Query
+```graphql
+query {
+    post {
+        title
+        author {
+            id
+            name(lastName: "Doe")
+        }
+        comments(filter: RECENT) {
+            id
+            content
+        }
+    }
+}
+```
+
 #### Optionals
 
 Optionals are supported and can be included in the query. In the instance where an optional should be included and the value is nil, the resulting GraphQL value will be `null`.
@@ -151,23 +168,6 @@ extension Author: ArgumentValueRepresentable {
         return "{ \(paramStrings.joined(separator: ",")) }"
     }
 }'
-```
-
-##### GraphQL Query
-```graphql
-query {
-    post {
-        title
-        author {
-            id
-            name(lastName: "Doe")
-        }
-        comments(filter: RECENT) {
-            id
-            content
-        }
-    }
-}
 ```
 
 ### Alias
