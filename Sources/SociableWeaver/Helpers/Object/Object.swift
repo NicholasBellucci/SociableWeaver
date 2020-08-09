@@ -346,11 +346,19 @@ public extension Object {
  */
 extension Object: ObjectWeavable {
     public var description: String {
-        buildDescription().withSubfields(fieldAggregates, paginationType: paginationType, pageInfo: pageInfo)
+        if slice != nil {
+            return buildDescription().withSubfields(fieldAggregates, paginationType: paginationType, pageInfo: pageInfo)
+        } else {
+            return buildDescription().withSubfields(fieldAggregates)
+        }
     }
 
     public var debugDescription: String {
-        buildDescription().withSubfields(fieldAggregates, paginationType: paginationType, pageInfo: pageInfo)
+        if slice != nil {
+            return buildDescription().withSubfields(fieldAggregates, paginationType: paginationType, pageInfo: pageInfo)
+        } else {
+            return buildDescription().withSubfields(fieldAggregates)
+        }
     }
 }
 

@@ -20,7 +20,7 @@ github "NicholasBellucci/SociableWeaver"
 
 ## Roadmap
 
-   - [ ] Pagination and edges support
+   - [x] Pagination and edges support
    - [ ] Add networking feature to handle GraphQL requests
 
 ## Table of Contents
