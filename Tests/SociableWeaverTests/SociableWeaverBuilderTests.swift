@@ -113,75 +113,81 @@ final class SociableWeaverBuilderTests: XCTestCase {
     
     func testBuildObjectWithSlice() {
         let query = Weave(.query) {
-            Object(Post.self) {
-                Field(Author.CodingKeys.id)
-                Field(Author.CodingKeys.name)
+            Object(Post.CodingKeys.comments) {
+                Field(Comment.CodingKeys.id)
+                Field(Comment.CodingKeys.author)
+                Field(Comment.CodingKeys.content)
             }
             .slice(amount: 2)
         }
 
-        let expected = "query { post(first: 2) { id name } }"
+        let expected = "query { comments(first: 2) { id author content } }"
         XCTAssertEqual(String(describing: query), expected)
     }
     
     func testBuildObjectWithSliceAndOffset() {
         let query = Weave(.query) {
-            Object(Post.self) {
-                Field(Author.CodingKeys.id)
-                Field(Author.CodingKeys.name)
+            Object(Post.CodingKeys.comments) {
+                Field(Comment.CodingKeys.id)
+                Field(Comment.CodingKeys.author)
+                Field(Comment.CodingKeys.content)
             }
             .slice(amount: 2, offset: 2)
         }
 
-        let expected = "query { post(first: 2, offset: 2) { id name } }"
+        let expected = "query { comments(first: 2, offset: 2) { id author content } }"
         XCTAssertEqual(String(describing: query), expected)
     }
     
     func testBuildObjectWithSliceAfterKey() {
         let query = Weave(.query) {
-            Object(Post.self) {
-                Field(Author.CodingKeys.id)
-                Field(Author.CodingKeys.name)
+            Object(Post.CodingKeys.comments) {
+                Field(Comment.CodingKeys.id)
+                Field(Comment.CodingKeys.author)
+                Field(Comment.CodingKeys.content)
             }
             .slice(amount: 2, after: "123")
         }
 
-        let expected = "query { post(first: 2, after: \"123\") { id name } }"
+        let expected = "query { comments(first: 2, after: \"123\") { id author content } }"
         XCTAssertEqual(String(describing: query), expected)
     }
     
     func testBuildObjectWithSliceWithEdges() {
         let query = Weave(.query) {
-            Object(Post.self) {
-                Field(Author.CodingKeys.id)
-                Field(Author.CodingKeys.name)
+            Object(Post.CodingKeys.comments) {
+                Field(Comment.CodingKeys.id)
+                Field(Comment.CodingKeys.author)
+                Field(Comment.CodingKeys.content)
             }
             .slice(amount: 2)
             .paginationType(.cursor)
         }
 
-        let expected = "query { post(first: 2) { cursor edges { node { id name } } } }"
+        let expected = "query { comments(first: 2) { cursor edges { node { id author content } } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
     
     func testBuildObjectWithNoSliceAndEdges() {
         let query = Weave(.query) {
-            Object(Post.self) {
-                Field(Author.CodingKeys.id)
-                Field(Author.CodingKeys.name)
+            Object(Post.CodingKeys.comments) {
+                Field(Comment.CodingKeys.id)
+                Field(Comment.CodingKeys.author)
+                Field(Comment.CodingKeys.content)
             }
             .paginationType(.cursor)
         }
 
-        let expected = "query { post { id name } }"
+        let expected = "query { comments { id author content } }"
         XCTAssertEqual(String(describing: query), expected)
     }
     
     func testBuildObjectWithEdgesAndPageInfo() {
         let query = Weave(.query) {
-            Object(Post.self) {
-                Field(Author.CodingKeys.id)
-                Field(Author.CodingKeys.name)
+            Object(Post.CodingKeys.comments) {
+                Field(Comment.CodingKeys.id)
+                Field(Comment.CodingKeys.author)
+                Field(Comment.CodingKeys.content)
             }
             .slice(amount: 2)
             .paginationType(.cursor)
@@ -191,15 +197,16 @@ final class SociableWeaverBuilderTests: XCTestCase {
                             PageInfo.CodingKeys.hasNextPage)
         }
 
-        let expected = "query { post(first: 2) { cursor edges { node { id name } } pageInfo { startCursor endCursor hasNextPage } } }"
+        let expected = "query { comments(first: 2) { cursor edges { node { id author content } } pageInfo { startCursor endCursor hasNextPage } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
     
     func testBuildObjectWithEdgesAndPageInfoStrings() {
         let query = Weave(.query) {
-            Object(Post.self) {
-                Field(Author.CodingKeys.id)
-                Field(Author.CodingKeys.name)
+            Object(Post.CodingKeys.comments) {
+                Field(Comment.CodingKeys.id)
+                Field(Comment.CodingKeys.author)
+                Field(Comment.CodingKeys.content)
             }
             .slice(amount: 2)
             .paginationType(.cursor)
@@ -209,7 +216,7 @@ final class SociableWeaverBuilderTests: XCTestCase {
                             "hasNextPage")
         }
 
-        let expected = "query { post(first: 2) { cursor edges { node { id name } } pageInfo { startCursor endCursor hasNextPage } } }"
+        let expected = "query { comments(first: 2) { cursor edges { node { id author content } } pageInfo { startCursor endCursor hasNextPage } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
 

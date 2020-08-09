@@ -30,6 +30,7 @@ github "NicholasBellucci/SociableWeaver"
    * [Mutations](#mutations)
    * [Inline Fragments](#inline-fragments)
    * [Meta Fields](#meta-fields)
+   * [Pagination](#pagination)
    * [Custom Types](#custom-types)
         * [BuilderType](#buildertype)
         * [CaseStyleOption](#casestyleoption)
@@ -496,6 +497,43 @@ query {
   }
 }
 ```
+
+### Pagination
+
+[GraphQL Pagination](https://graphql.org/learn/pagination/)
+
+SociableWeaver support pagination out of the box and can be easily customized. Features supported include slicing, edges, and page info inclusion.
+
+#### Slicing
+
+Slicing in GraphQL is great for fetching a specified amount of objects in a response. With SociableWeaver this can easily be specified with the `Object.slice` method.
+
+##### Swift
+```swift
+Weave(.query) {
+    Object(Post.CodingKeys.comments) {
+        Field(Comment.CodingKeys.id)
+        Field(Comment.CodingKeys.author)
+        Field(Comment.CodingKeys.content)
+    }
+    .slice(amount: 2)
+}
+```
+
+##### GraphQL Query
+```graphql
+{
+  comments(first: 2) {
+    id
+    author
+    content
+  }
+}
+```
+
+#### Cursor-Based Pagination
+
+Cursor-based pagination is described as being the most powerful pagination type GraphQL provides.
 
 ### Custom Types
 
