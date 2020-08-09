@@ -18,11 +18,6 @@ Add the following entry to your `Cartfile` and run `$ carthage update SociableWe
 github "NicholasBellucci/SociableWeaver"
 ```
 
-## Roadmap
-
-   - [ ] Pagination and edges support
-   - [ ] Add networking feature to handle GraphQL requests
-
 ## Table of Contents
    * [Objects and Fields](#objects-and-fields)
    * [Arguments](#arguments)
@@ -35,6 +30,7 @@ github "NicholasBellucci/SociableWeaver"
    * [Mutations](#mutations)
    * [Inline Fragments](#inline-fragments)
    * [Meta Fields](#meta-fields)
+   * [Pagination](#pagination)
    * [Custom Types](#custom-types)
         * [BuilderType](#buildertype)
         * [CaseStyleOption](#casestyleoption)
@@ -120,6 +116,23 @@ Weave(.query) {
 }
 ```
 
+##### GraphQL Query
+```graphql
+query {
+    post {
+        title
+        author {
+            id
+            name(lastName: "Doe")
+        }
+        comments(filter: RECENT) {
+            id
+            content
+        }
+    }
+}
+```
+
 #### Optionals
 
 Optionals are supported and can be included in the query. In the instance where an optional should be included and the value is nil, the resulting GraphQL value will be `null`.
@@ -155,23 +168,6 @@ extension Author: ArgumentValueRepresentable {
         return "{ \(paramStrings.joined(separator: ",")) }"
     }
 }'
-```
-
-##### GraphQL Query
-```graphql
-query {
-    post {
-        title
-        author {
-            id
-            name(lastName: "Doe")
-        }
-        comments(filter: RECENT) {
-            id
-            content
-        }
-    }
-}
 ```
 
 ### Alias
@@ -481,7 +477,7 @@ Weave(.query) {
         Field(Post.CodingKeys.content)
 
         Object(Post.CodingKeys.author) {
-            MetaField(type: .typename)
+            MetaField(.typename)
             Field(Author.CodingKeys.name)
         }
     }
@@ -497,6 +493,114 @@ query {
     author {
       __typename
       name
+    }
+  }
+}
+```
+
+### Pagination
+
+[GraphQL Pagination](https://graphql.org/learn/pagination/)
+
+SociableWeaver support pagination out of the box and can be easily customized. Features supported include slicing, edges, and page info inclusion.
+
+#### Slicing
+
+Slicing in GraphQL is great for fetching a specified amount of objects in a response. With SociableWeaver this can be specified with the `Object.slice` method.
+
+##### Swift
+```swift
+Weave(.query) {
+    Object(Post.CodingKeys.comments) {
+        Field(Comment.CodingKeys.id)
+        Field(Comment.CodingKeys.author)
+        Field(Comment.CodingKeys.content)
+    }
+    .slice(amount: 2)
+}
+```
+
+##### GraphQL Query
+```graphql
+{
+  comments(first: 2) {
+    id
+    author
+    content
+  }
+}
+```
+
+#### Cursor-Based Pagination
+
+Cursor-based pagination is described as being the most powerful pagination type GraphQL provides. Setup this pagination by declaring the pagination type for an object.
+
+##### Swift
+```swift
+Weave(.query) {
+    Object(Post.CodingKeys.comments) {
+        Field(Comment.CodingKeys.id)
+        Field(Comment.CodingKeys.author)
+        Field(Comment.CodingKeys.content)
+    }
+    .slice(amount: 2)
+    .paginationType(.cursor)
+}
+```
+
+##### GraphQL Query
+```graphql
+{
+  comments(first: 2) {
+    cursor
+    edges {
+      node {
+        id
+        author
+        content
+      }
+    }
+  }
+}
+```
+
+#### Pagination Page Info
+
+Including page info such as whether or not there is a next page or the end cursor is very flexible and supports a custom model.
+
+##### Swift
+```swift
+Weave(.query) {
+    Object(Post.CodingKeys.comments) {
+        Field(Comment.CodingKeys.id)
+        Field(Comment.CodingKeys.author)
+        Field(Comment.CodingKeys.content)
+    }
+    .slice(amount: 2)
+    .paginationType(.cursor)
+    .pageInfo(type: PageInfo.self,
+              keys: PageInfo.CodingKeys.startCursor,
+                    PageInfo.CodingKeys.endCursor,
+                    PageInfo.CodingKeys.hasNextPage)
+}
+```
+
+##### GraphQL Query
+```graphql
+{
+  comments(first: 2) {
+    cursor
+    edges {
+      node {
+        id
+        author
+        content
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
     }
   }
 }

@@ -7,6 +7,7 @@
  `Object.fieldAggregates`
  The aggregated fields that make up the object.
 */
+
 public struct Object: Directive {
     private var name: String
     private var nameRepresentable: String
@@ -14,6 +15,9 @@ public struct Object: Directive {
     
     private var alias: String? = nil
     private var arguments: [Argument]? = nil
+    private var slice: Slice? = nil
+    private var paginationType: PaginationType? = nil
+    private var pageInfo: PageInfoModel? = nil
 
     var include: Bool = true
     var skip: Bool = false
@@ -45,18 +49,6 @@ public struct Object: Directive {
 }
 
 public extension Object {
-    /**
-    Sets the case style of this object.
-
-     - Parameter caseStyle: The case style to use when constructing this object.
-     - Returns: An `Object` with the case style applied to the name.
-     */
-    func caseStyle(_ caseStyle: CaseStyleOption) -> Object {
-        var copy = self
-        copy.nameRepresentable = copy.name.convert(with: caseStyle)
-        return self
-    }
-
     /**
     Sets the alias of this object.
 
@@ -110,6 +102,69 @@ public extension Object {
     }
 
     /**
+    Sets the case style of this object.
+
+     - Parameter caseStyle: The case style to use when constructing this object.
+     - Returns: An `Object` with the case style applied to the name.
+     */
+    func caseStyle(_ caseStyle: CaseStyleOption) -> Object {
+        var copy = self
+        copy.nameRepresentable = copy.name.convert(with: caseStyle)
+        return copy
+    }
+    
+    /**
+    Only include this object in the operation if the argument is true.
+
+     - Parameter argument: A boolean argument.
+     - Returns: An `Object` with its include value set.
+     */
+    func include(if argument: Bool) -> Object {
+        var copy = self
+        copy.include = argument
+        return copy
+    }
+    
+    /**
+    The pagination type for the request. Mainly implemented to handle cursor-based pagination.
+
+     - Parameter type: The pagination type.
+     - Returns: An `Object` with its pagination type set.
+     */
+    func paginationType(_ type: PaginationType) -> Object {
+        var copy = self
+        copy.paginationType = type
+        return copy
+    }
+    
+    /**
+    The model and keys for a page info object that might be used with cursor-based pagination.
+
+     - Parameter type: The model type.
+     - Parameter caseStyle: The case style for the model type name.
+     - Parameter keys: The keys for the model.
+     - Returns: An `Object` with its page info model set.
+     */
+    func pageInfo(type: Any.Type, caseStyle: CaseStyleOption = .camelCase, keys: CodingKey...) -> Object {
+        var copy = self
+        copy.pageInfo = PageInfoModel(type: String(describing: type).convert(with: caseStyle), keys: keys.map { $0.stringValue })
+        return copy
+    }
+    
+    /**
+    The model and keys for a page info object that might be used with cursor-based pagination.
+
+     - Parameter name: The name of the page info model.
+     - Parameter keys: The keys for the model.
+     - Returns: An `Object` with its page info model set.
+     */
+    func pageInfo(name: String, keys: String...) -> Object {
+        var copy = self
+        copy.pageInfo = PageInfoModel(type: name, keys: keys)
+        return copy
+    }
+    
+    /**
     Sets the field name to the name of the query schema name.
 
      - Parameter name: The queries schema name for the request.
@@ -123,18 +178,6 @@ public extension Object {
     }
 
     /**
-    Only include this object in the operation if the argument is true.
-
-     - Parameter argument: A boolean argument.
-     - Returns: An `Object` with its include value set.
-     */
-    func include(if argument: Bool) -> Object {
-        var copy = self
-        copy.include = argument
-        return copy
-    }
-
-    /**
     Skip this object if the argument is true
 
      - Parameter argument: A boolean argument.
@@ -143,6 +186,44 @@ public extension Object {
     func skip(if argument: Bool) -> Object {
         var copy = self
         copy.skip = argument
+        return copy
+    }
+    
+    /**
+    Adds a slice to fetch a specified amount.
+
+     - Parameter amount: Number of desired results
+     - Returns: An `Object` with its slice value set.
+     */
+    func slice(amount: Int) -> Object {
+        var copy = self
+        copy.slice = Slice(first: amount)
+        return copy
+    }
+    
+    /**
+    Adds a slice to fetch a specified amount of results at a provided offset.
+
+     - Parameter amount: Number of desired results
+     - Parameter offset: Desired offset for results lookup
+     - Returns: An `Object` with its slice value set.
+     */
+    func slice(amount: Int, offset: Int) -> Object {
+        var copy = self
+        copy.slice = Slice(first: amount, offset: offset)
+        return copy
+    }
+    
+    /**
+    Adds a slice to fetch a specified amount of results at a provided offset.
+
+     - Parameter amount: Number of desired results
+     - Parameter key: Key to determine which variable to check when determining offset
+     - Returns: An `Object` with its slice value set.
+     */
+    func slice(amount: Int, after key: ArgumentValueRepresentable) -> Object {
+        var copy = self
+        copy.slice = Slice(first: amount, after: key)
         return copy
     }
 }
@@ -265,11 +346,19 @@ public extension Object {
  */
 extension Object: ObjectWeavable {
     public var description: String {
-        buildDescription().withSubfields(fieldAggregates)
+        if slice != nil {
+            return buildDescription().withSubfields(fieldAggregates, paginationType: paginationType, pageInfo: pageInfo)
+        } else {
+            return buildDescription().withSubfields(fieldAggregates)
+        }
     }
 
     public var debugDescription: String {
-        buildDescription().withSubfields(fieldAggregates)
+        if slice != nil {
+            return buildDescription().withSubfields(fieldAggregates, paginationType: paginationType, pageInfo: pageInfo)
+        } else {
+            return buildDescription().withSubfields(fieldAggregates)
+        }
     }
 }
 
@@ -297,13 +386,13 @@ private extension Object {
     func buildDescription() -> String {
         switch(alias, arguments) {
         case let(.some(alias), .some(arguments)):
-            return FieldFormatter.formatField(nameRepresentable, alias: alias, arguments: arguments)
+            return FieldFormatter.formatField(nameRepresentable, alias: alias, arguments: arguments, slice: slice)
         case let(.some(alias), nil):
-            return FieldFormatter.formatField(nameRepresentable, alias: alias)
+            return FieldFormatter.formatField(nameRepresentable, alias: alias, slice: slice)
         case let(nil, .some(arguments)):
-            return FieldFormatter.formatField(nameRepresentable, arguments: arguments)
+            return FieldFormatter.formatField(nameRepresentable, arguments: arguments, slice: slice)
         default:
-            return nameRepresentable
+            return FieldFormatter.formatField(nameRepresentable, slice: slice)
         }
     }
 }

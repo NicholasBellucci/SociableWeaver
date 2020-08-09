@@ -21,6 +21,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4C88F4FF24DF5D20007CD2E0 /* Slice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C88F4FE24DF5D20007CD2E0 /* Slice.swift */; };
+		4C88F50224DF5F75007CD2E0 /* SociableWeaverBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C88F50024DF5F70007CD2E0 /* SociableWeaverBuilderTests.swift */; };
+		4C88F50524DF988F007CD2E0 /* PageInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C88F50424DF988F007CD2E0 /* PageInfoModel.swift */; };
+		4C88F50724DF9B00007CD2E0 /* PageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C88F50624DF9B00007CD2E0 /* PageInfo.swift */; };
 		OBJ_55 /* CaseStyleOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* CaseStyleOption.swift */; };
 		OBJ_56 /* OperationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* OperationType.swift */; };
 		OBJ_57 /* Array+Argument.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Array+Argument.swift */; };
@@ -69,6 +73,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C88F4FE24DF5D20007CD2E0 /* Slice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slice.swift; sourceTree = "<group>"; };
+		4C88F50024DF5F70007CD2E0 /* SociableWeaverBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SociableWeaverBuilderTests.swift; sourceTree = "<group>"; };
+		4C88F50424DF988F007CD2E0 /* PageInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageInfoModel.swift; sourceTree = "<group>"; };
+		4C88F50624DF9B00007CD2E0 /* PageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageInfo.swift; sourceTree = "<group>"; };
 		OBJ_10 /* CaseStyleOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseStyleOption.swift; sourceTree = "<group>"; };
 		OBJ_11 /* OperationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationType.swift; sourceTree = "<group>"; };
 		OBJ_13 /* Array+Argument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Argument.swift"; sourceTree = "<group>"; };
@@ -121,6 +129,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4C88F4FD24DF5D17007CD2E0 /* Object */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_26 /* Object.swift */,
+				4C88F4FE24DF5D20007CD2E0 /* Slice.swift */,
+				4C88F50424DF988F007CD2E0 /* PageInfoModel.swift */,
+			);
+			path = Object;
+			sourceTree = "<group>";
+		};
 		OBJ_12 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,9 +161,9 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_20 /* Fragment */,
+				4C88F4FD24DF5D17007CD2E0 /* Object */,
 				OBJ_19 /* Field.swift */,
 				OBJ_25 /* MetaField.swift */,
-				OBJ_26 /* Object.swift */,
 				OBJ_27 /* Weave.swift */,
 			);
 			path = Helpers;
@@ -193,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_37 /* Models */,
+				4C88F50024DF5F70007CD2E0 /* SociableWeaverBuilderTests.swift */,
 				OBJ_41 /* SociableWeaverGeneralTests.swift */,
 				OBJ_42 /* SociableWeaverMutationTests.swift */,
 				OBJ_43 /* SociableWeaverQueryTests.swift */,
@@ -208,6 +227,7 @@
 				OBJ_38 /* Author.swift */,
 				OBJ_39 /* Comment.swift */,
 				OBJ_40 /* Post.swift */,
+				4C88F50624DF9B00007CD2E0 /* PageInfo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -348,6 +368,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				4C88F50724DF9B00007CD2E0 /* PageInfo.swift in Sources */,
 				OBJ_55 /* CaseStyleOption.swift in Sources */,
 				OBJ_56 /* OperationType.swift in Sources */,
 				OBJ_57 /* Array+Argument.swift in Sources */,
@@ -358,9 +379,11 @@
 				OBJ_62 /* Fragment.swift in Sources */,
 				OBJ_63 /* FragmentBuilder.swift in Sources */,
 				OBJ_64 /* FragmentReference.swift in Sources */,
+				4C88F4FF24DF5D20007CD2E0 /* Slice.swift in Sources */,
 				OBJ_65 /* InlineFragment.swift in Sources */,
 				OBJ_66 /* MetaField.swift in Sources */,
 				OBJ_67 /* Object.swift in Sources */,
+				4C88F50524DF988F007CD2E0 /* PageInfoModel.swift in Sources */,
 				OBJ_68 /* Weave.swift in Sources */,
 				OBJ_69 /* Argument.swift in Sources */,
 				OBJ_70 /* Directive.swift in Sources */,
@@ -384,6 +407,7 @@
 			files = (
 				OBJ_91 /* Author.swift in Sources */,
 				OBJ_92 /* Comment.swift in Sources */,
+				4C88F50224DF5F75007CD2E0 /* SociableWeaverBuilderTests.swift in Sources */,
 				OBJ_93 /* Post.swift in Sources */,
 				OBJ_94 /* SociableWeaverGeneralTests.swift in Sources */,
 				OBJ_95 /* SociableWeaverMutationTests.swift in Sources */,

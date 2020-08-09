@@ -18,7 +18,7 @@ public struct OperationBuilder {
         let objectsRepresentation = objects.map { String(describing: $0) }.joined(separator: " ")
         let fragmentsRepresentation = fragments.map { String(describing: $0) }.joined(separator: " ")
 
-        return "{ \(objectsRepresentation) } \(fragmentsRepresentation)"
+        return "{ \(objectsRepresentation) } \(fragmentsRepresentation)".trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     public static func buildBlock(_ component: Object) -> String {
