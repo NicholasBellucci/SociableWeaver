@@ -23,6 +23,11 @@ public struct Field: Directive {
         self.name = key.stringValue
         self.nameRepresentable = key.stringValue.convert(with: .camelCase)
     }
+    
+    public init(_ string: String) {
+        self.name = string
+        self.nameRepresentable = string.convert(with: .camelCase)
+    }
 }
 
 public extension Field {
