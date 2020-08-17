@@ -62,6 +62,21 @@ final class SociableWeaverBuilderTests: XCTestCase {
         XCTAssertEqual(String(describing: query), expected)
     }
     
+    func testBuildObjectWithNilArgument() {
+        let value: String? = nil
+        
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Author.CodingKeys.id)
+                Field(Author.CodingKeys.name)
+            }
+            .argument(key: "testArgument", value: value)
+        }
+
+        let expected = "query { post { id name } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+    
     func testBuildObjectWithCaseStyle() {
         let query = Weave(.query) {
             Object(Post.self) {
@@ -226,6 +241,7 @@ final class SociableWeaverBuilderTests: XCTestCase {
         ("testBuildObjectWithAlias", testBuildObjectWithAlias),
         ("testBuildObjectWithSchemaName", testBuildObjectWithSchemaName),
         ("testBuildObjectWithArgument", testBuildObjectWithArgument),
+        ("testBuildObjectWithNilArgument", testBuildObjectWithNilArgument),
         ("testBuildObjectWithCaseStyle", testBuildObjectWithCaseStyle),
         ("testBuildObjectWithRemove", testBuildObjectWithFalseInclude),
         ("testBuildObjectWithTrueSkip", testBuildObjectWithTrueSkip),

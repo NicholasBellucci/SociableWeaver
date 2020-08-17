@@ -68,9 +68,14 @@ public extension Field {
 
      - Parameter key: The key for the argument.
      - Parameter value: The value for the argument conforming to `ArgumentValueRepresentable`.
+     - Parameter includeIfNil: Boolean to determine if argument should be included when value is nil. Defaults to false.
      - Returns: A `Field` including the argument passed.
      */
-    func argument(key: String, value: ArgumentValueRepresentable?) -> Field {
+    func argument(key: String, value: ArgumentValueRepresentable, includeIfNil: Bool = false) -> Field {
+        if value.argumentValue == "null", includeIfNil == false {
+            return self
+        }
+        
         var copy = self
         let argument = Argument(key: key, value: value)
 
