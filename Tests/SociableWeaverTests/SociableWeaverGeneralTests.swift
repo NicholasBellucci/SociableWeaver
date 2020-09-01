@@ -182,6 +182,30 @@ final class SociableWeaverGeneralTests: XCTestCase {
         XCTAssertEqual(String(describing: query), expected)
     }
 
+    func testOperationWithCustomEnumArray() {
+        enum PostCategories: EnumValueRepresentable {
+            case art
+            case music
+            case technology
+        }
+
+        let query = Weave(.query) {
+            Object(Post.self) {
+                Field(Post.CodingKeys.title)
+                Field(Post.CodingKeys.content)
+
+                Object(Post.CodingKeys.author) {
+                    Field(Author.CodingKeys.id)
+                    Field(Author.CodingKeys.name)
+                }
+            }
+            .argument(key: "category", value: [PostCategories.art, PostCategories.music, PostCategories.technology])
+        }
+
+        let expected = "query { post(category: [ART, MUSIC, TECHNOLOGY]) { title content author { id name } } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+
     static var allTests = [
         ("testOperationWithArguments", testOperationWithArguments),
         ("testOperationWithFragment", testOperationWithFragment),
