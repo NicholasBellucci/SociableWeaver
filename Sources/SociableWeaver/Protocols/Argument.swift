@@ -84,6 +84,8 @@ extension Array: ArgumentValueRepresentable {
                 return value.argumentValue
             } else if let value = value as? Dictionary<String, Any> {
                 return value.argumentValue
+            } else  if let value = value as? ArgumentValueRepresentable {
+                return value.argumentValue
             }
 
             return ""
@@ -112,6 +114,8 @@ extension Dictionary: ArgumentValueRepresentable {
                 } else if let value = value as? Array<Any> {
                     return value.argumentValue
                 } else if let value = value as? Dictionary<String, Any> {
+                    return value.argumentValue
+                } else  if let value = value as? ArgumentValueRepresentable {
                     return value.argumentValue
                 } else if let _ = value as? NSNull {
                     return "null"
