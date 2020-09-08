@@ -159,7 +159,7 @@ final class SociableWeaverGeneralTests: XCTestCase {
     }
 
     func testOperationWithCustomEnum() {
-        enum PostCategories: EnumValueRepresentable {
+        enum PostCategories: String, EnumValueRepresentable {
             case art
             case music
             case technology
@@ -183,7 +183,7 @@ final class SociableWeaverGeneralTests: XCTestCase {
     }
 
     func testOperationWithCustomEnumArray() {
-        enum PostCategories: EnumValueRepresentable {
+        enum PostCategories: String, EnumValueRepresentable {
             case art
             case music
             case technology
