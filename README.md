@@ -1,6 +1,6 @@
 # SociableWeaver
 
-Swift meets GraphQL in this lightweight, declarative, easy to use framework. SociableWeaver uses a SwiftUI style of programming and makes GraphQL queries look natural in Swift code. Through the use of Swift 5.1 function builders and `CodingKeys`, SociableWeaver removes all of the need for unsafe strings and Dictionaries when creating objects and fields.
+Swift meets GraphQL in this lightweight, easy to use framework. SociableWeaver uses a declarative style of programming and makes GraphQL queries look natural in Swift code. Through the use of Swift 5.1 function builders and `CodingKeys`, SociableWeaver removes all of the need for unsafe strings and Dictionaries when creating objects and fields.
 
 ## Requirements
 Xcode 11.x or a Swift 5.1x toolchain with Swift Package Manager.

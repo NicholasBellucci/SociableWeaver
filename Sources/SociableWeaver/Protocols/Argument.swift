@@ -7,11 +7,11 @@ import Foundation
  */
 typealias Argument = (key: String, value: ArgumentValueRepresentable)
 
-public protocol EnumValueRepresentable: ArgumentValueRepresentable { }
+public protocol EnumValueRepresentable: ArgumentValueRepresentable, RawRepresentable { }
 
 public extension EnumValueRepresentable {
     var argumentValue: String {
-        "\(self)".uppercased()
+        "\(self.rawValue)".uppercased()
     }
 }
 
