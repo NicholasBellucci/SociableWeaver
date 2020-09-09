@@ -8,9 +8,9 @@ extension String {
     */
     func withSubfields(_ fields: String, paginationType: PaginationType? = nil, pageInfo: PageInfoModel? = nil) -> String {
         if let pageInfo = pageInfo, paginationType == .cursor {
-            return "\(self) { cursor edges { node { \(fields) } } \(String(describing: pageInfo.type)) { \(pageInfo.keys.joined(separator: " ")) } }"
+            return "\(self) { edges { cursor node { \(fields) } } \(String(describing: pageInfo.type)) { \(pageInfo.keys.joined(separator: " ")) } }"
         } else if paginationType == .cursor {
-            return "\(self) { cursor edges { node { \(fields) } } }"
+            return "\(self) { edges { cursor node { \(fields) } } }"
         } else {
             return "\(self) { \(fields) }"
         }

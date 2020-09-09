@@ -552,8 +552,8 @@ Weave(.query) {
 ```graphql
 {
   comments(first: 2) {
-    cursor
     edges {
+      cursor
       node {
         id
         author
@@ -589,8 +589,8 @@ Weave(.query) {
 ```graphql
 {
   comments(first: 2) {
-    cursor
     edges {
+      cursor
       node {
         id
         author

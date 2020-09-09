@@ -179,7 +179,7 @@ final class SociableWeaverBuilderTests: XCTestCase {
             .paginationType(.cursor)
         }
 
-        let expected = "query { comments(first: 2) { cursor edges { node { id author content } } } }"
+        let expected = "query { comments(first: 2) { edges { cursor node { id author content } } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
     
@@ -212,7 +212,7 @@ final class SociableWeaverBuilderTests: XCTestCase {
                             PageInfo.CodingKeys.hasNextPage)
         }
 
-        let expected = "query { comments(first: 2) { cursor edges { node { id author content } } pageInfo { startCursor endCursor hasNextPage } } }"
+        let expected = "query { comments(first: 2) { edges { cursor node { id author content } } pageInfo { startCursor endCursor hasNextPage } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
     
@@ -231,7 +231,7 @@ final class SociableWeaverBuilderTests: XCTestCase {
                             "hasNextPage")
         }
 
-        let expected = "query { comments(first: 2) { cursor edges { node { id author content } } pageInfo { startCursor endCursor hasNextPage } } }"
+        let expected = "query { comments(first: 2) { edges { cursor node { id author content } } pageInfo { startCursor endCursor hasNextPage } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
 
