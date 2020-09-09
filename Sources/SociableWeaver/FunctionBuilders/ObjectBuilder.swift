@@ -13,4 +13,8 @@ public struct ObjectBuilder {
 
         return descriptions.joined(separator: " ")
     }
+
+    public static func buildBlock(_ component: ObjectWeavable) -> String {
+        String(describing: component)
+    }
 }

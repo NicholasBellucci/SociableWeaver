@@ -1,7 +1,7 @@
 @_functionBuilder
 public struct OperationBuilder {
     public static func buildBlock(_ children: Weavable...) -> String {
-        var objects: [Object] = []
+        var weavables: [Weavable] = []
         var fragments: [Fragment] = []
 
         children.forEach {
@@ -9,19 +9,23 @@ public struct OperationBuilder {
                 if object.remove { return }
                 if object.skip || !object.include { return }
                 
-                objects.append(object)
+                weavables.append(object)
+            } else if let field = $0 as? Field {
+                if field.skip || !field.include { return }
+
+                weavables.append(field)
             } else if let fragment = $0 as? Fragment {
                 fragments.append(fragment)
             }
         }
 
-        let objectsRepresentation = objects.map { String(describing: $0) }.joined(separator: " ")
+        let weavablesRepresentation = weavables.map { String(describing: $0) }.joined(separator: " ")
         let fragmentsRepresentation = fragments.map { String(describing: $0) }.joined(separator: " ")
 
-        return "{ \(objectsRepresentation) } \(fragmentsRepresentation)".trimmingCharacters(in: .whitespacesAndNewlines)
+        return "{ \(weavablesRepresentation) } \(fragmentsRepresentation)".trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     public static func buildBlock(_ component: Object) -> String {
-        String(describing: component)
+        "{ \(String(describing: component)) }"
     }
 }
