@@ -39,7 +39,7 @@ public extension Fragment {
     - parameter builder: The objects fragment builder.
     - parameter content: The individual object conforming to `ObjectWeavable`
     */
-    init(_ builder: FragmentBuilder, _ individual: BuilderType = .individual, _ content: () -> ObjectWeavable) {
+    init(_ builder: FragmentBuilder, _ builderType: BuilderType = .individual, _ content: () -> ObjectWeavable) {
         self.init(builder, fieldAggregates: String(describing: content()))
     }
 }
