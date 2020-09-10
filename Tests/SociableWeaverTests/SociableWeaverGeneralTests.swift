@@ -46,10 +46,11 @@ final class SociableWeaverGeneralTests: XCTestCase {
 
                 Object(Post.CodingKeys.comments) {
                     Field(Comment.CodingKeys.id)
+                    Field(Comment.CodingKeys.content)
+
                     Object(Comment.CodingKeys.author) {
                         FragmentReference(for: authorFragment)
                     }
-                    Field(Comment.CodingKeys.content)
                 }
             }
 
@@ -59,7 +60,7 @@ final class SociableWeaverGeneralTests: XCTestCase {
             }
         }
 
-        let expected = "query { post { title content author { ...authorFields } comments { id author { ...authorFields } content } } } fragment authorFields on Author { id name }"
+        let expected = "query { post { title content author { ...authorFields } comments { id content author { ...authorFields } } } } fragment authorFields on Author { id name }"
         XCTAssertEqual(String(describing: query), expected)
     }
 
@@ -76,6 +77,8 @@ final class SociableWeaverGeneralTests: XCTestCase {
 
                 Object(Post.CodingKeys.comments) {
                     Field(Comment.CodingKeys.id)
+                    Field(Comment.CodingKeys.content)
+
                     Object(Comment.CodingKeys.author) {
                         InlineFragment("AnonymousUser") {
                             Field(Author.CodingKeys.id)
@@ -86,12 +89,11 @@ final class SociableWeaverGeneralTests: XCTestCase {
                             Field(Author.CodingKeys.name)
                         }
                     }
-                    Field(Comment.CodingKeys.content)
                 }
             }
         }
 
-        let expected = "query { post { title content author { id name } comments { id author { ... on AnonymousUser { id } ... on RegisteredUser { id name } } content } } }"
+        let expected = "query { post { title content author { id name } comments { id content author { ... on AnonymousUser { id } ... on RegisteredUser { id name } } } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
 
@@ -108,13 +110,14 @@ final class SociableWeaverGeneralTests: XCTestCase {
                 .include(if: false)
 
                 Object(Post.CodingKeys.comments) {
+                    Field(Comment.CodingKeys.content)
+                        .include(if: true)
+                        .skip(if: true)
+
                     Object(Comment.CodingKeys.author) {
                         Field(Author.CodingKeys.name)
                             .skip(if: true)
                     }
-                    Field(Comment.CodingKeys.content)
-                        .include(if: true)
-                        .skip(if: true)
                 }
             }
         }

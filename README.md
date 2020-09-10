@@ -229,10 +229,11 @@ let query = Weave(.query) {
         }
 
         Object(Post.CodingKeys.comments) {
+            Field(Comment.CodingKeys.content)
+            
             Object(Comment.CodingKeys.author) {
                 FragmentReference(for: authorFragment)
             }
-            Field(Comment.CodingKeys.content)
         }
     }
 
@@ -251,10 +252,10 @@ query {
       ...authorFields
     }
     comments {
+      content
       author {
         ...authorFields
       }
-      content
     }
   }
 }
@@ -354,14 +355,14 @@ let query = Weave(.query) {
         .include(if: false)
 
         Object(Post.CodingKeys.comments) {
+            Field(Comment.CodingKeys.content)
+                .include(if: true)
+                .skip(if: true)
+                
             Object(Comment.CodingKeys.author) {
                 Field(Author.CodingKeys.name)
                     .skip(if: true)
             }
-            
-            Field(Comment.CodingKeys.content)
-                .include(if: true)
-                .skip(if: true)
         }
     }
 }
@@ -423,6 +424,8 @@ Weave(.query) {
         Field(Post.CodingKeys.content)
 
         Object(Post.CodingKeys.comments) {
+            Field(Comment.CodingKeys.content)
+        
             Object(Comment.CodingKeys.author) {
                 InlineFragment("AnonymousUser") {
                     Field(Author.CodingKeys.id)
@@ -433,7 +436,6 @@ Weave(.query) {
                     Field(Author.CodingKeys.name)
                 }
             }
-            Field(Comment.CodingKeys.content)
         }
     }
 }
@@ -446,6 +448,7 @@ query {
     title
     content
     comments {
+      content
       author {
         ... on AnonymousUser {
           id
@@ -455,7 +458,6 @@ query {
           name
         }
       }
-      content
     }
   }
 }
