@@ -32,7 +32,6 @@ github "NicholasBellucci/SociableWeaver"
    * [Meta Fields](#meta-fields)
    * [Pagination](#pagination)
    * [Custom Types](#custom-types)
-        * [BuilderType](#buildertype)
         * [CaseStyleOption](#casestyleoption)
         * [EnumValueRepresentable](#enumvaluerepresentable)
 
@@ -225,12 +224,12 @@ GraphQL fragments can help when building complicated queries. SociableWeaver mak
 let authorFragment = FragmentBuilder(name: "authorFields", type: Author.self)
 let query = Weave(.query) {
     Object(Post.self) {
-        Object(Post.CodingKeys.author, .individual) {
+        Object(Post.CodingKeys.author) {
             FragmentReference(for: authorFragment)
         }
 
         Object(Post.CodingKeys.comments) {
-            Object(Comment.CodingKeys.author, .individual) {
+            Object(Comment.CodingKeys.author) {
                 FragmentReference(for: authorFragment)
             }
             Field(Comment.CodingKeys.content)
@@ -349,16 +348,17 @@ let query = Weave(.query) {
         Field(Post.CodingKeys.content)
             .include(if: true)
 
-        Object(Post.CodingKeys.author, .individual) {
+        Object(Post.CodingKeys.author) {
             Field(Author.CodingKeys.name)
         }
         .include(if: false)
 
         Object(Post.CodingKeys.comments) {
-            Object(Comment.CodingKeys.author, .individual) {
+            Object(Comment.CodingKeys.author) {
                 Field(Author.CodingKeys.name)
                     .skip(if: true)
             }
+            
             Field(Comment.CodingKeys.content)
                 .include(if: true)
                 .skip(if: true)
@@ -424,7 +424,7 @@ Weave(.query) {
 
         Object(Post.CodingKeys.comments) {
             Object(Comment.CodingKeys.author) {
-                InlineFragment("AnonymousUser", .individual) {
+                InlineFragment("AnonymousUser") {
                     Field(Author.CodingKeys.id)
                 }
 
@@ -609,20 +609,6 @@ Weave(.query) {
 ### Custom Types
 
 SociableWeaver provides a couple of custom types that help to build more natural looking queries. These types may or may not have been included in examples but will also be defined in this section to provide more clarity.
-
-#### BuilderType
-
-Due to current limitations with function builders, individual elements are not currently accepted. For that reason each function builder initializer has a corresponding initializer for a single element. `BuilderType.individual` has been set up to specify when an object or fragment will consist of only one element.
-
-```swift
-Object(Post.CodingKeys.author, .individual) {
-    Field(Author.CodingKeys.name)
-}
-
-Fragment(authorFragment, .individual) {
-    Field(Author.CodingKeys.name)
-}
-```
 
 #### CaseStyleOption
 

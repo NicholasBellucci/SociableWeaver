@@ -7,6 +7,6 @@ public enum OperationType {
 
 /// Used when a function builder only has one type.
 /// This will be removed when function builders are a full swift feature.
-public enum BuilderType {
+private enum BuilderType {
     case individual
 }
