@@ -8,20 +8,21 @@ final class SociableWeaverQueryTests: XCTestCase {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Post.CodingKeys.author, .individual) {
+                Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.name)
                 }
 
                 Object(Post.CodingKeys.comments) {
-                    Object(Comment.CodingKeys.author, .individual) {
+                    Field(Comment.CodingKeys.content)
+
+                    Object(Comment.CodingKeys.author) {
                         Field(Author.CodingKeys.name)
                     }
-                    Field(Comment.CodingKeys.content)
                 }
             }
         }
 
-        let expected = "query { post { title content author { name } comments { author { name } content } } }"
+        let expected = "query { post { title content author { name } comments { content author { name } } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
 
@@ -31,21 +32,22 @@ final class SociableWeaverQueryTests: XCTestCase {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Post.CodingKeys.author, .individual) {
+                Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.name)
                 }
 
                 Object(Post.CodingKeys.comments) {
-                    Object(Comment.CodingKeys.author, .individual) {
+                    Field(Comment.CodingKeys.content)
+
+                    Object(Comment.CodingKeys.author) {
                         Field(Author.CodingKeys.name)
                     }
-                    Field(Comment.CodingKeys.content)
                 }
             }
         }
         .name("GetPost")
 
-        let expected = "query GetPost { post { title content author { name } comments { author { name } content } } }"
+        let expected = "query GetPost { post { title content author { name } comments { content author { name } } } }"
         XCTAssertEqual(String(describing: query), expected)
     }
 

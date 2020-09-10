@@ -52,10 +52,10 @@ public extension Weave {
      Operation initializer using the operation function builder.
 
     - parameter type: The operation type to be created.
-    - parameter buildType: The builder type only exists to avoid ambiguous init error.
+    - parameter builderType: The builder type only exists to avoid ambiguous init error.
     - parameter content: The individual `Weavable` model.
     */
-    init(_ type: OperationType, _ buildType: BuilderType = .individual, _ content: () -> Weavable) {
+    init(_ type: OperationType, _ builderType: BuilderType = .individual, _ content: () -> Weavable) {
         self.init(type: type, fields: "{ \(String(describing: content())) }")
     }
 }

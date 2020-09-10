@@ -225,15 +225,16 @@ GraphQL fragments can help when building complicated queries. SociableWeaver mak
 let authorFragment = FragmentBuilder(name: "authorFields", type: Author.self)
 let query = Weave(.query) {
     Object(Post.self) {
-        Object(Post.CodingKeys.author, .individual) {
+        Object(Post.CodingKeys.author) {
             FragmentReference(for: authorFragment)
         }
 
         Object(Post.CodingKeys.comments) {
-            Object(Comment.CodingKeys.author, .individual) {
+            Field(Comment.CodingKeys.content)
+            
+            Object(Comment.CodingKeys.author) {
                 FragmentReference(for: authorFragment)
             }
-            Field(Comment.CodingKeys.content)
         }
     }
 
@@ -252,10 +253,10 @@ query {
       ...authorFields
     }
     comments {
+      content
       author {
         ...authorFields
       }
-      content
     }
   }
 }
@@ -349,19 +350,20 @@ let query = Weave(.query) {
         Field(Post.CodingKeys.content)
             .include(if: true)
 
-        Object(Post.CodingKeys.author, .individual) {
+        Object(Post.CodingKeys.author) {
             Field(Author.CodingKeys.name)
         }
         .include(if: false)
 
         Object(Post.CodingKeys.comments) {
-            Object(Comment.CodingKeys.author, .individual) {
-                Field(Author.CodingKeys.name)
-                    .skip(if: true)
-            }
             Field(Comment.CodingKeys.content)
                 .include(if: true)
                 .skip(if: true)
+                
+            Object(Comment.CodingKeys.author) {
+                Field(Author.CodingKeys.name)
+                    .skip(if: true)
+            }
         }
     }
 }
@@ -423,8 +425,10 @@ Weave(.query) {
         Field(Post.CodingKeys.content)
 
         Object(Post.CodingKeys.comments) {
+            Field(Comment.CodingKeys.content)
+        
             Object(Comment.CodingKeys.author) {
-                InlineFragment("AnonymousUser", .individual) {
+                InlineFragment("AnonymousUser") {
                     Field(Author.CodingKeys.id)
                 }
 
@@ -433,7 +437,6 @@ Weave(.query) {
                     Field(Author.CodingKeys.name)
                 }
             }
-            Field(Comment.CodingKeys.content)
         }
     }
 }
@@ -446,6 +449,7 @@ query {
     title
     content
     comments {
+      content
       author {
         ... on AnonymousUser {
           id
@@ -455,7 +459,6 @@ query {
           name
         }
       }
-      content
     }
   }
 }
@@ -612,10 +615,10 @@ SociableWeaver provides a couple of custom types that help to build more natural
 
 #### BuilderType
 
-Due to current limitations with function builders, individual elements are not currently accepted. For that reason each function builder initializer has a corresponding initializer for a single element. `BuilderType.individual` has been set up to specify when an object or fragment will consist of only one element.
+Due to current limitations with function builders, individual elements are not currently accepted. For that reason each function builder initializer has a corresponding initializer for a single element. `BuilderType.individual` has been set up to specify when an object or fragment will consist of only one element. The default value for the `builderType` parameter on all initializations is `.individual`. This means that passing it is not required and will result in the same outcome.
 
 ```swift
-Object(Post.CodingKeys.author, .individual) {
+Object(Post.CodingKeys.author) {
     Field(Author.CodingKeys.name)
 }
 
