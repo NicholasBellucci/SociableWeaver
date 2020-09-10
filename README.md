@@ -32,6 +32,7 @@ github "NicholasBellucci/SociableWeaver"
    * [Meta Fields](#meta-fields)
    * [Pagination](#pagination)
    * [Custom Types](#custom-types)
+        * [BuilderType](#buildertype)
         * [CaseStyleOption](#casestyleoption)
         * [EnumValueRepresentable](#enumvaluerepresentable)
 
@@ -611,6 +612,20 @@ Weave(.query) {
 ### Custom Types
 
 SociableWeaver provides a couple of custom types that help to build more natural looking queries. These types may or may not have been included in examples but will also be defined in this section to provide more clarity.
+
+#### BuilderType
+
+Due to current limitations with function builders, individual elements are not currently accepted. For that reason each function builder initializer has a corresponding initializer for a single element. `BuilderType.individual` has been set up to specify when an object or fragment will consist of only one element. The default value for the `builderType` parameter on all initializations is `.individual`. This means that passing it is not required and will result in the same outcome.
+
+```swift
+Object(Post.CodingKeys.author) {
+    Field(Author.CodingKeys.name)
+}
+
+Fragment(authorFragment, .individual) {
+    Field(Author.CodingKeys.name)
+}
+```
 
 #### CaseStyleOption
 
