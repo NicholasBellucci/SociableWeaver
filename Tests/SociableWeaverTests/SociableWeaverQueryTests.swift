@@ -8,12 +8,12 @@ final class SociableWeaverQueryTests: XCTestCase {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Post.CodingKeys.author, .individual) {
+                Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.name)
                 }
 
                 Object(Post.CodingKeys.comments) {
-                    Object(Comment.CodingKeys.author, .individual) {
+                    Object(Comment.CodingKeys.author) {
                         Field(Author.CodingKeys.name)
                     }
                     Field(Comment.CodingKeys.content)
@@ -31,12 +31,12 @@ final class SociableWeaverQueryTests: XCTestCase {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Post.CodingKeys.author, .individual) {
+                Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.name)
                 }
 
                 Object(Post.CodingKeys.comments) {
-                    Object(Comment.CodingKeys.author, .individual) {
+                    Object(Comment.CodingKeys.author) {
                         Field(Author.CodingKeys.name)
                     }
                     Field(Comment.CodingKeys.content)

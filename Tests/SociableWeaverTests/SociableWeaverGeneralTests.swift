@@ -40,13 +40,13 @@ final class SociableWeaverGeneralTests: XCTestCase {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Post.CodingKeys.author, .individual) {
+                Object(Post.CodingKeys.author) {
                     FragmentReference(for: authorFragment)
                 }
 
                 Object(Post.CodingKeys.comments) {
                     Field(Comment.CodingKeys.id)
-                    Object(Comment.CodingKeys.author, .individual) {
+                    Object(Comment.CodingKeys.author) {
                         FragmentReference(for: authorFragment)
                     }
                     Field(Comment.CodingKeys.content)
@@ -77,7 +77,7 @@ final class SociableWeaverGeneralTests: XCTestCase {
                 Object(Post.CodingKeys.comments) {
                     Field(Comment.CodingKeys.id)
                     Object(Comment.CodingKeys.author) {
-                        InlineFragment("AnonymousUser", .individual) {
+                        InlineFragment("AnonymousUser") {
                             Field(Author.CodingKeys.id)
                         }
 
@@ -102,13 +102,13 @@ final class SociableWeaverGeneralTests: XCTestCase {
                 Field(Post.CodingKeys.content)
                     .include(if: true)
 
-                Object(Post.CodingKeys.author, .individual) {
+                Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.name)
                 }
                 .include(if: false)
 
                 Object(Post.CodingKeys.comments) {
-                    Object(Comment.CodingKeys.author, .individual) {
+                    Object(Comment.CodingKeys.author) {
                         Field(Author.CodingKeys.name)
                             .skip(if: true)
                     }

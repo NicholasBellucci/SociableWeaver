@@ -69,7 +69,7 @@ public extension InlineFragment {
     - parameter type: The class type.
     - parameter content: The individual object conforming to `ObjectWeavable`.
     */
-    init(_ type: Any.Type, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
+    init(_ type: Any.Type, _ individual: BuilderType = .individual, _ content: () -> ObjectWeavable) {
         let type = String(describing: type)
         self.init(type, fieldAggregates: String(describing: content()))
         self.remove = shouldRemove(content: content)
@@ -95,7 +95,7 @@ public extension InlineFragment {
     - parameter type: The string representation of type.
     - parameter content: The individual object conforming to `ObjectWeavable`.
     */
-    init(_ type: String, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
+    init(_ type: String, _ individual: BuilderType = .individual, _ content: () -> ObjectWeavable) {
         self.init(type, fieldAggregates: String(describing: content()))
         self.remove = shouldRemove(content: content)
     }

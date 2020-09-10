@@ -8,7 +8,7 @@ final class SociableWeaverMutationTests: XCTestCase {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Post.CodingKeys.author, .individual) {
+                Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.name)
                 }
             }
@@ -27,7 +27,7 @@ final class SociableWeaverMutationTests: XCTestCase {
                 Field(Post.CodingKeys.title)
                 Field(Post.CodingKeys.content)
 
-                Object(Post.CodingKeys.author, .individual) {
+                Object(Post.CodingKeys.author) {
                     Field(Author.CodingKeys.name)
                 }
             }

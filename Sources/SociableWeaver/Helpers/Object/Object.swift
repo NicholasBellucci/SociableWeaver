@@ -256,7 +256,7 @@ public extension Object {
      - parameter type: The type of `Any` used for the name.
      - parameter content: The individual object conforming to `ObjectWeavable`.
     */
-    init(_ type: Any.Type, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
+    init(_ type: Any.Type, _ individual: BuilderType = .individual, _ content: () -> ObjectWeavable) {
         self.init(type, fieldAggregates: String(describing: content()))
         self.skip = shouldRemove(content: content)
     }
@@ -283,7 +283,7 @@ public extension Object {
      - parameter key: The coding key used for the name.
      - parameter content: The individual object conforming to `ObjectWeavable`.
     */
-    init(_ key: CodingKey, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
+    init(_ key: CodingKey, _ individual: BuilderType = .individual, _ content: () -> ObjectWeavable) {
         self.init(key, fieldAggregates: String(describing: content()))
         self.remove = shouldRemove(content: content)
     }
@@ -310,7 +310,7 @@ public extension Object {
      - parameter key: The coding key used for the name.
      - parameter content: The individual object conforming to `ObjectWeavable`.
     */
-    init(_ key: String, _ individual: BuilderType, _ content: () -> ObjectWeavable) {
+    init(_ key: String, _ individual: BuilderType = .individual, _ content: () -> ObjectWeavable) {
         self.init(key, fieldAggregates: String(describing: content()))
         self.remove = shouldRemove(content: content)
     }
@@ -337,7 +337,7 @@ public extension Object {
      - parameter key: The coding key used for the name.
      - parameter content: The individual object conforming to `ObjectWeavable`.
     */
-    init(_ individual: BuilderType, _ content: () -> ObjectWeavable) {
+    init(_ individual: BuilderType = .individual, _ content: () -> ObjectWeavable) {
         self.init(fieldAggregates: String(describing: content()))
         self.remove = shouldRemove(content: content)
     }
