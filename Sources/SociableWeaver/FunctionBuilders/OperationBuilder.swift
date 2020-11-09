@@ -16,6 +16,10 @@ public struct OperationBuilder {
                 weavables.append(field)
             } else if let fragment = $0 as? Fragment {
                 fragments.append(fragment)
+            } else if let forEach = $0 as? ForEachWeavable {
+                if forEach.skip || !forEach.include { return }
+
+                weavables.append(forEach)
             }
         }
 

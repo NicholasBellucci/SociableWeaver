@@ -235,6 +235,29 @@ final class SociableWeaverBuilderTests: XCTestCase {
         XCTAssertEqual(String(describing: query), expected)
     }
 
+    func testForEachWeavable() {
+        let authors = [
+            Author(id: "1", name: "John", age: 17, birthplace: [:]),
+            Author(id: "2", name: "Jane", age: 29, birthplace: [:]),
+            Author(id: "3", name: "Adam", age: 41, birthplace: [:])
+        ]
+
+        let query = Weave(.query) {
+            ForEachWeavable(authors) { author in
+                Object("postsForAuthor") {
+                    Field(Author.CodingKeys.id)
+                    Field(Author.CodingKeys.name)
+                    Field(Author.CodingKeys.age)
+                    Field(Author.CodingKeys.birthplace)
+                }
+                .argument(key: "id", value: author.id)
+            }
+        }
+
+        let expected = "query { postsForAuthor(id: \"1\") { id name age birthplace } postsForAuthor(id: \"2\") { id name age birthplace } postsForAuthor(id: \"3\") { id name age birthplace } }"
+        XCTAssertEqual(String(describing: query), expected)
+    }
+
     static var allTests = [
         ("testBuildField", testBuildField),
         ("testBuildObject", testBuildObject),
