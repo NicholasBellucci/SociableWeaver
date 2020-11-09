@@ -4,10 +4,8 @@ public struct ForEachWeavable: Directive {
     var include: Bool = true
     var skip: Bool = false
 
-    init<T>(_ array: [T], content: @escaping (T) -> ObjectWeavable) {
-        array.forEach {
-            objects.append(content($0))
-        }
+    public init<T>(_ array: [T], content: @escaping (T) -> ObjectWeavable) {
+        array.forEach { objects.append(content($0)) }
     }
 }
 
