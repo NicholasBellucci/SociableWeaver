@@ -32,6 +32,7 @@ github "NicholasBellucci/SociableWeaver"
    * [Meta Fields](#meta-fields)
    * [Pagination](#pagination)
    * [Custom Types](#custom-types)
+        * [ForEachWeavable](#foreachweavable)
         * [BuilderType](#buildertype)
         * [CaseStyleOption](#casestyleoption)
         * [EnumValueRepresentable](#enumvaluerepresentable)
@@ -612,6 +613,55 @@ Weave(.query) {
 ### Custom Types
 
 SociableWeaver provides a couple of custom types that help to build more natural looking queries. These types may or may not have been included in examples but will also be defined in this section to provide more clarity.
+
+#### ForEachWeavable
+
+The ForEachWeavable struct was added for times where you may want to add objects or fields in a loop. More discussion around this use case can be found [here](https://github.com/NicholasBellucci/SociableWeaver/issues/42).
+
+##### Swift
+```swift
+let authors = [
+    Author(id: "1", name: "John", age: 17, birthplace: [:]),
+    Author(id: "2", name: "Jane", age: 29, birthplace: [:]),
+    Author(id: "3", name: "Adam", age: 41, birthplace: [:])
+]
+
+let query = Weave(.query) {
+    ForEachWeavable(authors) { author in
+        Object("postsForAuthor") {
+            Field(Author.CodingKeys.id)
+            Field(Author.CodingKeys.name)
+            Field(Author.CodingKeys.age)
+            Field(Author.CodingKeys.birthplace)
+        }
+        .argument(key: "id", value: author.id)
+    }
+}
+```
+
+##### GraphQL Query
+```graphql
+{
+  postsForAuthor(id: "1") {
+    id
+    name
+    age
+    birthplace
+  }
+  postsForAuthor(id: "2") {
+    id
+    name
+    age
+    birthplace
+  }
+  postsForAuthor(id: "3") {
+    id
+    name
+    age
+    birthplace
+  }
+}
+```
 
 #### BuilderType
 
