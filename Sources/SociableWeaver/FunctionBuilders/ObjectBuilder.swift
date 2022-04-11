@@ -1,4 +1,4 @@
-@_functionBuilder
+@resultBuilder
 public struct ObjectBuilder {
     public static func buildBlock(_ children: ObjectWeavable...) -> String {
         var descriptions: [String] = []
